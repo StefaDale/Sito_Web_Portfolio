@@ -9,6 +9,18 @@ const EMAILJS_CONFIG = {
 };
 const EMAIL_VERIFICATION_CODE_LENGTH = 6;
 const EMAIL_VERIFICATION_TTL_MS = 5 * 60 * 1000;
+const LIVE_BACKGROUND_CONFIG = {
+  dark: {
+    node: 'rgba(168, 85, 247, 0.62)',
+    line: 'rgba(124, 58, 237, 0.24)',
+    glow: 'rgba(168, 85, 247, 0.18)',
+  },
+  light: {
+    node: 'rgba(109, 40, 217, 0.42)',
+    line: 'rgba(109, 40, 217, 0.16)',
+    glow: 'rgba(109, 40, 217, 0.10)',
+  },
+};
 const CONTACT_MESSAGES = {
   it: {
     sending: 'Invio del messaggio in corso...',
@@ -493,21 +505,27 @@ async function loadPageFragments() {
 }
 
 function setupSkillsScroller() {
-  const wrapper = document.getElementById('skills-scroll-wrapper');
-  const prev = document.getElementById('skills-prev');
-  const next = document.getElementById('skills-next');
-  if (!wrapper || !prev || !next || wrapper.dataset.skillsReady === 'true') return;
+  document.querySelectorAll('.skills-scroll-wrapper').forEach(wrapper => {
+    if (wrapper.dataset.skillsReady === 'true') return;
 
-  const STEP = 160;
-  const updateButtons = () => updateSkillsNavButtons(wrapper, prev, next);
+    const section = wrapper.closest('.content-section') || document;
+    const prev = section.querySelector('#skills-prev');
+    const next = section.querySelector('#skills-next');
+    if (!prev || !next) return;
 
-  prev.addEventListener('click', () => smoothHorizontalScroll(wrapper, -STEP, updateButtons));
-  next.addEventListener('click', () => smoothHorizontalScroll(wrapper, STEP, updateButtons));
-  wrapper.addEventListener('scroll', updateButtons, { passive: true });
-  window.addEventListener('resize', updateButtons);
+    const firstCard = wrapper.querySelector('.skill-card');
+    const gap = parseFloat(getComputedStyle(wrapper.querySelector('.skills-scroll')).columnGap) || 0;
+    const STEP = firstCard ? firstCard.getBoundingClientRect().width + gap : 360;
+    const updateButtons = () => updateSkillsNavButtons(wrapper, prev, next);
 
-  updateButtons();
-  wrapper.dataset.skillsReady = 'true';
+    prev.addEventListener('click', () => smoothHorizontalScroll(wrapper, -STEP, updateButtons));
+    next.addEventListener('click', () => smoothHorizontalScroll(wrapper, STEP, updateButtons));
+    wrapper.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+
+    updateButtons();
+    wrapper.dataset.skillsReady = 'true';
+  });
 }
 
 function updateSkillsNavButtons(wrapper, prev, next) {
@@ -806,6 +824,7 @@ function setupContactForm(root = document) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  setupLiveBackground();
   loadPageFragments();
   setupSkillsScroller();
   setupCvFallback();
@@ -815,6 +834,128 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(() => setupRevealAnimations());
   }
 });
+
+function setupLiveBackground() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduceMotion.matches || document.getElementById('live-background')) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'live-background';
+  canvas.setAttribute('aria-hidden', 'true');
+  document.body.prepend(canvas);
+
+  const ctx = canvas.getContext('2d');
+  const pointer = { x: 0, y: 0, active: false };
+  const nodes = [];
+  let width = 0;
+  let height = 0;
+  let animationFrame = 0;
+
+  const createNodes = () => {
+    nodes.length = 0;
+    const density = Math.min(90, Math.max(34, Math.round((width * height) / 26000)));
+    for (let index = 0; index < density; index += 1) {
+      nodes.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.22,
+        radius: Math.random() * 1.8 + 1.1,
+      });
+    }
+  };
+
+  const resize = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    createNodes();
+  };
+
+  const draw = () => {
+    const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+    const colors = LIVE_BACKGROUND_CONFIG[theme];
+    ctx.clearRect(0, 0, width, height);
+
+    for (let i = 0; i < nodes.length; i += 1) {
+      const node = nodes[i];
+
+      if (pointer.active) {
+        const dx = pointer.x - node.x;
+        const dy = pointer.y - node.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 180 && distance > 0) {
+          const force = (1 - distance / 180) * 0.012;
+          node.vx += dx * force / distance;
+          node.vy += dy * force / distance;
+        }
+      }
+
+      node.x += node.vx;
+      node.y += node.vy;
+      node.vx *= 0.985;
+      node.vy *= 0.985;
+
+      if (node.x < -20) node.x = width + 20;
+      if (node.x > width + 20) node.x = -20;
+      if (node.y < -20) node.y = height + 20;
+      if (node.y > height + 20) node.y = -20;
+
+      for (let j = i + 1; j < nodes.length; j += 1) {
+        const other = nodes[j];
+        const dx = other.x - node.x;
+        const dy = other.y - node.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance > 135) continue;
+
+        ctx.strokeStyle = colors.line;
+        ctx.globalAlpha = 1 - distance / 135;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(node.x, node.y);
+        ctx.lineTo(other.x, other.y);
+        ctx.stroke();
+      }
+
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = colors.glow;
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, node.radius * 3.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = colors.node;
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.globalAlpha = 1;
+    animationFrame = requestAnimationFrame(draw);
+  };
+
+  window.addEventListener('resize', resize);
+  window.addEventListener('pointermove', event => {
+    pointer.x = event.clientX;
+    pointer.y = event.clientY;
+    pointer.active = true;
+  }, { passive: true });
+  window.addEventListener('pointerleave', () => {
+    pointer.active = false;
+  });
+  reduceMotion.addEventListener?.('change', event => {
+    if (!event.matches) return;
+    cancelAnimationFrame(animationFrame);
+    canvas.remove();
+  });
+
+  resize();
+  draw();
+}
 
 // ── MODAL ────────────────────────────────────────────────
 let lastFocusedBeforeModal = null;

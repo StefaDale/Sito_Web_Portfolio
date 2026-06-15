@@ -14,7 +14,7 @@
 | **Tipo** | Sito web personale statico ibrido: home one-page + due pagine sorgente/modificabili |
 | **Scopo principale** | Presentare il proprietario — chi è, le sue passioni e il suo percorso scolastico/lavorativo — con un curriculum vitae visualizzabile online |
 | **Problema che risolve** | Fornisce un biglietto da visita digitale completo, accessibile in piu lingue, navigabile da chiunque voglia conoscere Stefano |
-| **Stato attuale** | **Funzionale e online.** La home carica in una pagina lunga i contenuti delle pagine personale e lavorativa; le due sottopagine restano modificabili e apribili direttamente. Navbar dinamica, i18n multi-lingua, selettore lingue con modal ricercabile, tema chiaro/scuro, modal contatti accessibile, form EmailJS inline dopo il CV, invio diretto preceduto da verifica email tramite codice, scroll spy, scroll fluido, SEO base, favicon SCD, visualizzatore CV con Google Docs Viewer dove necessario e fallback, e animazioni di entrata sono operativi. Deploy completato su Netlify. Manca ancora la foto profilo. |
+| **Stato attuale** | **Funzionale e online.** La home carica in una pagina lunga i contenuti delle pagine personale e lavorativa; le due sottopagine restano modificabili e apribili direttamente. Navbar dinamica, i18n multi-lingua, selettore lingue con modal ricercabile, tema chiaro/scuro, modal contatti accessibile, form EmailJS inline dopo il CV, invio diretto preceduto da verifica email tramite codice, scroll spy, scroll fluido, SEO base, favicon SCD, visualizzatore CV con Google Docs Viewer dove necessario e fallback, e animazioni di entrata sono operativi. Deploy completato su Netlify. La foto profilo non è prevista: l'identità è già coperta dal CV. |
 | **URL di produzione** | https://stefanocatalin.netlify.app |
 | **Hosting** | Netlify (deploy statico) |
 
@@ -35,6 +35,7 @@
 - **flagcdn.com** — CDN di bandiere SVG usato per le flag nel selettore lingua (dipendenza esterna leggera, nessun pacchetto npm)
 - **EmailJS Browser SDK + REST API** — SDK caricato via CDN (`@emailjs/browser@4`) per inviare i messaggi del form contatti senza backend proprietario, con fallback REST ufficiale quando il CDN non espone `window.emailjs`
 - **Google Docs Viewer** — viewer esterno usato da `main.js` per visualizzare il CV dentro l'`iframe` su mobile o nei browser senza anteprima PDF inline nativa
+- **Simple Icons / Devicon** — sorgenti degli SVG brand scaricati localmente in `assets/icons/` per le skill card
 - **localStorage** — usato da `i18n.js` per persistere la scelta della lingua e da `main.js` per persistere il tema chiaro/scuro
 - **IntersectionObserver** — usato da `main.js` per attivare le animazioni di entrata durante lo scroll
 - **matchMedia / prefers-reduced-motion** — usato per rispettare le preferenze utente sulle animazioni
@@ -80,9 +81,9 @@ mio-sito/                        ← root del progetto
 |---|---|
 | `index.html` | Home one-page: hero + contenitori `page-fragment` che caricano i blocchi personale/lavorativo + footer + modal |
 | `vita-personale.html` | Pagina autonoma e sorgente del blocco `#personal-section-source`: chi sono, passioni, storia personale |
-| `vita-lavorativa.html` | Pagina autonoma e sorgente del blocco `#work-section-source`: skill cards, timeline esperienze, iframe CV e form contatti EmailJS inline subito dopo il CV |
+| `vita-lavorativa.html` | Pagina autonoma e sorgente del blocco `#work-section-source`: skill cards con badge livello, timeline esperienze, iframe CV e form contatti EmailJS inline subito dopo il CV |
 | `style.css` | CSS globale. Sezioni: variabili tema dark/light, reset, animazioni reveal, navbar, hero, footer, modal, modal lingue, page-hero, content-section, cards, skills, timeline, CV viewer, lang-dropdown, mobile menu |
-| `main.js` | Costruisce la navbar lato client, carica i frammenti nella home, gestisce i form contatti con EmailJS e verifica email, modal contatti accessibile, modal lingue ricercabile, tema, scroll spy, scroll fluido, hamburger, skill scroller con frecce disabilitabili, visualizzazione CV tramite PDF diretto/Google Docs Viewer con fallback e animazioni reveal |
+| `main.js` | Costruisce la navbar lato client, carica i frammenti nella home, gestisce i form contatti con EmailJS e verifica email, modal contatti accessibile, modal lingue ricercabile, tema, scroll spy, scroll fluido, hamburger, skill scroller con frecce disabilitabili, sfondo live canvas, visualizzazione CV tramite PDF diretto/Google Docs Viewer con fallback e animazioni reveal |
 | `i18n.js` | Carica il JSON della lingua corrente via `fetch()`, applica le stringhe agli elementi `[data-i18n]`, persiste la scelta in localStorage, espone i metadati delle lingue e riapplica le traduzioni ai frammenti caricati |
 | `locales/*.json` | Dizionari di traduzione, struttura identica con chiavi annidate: `nav`, `home`, `personal`, `work`, `modal`, `language_modal`, `footer` |
 | `Stefano Catalin D'Alessandro.pdf` | PDF del CV; referenziato come `src` iniziale dell'`<iframe>` in `vita-lavorativa.html` e usato anche per generare l'URL assoluto passato a Google Docs Viewer |
@@ -157,13 +158,19 @@ mio-sito/                        ← root del progetto
   La funzione è idempotente grazie a `data-contact-ready`, quindi può essere richiamata
   sia al `DOMContentLoaded` sia dopo il caricamento dei frammenti nella home.
 
-### 5. Skill Cards con scroll orizzontale
+### 5. Skill Cards con scroll orizzontale e badge livello
 - **Dove:** `vita-lavorativa.html` + CSS `.skills-scroll-wrapper`
 - **Come:** Le card sono in un contenitore `overflow-x: auto` con `scrollbar-width: none`.
-  Due bottoni ← → chiamano `smoothHorizontalScroll()` in `main.js`.
+  Due bottoni ← → chiamano `smoothHorizontalScroll()` in `main.js` e avanzano di una card intera
+  calcolando dinamicamente larghezza card + gap.
   I bottoni vengono disabilitati automaticamente quando lo scroll è già a inizio/fine lista:
   lo stato disabilitato rimuove hover, pointer cursor e interazione.
-  Al hover, la card espande la descrizione via transizione CSS su `max-height` e `opacity`.
+  Ogni card usa un layout orizzontale: titolo e descrizione a sinistra, icona grande a destra
+  e badge livello centrato in basso. L'hover evidenzia la card senza nascondere la descrizione.
+- **Contenuto:** le competenze sono suddivise in 11 card autonome: Windows, C#, Python, C,
+  C++, HTML, CSS, Assembly, Intelligenza Artificiale, Google Workspace e Microsoft Office.
+  Ogni card ha un'icona brand locale in `assets/icons/` e un badge di preparazione (`Ottimo`, `Buono`,
+  `Intermedio`, `Base`) gestito via i18n.
 
 ### 6. Timeline esperienze
 - **Dove:** `vita-lavorativa.html` + CSS `.timeline`
@@ -215,6 +222,17 @@ mio-sito/                        ← root del progetto
   l'utente usa le frecce orizzontali.
 - **Accessibilità:** se l'utente ha attivo `prefers-reduced-motion`, gli elementi sono
   mostrati senza animazione.
+
+### 13. Sfondo live particellare
+- **Dove:** `main.js` → `setupLiveBackground()`; `style.css` → `#live-background`.
+- **Come:** al `DOMContentLoaded` viene creato un `<canvas id="live-background">` fisso,
+  non interattivo (`pointer-events: none`) e dietro al contenuto (`z-index: -1`).
+  Il canvas disegna nodi/particelle e linee tra punti vicini; il mouse genera una lieve
+  attrazione sui nodi per dare un effetto interattivo morbido.
+- **Tema:** i colori cambiano in base a `data-theme`, con viola più luminoso nel tema scuro
+  e linee più leggere nel tema chiaro.
+- **Accessibilità/performance:** se `prefers-reduced-motion: reduce` è attivo, lo sfondo
+  non viene avviato. La densità dei nodi è calcolata in base all'area viewport e limitata.
 
 ---
 
@@ -328,7 +346,8 @@ comparire anche nel dropdown rapido, va aggiunta anche al template `.lang-menu` 
 - Pulizia HTML/accessibilità dei modal contatti: chiusura coerente dei tag `<li>`, label nascosta per codice OTP, stati ARIA e `rel="noopener noreferrer"` sui link aperti in nuova scheda
 - Menu hamburger mobile con chiusura su click esterno e click sui link
 - Animazioni di entrata scroll-triggered con `IntersectionObserver`, effetto comparsa verso l'alto e rispetto di `prefers-reduced-motion`
-- Skill cards con scroll orizzontale fluido custom, frecce di navigazione disabilitabili a inizio/fine lista e expand-on-hover
+- Sfondo live canvas con rete di nodi/particelle, interazione leggera col mouse e rispetto di `prefers-reduced-motion`
+- Skill cards più ampie con layout orizzontale, icona grande a destra, descrizione visibile, badge livello e scroll orizzontale fluido custom
 - Frecce skill cards con `aria-label` localizzato
 - Timeline esperienze
 - Visualizzatore PDF/Google Docs Viewer per il CV con fallback automatico e link apertura/download
@@ -336,7 +355,8 @@ comparire anche nel dropdown rapido, va aggiunta anche al template `.lang-menu` 
 - Selettore lingua con bandiere, dropdown animato, tre lingue rapide e pulsante "Visualizza tutto"
 - Modal "Tutte le lingue" con barra di ricerca, lista generata da `SUPPORTED`/`LANG_META` e selezione lingua
 - Toggle tema chiaro/scuro con persistenza localStorage e anti-flash nel `<head>`
-- SEO base: title coerenti, meta description, Open Graph, Twitter Card, favicon SVG `SCD` e immagine preview locale
+- SEO base: title coerenti, meta description, canonical URL, `og:url`, Open Graph, Twitter Card, favicon SVG `SCD` e immagine preview locale
+- Contenitori principali e sezioni alternate allineati su una larghezza comune tramite `--content-width`
 
 ### In lavorazione / da consolidare 🔄
 - Nessuna attività di sviluppo attiva al momento dell'analisi
@@ -371,7 +391,6 @@ comparire anche nel dropdown rapido, va aggiunta anche al template `.lang-menu` 
   soprattutto sull'URL Netlify.
 
 ### Possibili miglioramenti
-- Aggiungere URL canonical e `og:url` quando sarà disponibile il dominio di produzione
 
 ---
 
@@ -427,8 +446,6 @@ Significa che le traduzioni non possono contenere HTML formattato.
 
 ### Priorità bassa 🟢
 3. **Pagina 404** — pagina di errore personalizzata
-4. **Canonical/URL produzione** — aggiungere `canonical` e `og:url` quando esiste il dominio finale
-5. **Deployment** — configurazione per GitHub Pages o Netlify (file `_redirects` o `netlify.toml`)
 
 ---
 
@@ -523,7 +540,13 @@ npx serve .
 | **Fase 25** | Passata accessibilità/HTML: dialog semantico, focus trap, chiusura con Escape, ripristino focus, label nascosta OTP, aria-label frecce skill e rel coerenti sui link esterni |
 | **Fase 26** | Aggiunta lingua spagnola, dropdown rapido a tre lingue e modal "Tutte le lingue" con ricerca generato da `SUPPORTED`/`LANG_META` |
 | **Fase 27** | Test manuale completato, deploy Netlify registrato e successivo aggiornamento del viewer CV con Google Docs Viewer su mobile/browser senza PDF inline nativo |
-| **Stato corrente** | Progetto funzionale e online. In attesa di: eventuale backend proprietario/server-side per il form, foto profilo e miglioramenti SEO con URL/immagini definitive |
+| **Fase 28** | Aggiunti canonical URL e `og:url` di produzione alle tre pagine HTML; roadmap SEO aggiornata |
+| **Fase 29** | Skill cards rifinite con hover/focus visivo, classe CSS `.is-open` equivalente allo stato evidenziato e overflow verticale per contenuti lunghi |
+| **Fase 30** | Allargamento coordinato dei contenitori tramite `--content-width`, ingrandimento skill card, separazione delle competenze accorpate, aggiunta icone brand locali e badge livello i18n |
+| **Fase 31** | Ridisegno layout skill card: card più grandi, icona grande a destra, titolo/descrizione a sinistra e badge livello centrato in basso |
+| **Fase 32** | Aggiornamento frecce skill card: step di scorrimento calcolato dinamicamente su larghezza card + gap |
+| **Fase 33** | Aggiunta sfondo live canvas con rete di nodi/particelle, colori per tema dark/light e interazione leggera col mouse |
+| **Stato corrente** | Progetto funzionale e online. In attesa di: eventuale backend proprietario/server-side per il form e ulteriori rifiniture dell'immagine Open Graph |
 
 ---
 
@@ -568,29 +591,26 @@ scolastico/professionale, con il CV scaricabile/visualizzabile.
   mantenendo un'esperienza one-page senza perdere file separati e modificabili
 - **Scroll spy:** la sezione visibile aggiorna lo stato attivo dei bottoni navbar desktop/mobile
 - **Lazy content reveal (CSS + JS):** le animazioni di entrata usano `.reveal`/`.is-visible`
-  e `IntersectionObserver`; la descrizione delle skill card usa `max-height: 0 → 120px`
-  e `opacity: 0 → 1` per l'expand-on-hover
+  e `IntersectionObserver`; le skill card usano un layout stabile con descrizione sempre visibile
 
 ### Stato preciso dell'ultima versione analizzata
 - Tre pagine HTML complete: home one-page + due sottopagine autonome/sorgente
 - CSS: include media query mobile, tema dark/light, scroll margin per ancore, utility `.sr-only`, modal lingue, classi reveal e fallback reduced motion
-- `main.js`: navbar, modal contatti accessibile, modal lingue ricercabile, frammenti, tema, scroll spy, scroll fluido, skill scroller con frecce disabilitabili, visualizzatore CV tramite PDF diretto/Google Docs Viewer con fallback e animazioni reveal
+- `main.js`: navbar, modal contatti accessibile, modal lingue ricercabile, frammenti, tema, scroll spy, scroll fluido, skill scroller con frecce disabilitabili, sfondo live canvas, visualizzatore CV tramite PDF diretto/Google Docs Viewer con fallback e animazioni reveal
 - `i18n.js`: sistema i18n completo con event delegation, `navigator.language`, `refreshI18n()`, `SUPPORTED` e `LANG_META`
 - JSON: struttura identica per tutte le lingue supportate in `locales/`
 - `Stefano Catalin D'Alessandro.pdf`: presente in `assets/` (contenuto non analizzato)
 - `assets/favicon.svg`: favicon `SCD` viola su sfondo scuro
-- `assets/images/`: contiene `og-preview.svg`; nessuna foto profilo personale presente
+- `assets/images/`: contiene `og-preview.svg`; nessuna foto profilo personale prevista
 
 ### Ultimo lavoro svolto
-Claude (claude.ai) ha sostituito il comportamento del viewer CV con una gestione ibrida:
-il PDF locale resta lo `src` iniziale dell'`iframe`, ma `main.js` costruisce un URL per
-Google Docs Viewer e lo usa su mobile o quando il browser non espone supporto PDF inline
-nativo. Codex ha poi verificato la modifica rispetto al codice attuale e riallineato questo
-documento di contesto, correggendo anche i riferimenti obsoleti alle sole lingue IT/EN/ES.
+Codex ha aggiunto uno sfondo live canvas con rete di nodi/particelle e interazione leggera
+col mouse. Lo sfondo rispetta `prefers-reduced-motion`, cambia colore in base al tema e resta
+dietro al contenuto senza intercettare click o focus.
 
 ### Prossimo passo consigliato
 Test manuale completato con esito positivo. Deploy effettuato su Netlify all'indirizzo https://stefanocatalin.netlify.app.
-Passo successivo: aggiungere la foto profilo in `assets/images/` e aggiornarla nel codice HTML; aggiornare i meta Open Graph (`og:url`, `og:image`) con l'URL di produzione reale.
+Passo successivo: rifinire l'immagine Open Graph quando necessario e mantenere allineati i meta social.
 
 ### Istruzione per futuri aggiornamenti del documento
 Quando un'IA aggiorna questo file deve aggiornare anche la tabella "Tracciamento IA" e la
@@ -620,10 +640,11 @@ mantenerlo leggibile.
 | 15 giugno 2026 | Codex | Aggiunta lingua spagnola, modal "Tutte le lingue" con ricerca, istruzioni precise per aggiungere nuove lingue e aggiornamento del contesto |
 | 15 giugno 2026 | Claude (claude.ai) | Test manuale completato con esito positivo. Deploy effettuato su Netlify (https://stefanocatalin.netlify.app). Aggiornamento del documento: stato progetto, URL di produzione, hosting e prossimo passo consigliato. Foto profilo ancora assente. |
 | 15 giugno 2026 | Claude (claude.ai) + Codex | Modifica del viewer CV per usare Google Docs Viewer su mobile/browser senza viewer PDF nativo; verifica Codex del codice attuale e riallineamento del documento di contesto. |
+| 15 giugno 2026 | Codex | Allargamento coordinato dei contenitori, rifinitura tema chiaro del modal contatti, ingrandimento/separazione skill card e aggiunta badge livello i18n. |
 
 ---
 
 *Documento inizialmente generato da Claude Code tramite analisi statica del codice sorgente:
 per quella prima analisi nessuna esecuzione del codice è stata effettuata. Successivamente
 Codex ha aggiornato questo documento dopo aver modificato il progetto ed eseguito/verificato
-il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilità del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Claude (claude.ai) ha poi aggiornato il documento dopo il completamento del test manuale e del deploy su Netlify, registrando l'URL di produzione e il nuovo stato del progetto, e ha modificato il viewer CV per usare Google Docs Viewer dove necessario. Codex ha infine verificato questa modifica rispetto al codice attuale e riallineato il contesto. Alcune inferenze (es. cronologia iniziale) restano basate sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
+il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilità del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Claude (claude.ai) ha poi aggiornato il documento dopo il completamento del test manuale e del deploy su Netlify, registrando l'URL di produzione e il nuovo stato del progetto, e ha modificato il viewer CV per usare Google Docs Viewer dove necessario. Codex ha infine verificato questa modifica rispetto al codice attuale, riallineato il contesto, rifinito il tema chiaro del modal contatti e riorganizzato le skill card con contenitori più ampi e badge livello. Alcune inferenze (es. cronologia iniziale) restano basate sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
