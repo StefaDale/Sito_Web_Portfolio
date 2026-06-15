@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vita lavorativa e CV | Stefano D'Alessandro</title>
+  <meta name="description" content="Vita lavorativa di Stefano D'Alessandro: competenze informatiche, percorso scolastico-professionale e curriculum vitae." />
+  <meta name="author" content="Stefano Catalin D'Alessandro" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content="Stefano D'Alessandro" />
+  <meta property="og:title" content="Vita lavorativa e CV | Stefano D'Alessandro" />
+  <meta property="og:description" content="Competenze informatiche, percorso scolastico-professionale e curriculum vitae." />
+  <meta property="og:image" content="assets/images/og-preview.svg" />
+  <meta property="og:locale" content="it_IT" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vita lavorativa e CV | Stefano D'Alessandro" />
+  <meta name="twitter:description" content="Competenze informatiche, percorso scolastico-professionale e curriculum vitae." />
+  <meta name="twitter:image" content="assets/images/og-preview.svg" />
+  <script>
+    document.documentElement.dataset.theme =
+      localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
+  </script>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-work">
+  <main id="work-section-source">
+
+  <!-- ── HERO PAGINA ── -->
+  <section class="page-hero">
+    <h1 data-i18n="work.title"></h1>
+    <p data-i18n="work.subtitle"></p>
+  </section>
+
+  <!-- ── SEZIONE: COMPETENZE ── -->
+  <section class="content-section">
+    <div class="skills-header">
+      <h2 data-i18n="work.skills_title"></h2>
+      <div class="skills-nav">
+        <button class="skills-nav-btn" id="skills-prev" type="button" data-i18n-aria-label="work.skills_prev_label">←</button>
+        <button class="skills-nav-btn" id="skills-next" type="button" data-i18n-aria-label="work.skills_next_label">→</button>
+      </div>
+    </div>
+    <div class="skills-scroll-wrapper" id="skills-scroll-wrapper">
+      <div class="skills-scroll">
+
+        <div class="skill-card">
+          <span class="skill-card-icon">🖥️</span>
+          <span class="skill-card-name" data-i18n="work.skill1_name"></span>
+          <span class="skill-card-desc" data-i18n="work.skill1_desc"></span>
+        </div>
+
+        <div class="skill-card">
+          <span class="skill-card-icon">💻</span>
+          <span class="skill-card-name" data-i18n="work.skill2_name"></span>
+          <span class="skill-card-desc" data-i18n="work.skill2_desc"></span>
+        </div>
+
+        <div class="skill-card">
+          <span class="skill-card-icon">⚙️</span>
+          <span class="skill-card-name" data-i18n="work.skill3_name"></span>
+          <span class="skill-card-desc" data-i18n="work.skill3_desc"></span>
+        </div>
+
+        <div class="skill-card">
+          <span class="skill-card-icon">🌐</span>
+          <span class="skill-card-name" data-i18n="work.skill4_name"></span>
+          <span class="skill-card-desc" data-i18n="work.skill4_desc"></span>
+        </div>
+
+        <div class="skill-card">
+          <span class="skill-card-icon">🔩</span>
+          <span class="skill-card-name" data-i18n="work.skill5_name"></span>
+          <span class="skill-card-desc" data-i18n="work.skill5_desc"></span>
+        </div>
+
+        <div class="skill-card">
+          <span class="skill-card-icon">🤖</span>
+          <span class="skill-card-name" data-i18n="work.skill6_name"></span>
+          <span class="skill-card-desc" data-i18n="work.skill6_desc"></span>
+        </div>
+
+        <div class="skill-card">
+          <span class="skill-card-icon">📂</span>
+          <span class="skill-card-name" data-i18n="work.skill7_name"></span>
+          <span class="skill-card-desc" data-i18n="work.skill7_desc"></span>
+        </div>
+
+        <div class="skill-card">
+          <span class="skill-card-icon">📊</span>
+          <span class="skill-card-name" data-i18n="work.skill8_name"></span>
+          <span class="skill-card-desc" data-i18n="work.skill8_desc"></span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SEZIONE: ESPERIENZE ── -->
+  <section class="content-section alt">
+    <h2 data-i18n="work.experience_title"></h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <span class="timeline-date">2022 — Oggi</span>
+        <h3 data-i18n="work.exp1_title"></h3>
+        <p class="timeline-role" data-i18n="work.exp1_role"></p>
+        <p data-i18n="work.exp1_text"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SEZIONE: CV ── -->
+  <section class="content-section">
+    <h2 data-i18n="work.cv_title"></h2>
+    <p data-i18n="work.cv_text"></p>
+    <div class="cv-wrapper">
+      <iframe
+        src="assets/Stefano Catalin D'Alessandro.pdf"
+        class="cv-frame"
+        title="Curriculum Vitae">
+      </iframe>
+      <p class="cv-fallback" data-i18n="work.cv_fallback"></p>
+      <div class="cv-actions">
+        <a href="assets/Stefano Catalin D'Alessandro.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary" data-i18n="work.cv_open"></a>
+        <a href="assets/Stefano Catalin D'Alessandro.pdf" download class="btn-primary" data-i18n="work.cv_download"></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SEZIONE: CONTATTI ── -->
+  <section class="content-section alt inline-contact-section">
+    <h2 data-i18n="modal.title"></h2>
+    <p class="modal-intro" data-i18n="modal.intro"></p>
+    <form class="contact-form" id="inline-contact-form">
+      <label for="inline-contact-name" data-i18n="modal.name_label"></label>
+      <input id="inline-contact-name" name="name" type="text" autocomplete="name" data-i18n-placeholder="modal.name_placeholder" required>
+
+      <label for="inline-contact-email" data-i18n="modal.email_label"></label>
+      <input id="inline-contact-email" name="email" type="email" autocomplete="email" data-i18n-placeholder="modal.email_placeholder" required>
+      <div class="email-verification">
+        <button class="email-verify-send" type="button" data-i18n="modal.verify_send"></button>
+        <label class="sr-only" for="inline-email-code" data-i18n="modal.code_label"></label>
+        <input id="inline-email-code" name="email_code" type="text" inputmode="numeric" autocomplete="one-time-code" data-i18n-placeholder="modal.code_placeholder" aria-describedby="inline-email-verification-status">
+        <button class="email-verify-check" type="button" data-i18n="modal.verify_check"></button>
+      </div>
+      <p class="email-verification-status" id="inline-email-verification-status" role="status" aria-live="polite"></p>
+
+      <label for="inline-contact-message" data-i18n="modal.message_label"></label>
+      <textarea id="inline-contact-message" name="message" rows="5" data-i18n-placeholder="modal.message_placeholder" required></textarea>
+
+      <button class="contact-submit" type="submit" data-i18n="modal.submit"></button>
+    </form>
+    <p class="contact-form-status" id="inline-contact-form-status" role="status" aria-live="polite"></p>
+    <p class="contact-form-hint" data-i18n="modal.mail_hint"></p>
+  </section>
+
+  <!-- ── FOOTER CONTATTI ── -->
+  </main>
+
+  <footer class="footer" id="contatti">
+    <p class="footer-label" data-i18n="footer.title"></p>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/ste_catalin_/" target="_blank" rel="noopener noreferrer" data-i18n="footer.instagram"></a>
+      <a href="https://github.com/StefaDale" target="_blank" rel="noopener noreferrer" data-i18n="footer.github"></a>
+    </div>
+    <p class="footer-copy" data-i18n="footer.copyright"></p>
+  </footer>
+
+  <!-- ── MODAL CONTATTI ── -->
+  <div class="modal-overlay" id="modal-contatti" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-intro" tabindex="-1">
+      <button class="modal-close" id="btn-close-modal" type="button" data-i18n-aria-label="modal.close">✕</button>
+      <h2 id="modal-title" data-i18n="modal.title"></h2>
+      <p class="modal-intro" id="modal-intro" data-i18n="modal.intro"></p>
+      <form class="contact-form" id="contact-form">
+        <label for="contact-name" data-i18n="modal.name_label"></label>
+        <input id="contact-name" name="name" type="text" autocomplete="name" data-i18n-placeholder="modal.name_placeholder" required>
+
+        <label for="contact-email" data-i18n="modal.email_label"></label>
+        <input id="contact-email" name="email" type="email" autocomplete="email" data-i18n-placeholder="modal.email_placeholder" required>
+        <div class="email-verification">
+          <button class="email-verify-send" id="email-verify-send" type="button" data-i18n="modal.verify_send"></button>
+          <label class="sr-only" for="email-code" data-i18n="modal.code_label"></label>
+          <input id="email-code" name="email_code" type="text" inputmode="numeric" autocomplete="one-time-code" data-i18n-placeholder="modal.code_placeholder" aria-describedby="email-verification-status">
+          <button class="email-verify-check" id="email-verify-check" type="button" data-i18n="modal.verify_check"></button>
+        </div>
+        <p class="email-verification-status" id="email-verification-status" role="status" aria-live="polite"></p>
+
+        <label for="contact-message" data-i18n="modal.message_label"></label>
+        <textarea id="contact-message" name="message" rows="5" data-i18n-placeholder="modal.message_placeholder" required></textarea>
+
+        <button class="contact-submit" type="submit" data-i18n="modal.submit"></button>
+      </form>
+      <p class="contact-form-status" id="contact-form-status" role="status" aria-live="polite"></p>
+      <p class="contact-form-hint" data-i18n="modal.mail_hint"></p>
+      <ul class="modal-list">
+        <li>📸 <a href="https://www.instagram.com/ste_catalin_/" target="_blank" rel="noopener noreferrer" data-i18n="footer.instagram"></a></li>
+        <li>💻 <a href="https://github.com/StefaDale" target="_blank" rel="noopener noreferrer" data-i18n="footer.github"></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
