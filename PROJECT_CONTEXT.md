@@ -14,7 +14,9 @@
 | **Tipo** | Sito web personale statico ibrido: home one-page + due pagine sorgente/modificabili |
 | **Scopo principale** | Presentare il proprietario — chi è, le sue passioni e il suo percorso scolastico/lavorativo — con un curriculum vitae visualizzabile online |
 | **Problema che risolve** | Fornisce un biglietto da visita digitale completo, accessibile in piu lingue, navigabile da chiunque voglia conoscere Stefano |
-| **Stato attuale** | **Funzionale ma in sviluppo attivo.** La home carica in una pagina lunga i contenuti delle pagine personale e lavorativa; le due sottopagine restano modificabili e apribili direttamente. Navbar dinamica, i18n multi-lingua, selettore lingue con modal ricercabile, tema chiaro/scuro, modal contatti accessibile, form EmailJS inline dopo il CV, invio diretto preceduto da verifica email tramite codice, scroll spy, scroll fluido, SEO base, favicon SCD, fallback CV e animazioni di entrata sono operativi. Mancano ancora foto profilo e configurazione di deploy |
+| **Stato attuale** | **Funzionale e online.** La home carica in una pagina lunga i contenuti delle pagine personale e lavorativa; le due sottopagine restano modificabili e apribili direttamente. Navbar dinamica, i18n multi-lingua, selettore lingue con modal ricercabile, tema chiaro/scuro, modal contatti accessibile, form EmailJS inline dopo il CV, invio diretto preceduto da verifica email tramite codice, scroll spy, scroll fluido, SEO base, favicon SCD, fallback CV e animazioni di entrata sono operativi. Deploy completato su Netlify. Manca ancora la foto profilo. |
+| **URL di produzione** | https://stefanocatalin.netlify.app |
+| **Hosting** | Netlify (deploy statico) |
 
 ---
 
@@ -316,7 +318,7 @@ comparire anche nel dropdown rapido, va aggiunta anche al template `.lang-menu` 
 - Struttura ibrida: home one-page + pagine personale/lavorativa autonome e usate come sorgenti dei frammenti
 - Foglio di stile completo con variabili CSS per tema scuro e tema chiaro
 - Navbar dinamica generata via JS con link ad ancore, scroll spy e stato attivo desktop/mobile
-- Sistema i18n funzionante (16 lingue) con persistenza localStorage, rilevamento `navigator.language` e `refreshI18n()`
+- Sistema i18n funzionante (IT/EN/ES) con persistenza localStorage, rilevamento `navigator.language` e `refreshI18n()`
 - Modal contatti funzionante (apertura via bottone navbar, chiusura con ✕ o click esterno)
 - Form contatti statico nel modal: campi nome/email/codice verifica/messaggio, submit diretto via EmailJS dopo verifica email, stato invio accessibile e testi i18n IT/EN/ES
 - Modal contatti con semantica dialog, gestione `Escape`, focus iniziale, focus trap e ripristino focus alla chiusura
@@ -587,9 +589,8 @@ e tutti i JSON hanno la stessa struttura.
 Sono ora disponibili 16 lingue diverse.
 
 ### Prossimo passo consigliato
-Eseguire un test responsive/manuale finale su desktop e mobile: navigazione, modal contatti,
-modal lingue con ricerca, form contatti, cambio lingua, tema chiaro/scuro, scroll skill cards e visualizzazione CV. Dopo
-quel giro, preparare deploy e URL canonici/social reali.
+Test manuale completato con esito positivo. Deploy effettuato su Netlify all'indirizzo https://stefanocatalin.netlify.app.
+Passo successivo: aggiungere la foto profilo in `assets/images/` e aggiornarla nel codice HTML; aggiornare i meta Open Graph (`og:url`, `og:image`) con l'URL di produzione reale.
 
 ### Istruzione per futuri aggiornamenti del documento
 Quando un'IA aggiorna questo file deve aggiornare anche la tabella "Tracciamento IA" e la
@@ -617,11 +618,11 @@ mantenerlo leggibile.
 | 15 giugno 2026 | Codex | Configurazione template verifica EmailJS, durata codice a 5 minuti, normalizzazione cursori dei bottoni disabilitati, aggiornamento favicon SCD e riallineamento completo del contesto |
 | 15 giugno 2026 | Codex | Passata accessibilità/HTML su modal, link esterni e controlli skill, con verifica tramite Browser in-app su `127.0.0.1:5500` |
 | 15 giugno 2026 | Codex | Aggiunta lingua spagnola, modal "Tutte le lingue" con ricerca, istruzioni precise per aggiungere nuove lingue e aggiornamento del contesto |
+| 15 giugno 2026 | Claude (claude.ai) | Test manuale completato con esito positivo. Deploy effettuato su Netlify (https://stefanocatalin.netlify.app). Aggiornamento del documento: stato progetto, URL di produzione, hosting e prossimo passo consigliato. Foto profilo ancora assente. |
 
 ---
 
 *Documento inizialmente generato da Claude Code tramite analisi statica del codice sorgente:
 per quella prima analisi nessuna esecuzione del codice è stata effettuata. Successivamente
 Codex ha aggiornato questo documento dopo aver modificato il progetto ed eseguito/verificato
-il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilità del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Alcune inferenze (es. cronologia iniziale) restano basate
-sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
+il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilità del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Claude (claude.ai) ha infine aggiornato il documento dopo il completamento del test manuale e del deploy su Netlify, registrando l'URL di produzione e il nuovo stato del progetto. Alcune inferenze (es. cronologia iniziale) restano basate sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
