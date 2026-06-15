@@ -551,13 +551,25 @@ function setupCvFallback() {
     const fallback = wrapper.querySelector('.cv-fallback');
     if (!frame || !fallback) return;
 
+    const originalSrc = frame.src;
+
+    // Costruisce l'URL per Google Docs Viewer
+    const absoluteSrc = new URL(originalSrc, window.location.href).href;
+    const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(absoluteSrc)}&embedded=true`;
+
     const showFallback = () => {
       fallback.classList.add('show');
       wrapper.classList.add('cv-no-preview');
     };
 
-    frame.addEventListener('error', showFallback);
-    if (!canPreviewPdfInline()) showFallback();
+    if (canPreviewPdfInline()) {
+      // Desktop con viewer nativo: usa il PDF diretto
+      frame.addEventListener('error', showFallback);
+    } else {
+      // Mobile o browser senza viewer: usa Google Docs
+      frame.src = googleViewerUrl;
+      frame.addEventListener('error', showFallback);
+    }
 
     wrapper.dataset.cvReady = 'true';
   });

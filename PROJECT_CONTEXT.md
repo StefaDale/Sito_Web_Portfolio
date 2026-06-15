@@ -10,7 +10,7 @@
 | Campo | Dettaglio |
 |---|---|
 | **Nome** | Sito personale di Stefano Catalin D'Alessandro |
-| **Titolo HTML corrente** | `Stefano D'Alessandro \| Sito personale e curriculum` (home) / `Vita personale \| Stefano D'Alessandro` / `Vita lavorativa e CV \| Stefano D'Alessandro` |
+| **Titolo HTML corrente** | `Stefano Catalin D'Alessandro \| Sito personale` (home) / `Vita personale \| Stefano Catalin D'Alessandro` / `Vita lavorativa e CV \| Stefano Catalin D'Alessandro` |
 | **Tipo** | Sito web personale statico ibrido: home one-page + due pagine sorgente/modificabili |
 | **Scopo principale** | Presentare il proprietario — chi è, le sue passioni e il suo percorso scolastico/lavorativo — con un curriculum vitae visualizzabile online |
 | **Problema che risolve** | Fornisce un biglietto da visita digitale completo, accessibile in piu lingue, navigabile da chiunque voglia conoscere Stefano |
