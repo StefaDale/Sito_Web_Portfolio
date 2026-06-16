@@ -170,15 +170,13 @@
     <h2 data-i18n="work.cv_title"></h2>
     <p data-i18n="work.cv_text"></p>
     <div class="cv-wrapper">
-      <iframe
-        src="assets/Stefano Catalin D'Alessandro.pdf"
-        class="cv-frame"
-        title="Curriculum Vitae">
-      </iframe>
+      <div id="cv-render-container" class="cv-render-container" data-cv-url="assets/Stefano_Catalin_DAlessandro_CV.pdf">
+        <!-- PDF.js canvasses will be injected here -->
+      </div>
       <p class="cv-fallback" data-i18n="work.cv_fallback"></p>
       <div class="cv-actions">
-        <a href="assets/Stefano Catalin D'Alessandro.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary" data-i18n="work.cv_open"></a>
-        <a href="assets/Stefano Catalin D'Alessandro.pdf" download class="btn-primary" data-i18n="work.cv_download"></a>
+        <a href="assets/Stefano_Catalin_DAlessandro_CV.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary" data-i18n="work.cv_open"></a>
+        <a href="assets/Stefano_Catalin_DAlessandro_CV.pdf" download class="btn-primary" data-i18n="work.cv_download"></a>
       </div>
     </div>
   </section>
@@ -257,6 +255,8 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
 </body>

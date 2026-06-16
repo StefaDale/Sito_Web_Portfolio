@@ -862,10 +862,39 @@ img {
   overflow: hidden;
 }
 
-.cv-frame {
+.cv-render-container {
   width: 100%;
   height: 700px;
-  border: none;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--bg-nav);
+  padding: 2rem 0;
+  gap: 2rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg-nav);
+}
+
+.cv-render-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cv-render-container::-webkit-scrollbar-track {
+  background: var(--bg-nav);
+}
+
+.cv-render-container::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+.cv-page {
+  max-width: calc(100% - 2rem);
+  height: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  background-color: white; /* I fogli PDF di base sono bianchi */
   display: block;
 }
 
@@ -878,10 +907,6 @@ img {
 
 .cv-fallback.show {
   display: block;
-}
-
-.cv-wrapper.cv-no-preview .cv-frame {
-  display: none;
 }
 
 .cv-actions {
@@ -1169,9 +1194,11 @@ img {
     font-size: 0.8rem;
   }
 
-  /* --- CV iframe: altezza ridotta, più gestibile su mobile --- */
-  .cv-frame {
-    height: 400px;
+  /* --- CV container: altezza ridotta, più gestibile su mobile --- */
+  .cv-render-container {
+    height: 450px;
+    padding: 1rem 0;
+    gap: 1rem;
   }
 
   /* --- Modal: occupa quasi tutto lo schermo su mobile --- */

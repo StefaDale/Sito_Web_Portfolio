@@ -493,7 +493,7 @@ async function loadPageFragments() {
   if (typeof refreshI18n === 'function') refreshI18n();
 
   setupSkillsScroller();
-  setupCvFallback();
+  renderCustomCV();
   setupContactForm();
 
   // Aspetta due frame: uno per il layout, uno per il paint
@@ -568,41 +568,50 @@ function smoothHorizontalScroll(element, distance, onUpdate) {
   requestAnimationFrame(animate);
 }
 
-function canPreviewPdfInline() {
-  if ('pdfViewerEnabled' in navigator) return navigator.pdfViewerEnabled;
-  return Boolean(navigator.mimeTypes?.['application/pdf']);
-}
+async function renderCustomCV() {
+  if (typeof pdfjsLib === 'undefined') return;
 
-function setupCvFallback() {
-  document.querySelectorAll('.cv-wrapper').forEach(wrapper => {
-    if (wrapper.dataset.cvReady === 'true') return;
+  const containers = document.querySelectorAll('.cv-render-container');
+  
+  for (const container of containers) {
+    if (container.dataset.cvReady === 'true') continue;
+    const url = container.dataset.cvUrl;
+    if (!url) continue;
 
-    const frame = wrapper.querySelector('.cv-frame');
-    const fallback = wrapper.querySelector('.cv-fallback');
-    if (!frame || !fallback) return;
+    try {
+      const pdf = await pdfjsLib.getDocument(url).promise;
+      container.innerHTML = '';
 
-    const originalSrc = frame.src;
+      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        const page = await pdf.getPage(pageNum);
+        const scale = 1.5;
+        const viewport = page.getViewport({ scale });
+        
+        const canvas = document.createElement('canvas');
+        canvas.className = 'cv-page';
+        const ctx = canvas.getContext('2d');
+        
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(viewport.width * dpr);
+        canvas.height = Math.floor(viewport.height * dpr);
+        canvas.style.width = `${viewport.width}px`;
+        canvas.style.height = `${viewport.height}px`;
+        ctx.scale(dpr, dpr);
 
-    // Costruisce l'URL per Google Docs Viewer
-    const absoluteSrc = new URL(originalSrc, window.location.href).href;
-    const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(absoluteSrc)}&embedded=true`;
-
-    const showFallback = () => {
-      fallback.classList.add('show');
-      wrapper.classList.add('cv-no-preview');
-    };
-
-    if (canPreviewPdfInline()) {
-      // Desktop con viewer nativo: usa il PDF diretto
-      frame.addEventListener('error', showFallback);
-    } else {
-      // Mobile o browser senza viewer: usa Google Docs
-      frame.src = googleViewerUrl;
-      frame.addEventListener('error', showFallback);
+        container.appendChild(canvas);
+        
+        await page.render({
+          canvasContext: ctx,
+          viewport: viewport
+        }).promise;
+      }
+      container.dataset.cvReady = 'true';
+    } catch (err) {
+      console.error('Error rendering PDF:', err);
+      const fallback = container.parentElement.querySelector('.cv-fallback');
+      if (fallback) fallback.classList.add('show');
     }
-
-    wrapper.dataset.cvReady = 'true';
-  });
+  }
 }
 
 function setupContactForm(root = document) {
@@ -839,7 +848,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupLiveBackground();
   loadPageFragments();
   setupSkillsScroller();
-  setupCvFallback();
+  renderCustomCV();
 
   // Su pagine senza fragment le animazioni partono subito
   if (!document.querySelector('[data-fragment-url]')) {
