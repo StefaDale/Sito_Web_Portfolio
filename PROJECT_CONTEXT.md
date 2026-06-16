@@ -476,6 +476,8 @@ npx serve .
 > fallirà per CORS. È necessario un server HTTP locale.  
 >⚠️ **Collegarsi a 127.0.0.1:5500/index.html**
 
+La repository del progetto è disponibile su GitHub all'indirizzo: https://github.com/StefaDale/Sito_Web_Portfolio.git
+
 ### Come effettuare modifiche
 
 | Cosa modificare | File da toccare |
