@@ -84,9 +84,9 @@ mio-sito/                        ← root del progetto
 | File | Ruolo |
 |---|---|
 | `index.html` | Home one-page: hero + contenitori `page-fragment` che caricano i blocchi personale/lavorativo + footer + modal |
-| `404.html` | Pagina 404 personalizzata: messaggio localizzato, pulsanti verso home/CV, navbar dinamica, tema, sfondo live e modal contatti |
+| `404.html` | Pagina 404 personalizzata: messaggio localizzato, pulsanti verso home e ancora diretta `index.html#cv-section`, navbar dinamica, tema, sfondo live e modal contatti |
 | `vita-personale.html` | Pagina autonoma e sorgente del blocco `#personal-section-source`: chi sono, passioni, storia personale |
-| `vita-lavorativa.html` | Pagina autonoma e sorgente del blocco `#work-section-source`: skill cards con badge livello, timeline esperienze, contenitore CV renderizzato da PDF.js e form contatti EmailJS inline subito dopo il CV |
+| `vita-lavorativa.html` | Pagina autonoma e sorgente del blocco `#work-section-source`: skill cards con badge livello, timeline esperienze, sezione CV con ancora `#cv-section`, contenitore CV renderizzato da PDF.js e form contatti EmailJS inline subito dopo il CV |
 | `style.css` | CSS globale. Sezioni: variabili tema dark/light, reset, animazioni reveal, navbar, hero, footer, modal, modal lingue, page-hero, content-section, cards, skills, timeline, CV viewer, lang-dropdown, mobile menu |
 | `main.js` | Costruisce la navbar lato client, carica i frammenti nella home, gestisce i form contatti con EmailJS e verifica email, modal contatti accessibile, modal lingue ricercabile, tema, scroll spy, scroll fluido, hamburger, skill scroller con frecce disabilitabili, sfondo live canvas, rendering CV con PDF.js e fallback, selezione automatica del PDF CV in base alla lingua, e animazioni reveal |
 | `i18n.js` | Carica il JSON della lingua corrente via `fetch()`, applica le stringhe agli elementi `[data-i18n]`, persiste la scelta in localStorage, espone i metadati delle lingue, riapplica le traduzioni ai frammenti caricati ed emette l'evento `languagechange` quando la lingua viene inizializzata o cambiata |
@@ -180,6 +180,10 @@ mio-sito/                        ← root del progetto
   C++, HTML, CSS, Assembly, Intelligenza Artificiale, Google Workspace e Microsoft Office.
   Ogni card ha un'icona brand locale in `assets/icons/` e un badge di preparazione (`Ottimo`, `Buono`,
   `Intermedio`, `Base`) gestito via i18n.
+- **Traduzioni:** le descrizioni delle card sono separate in tutte le 16 lingue supportate:
+  C# non include Python, Python non include C#, C non include C++, C++ non include C,
+  HTML non include CSS e CSS non include HTML. Questo evita il vecchio testo accorpato
+  dopo la separazione delle competenze in card autonome.
 
 ### 6. Timeline esperienze
 - **Dove:** `vita-lavorativa.html` + CSS `.timeline`
@@ -195,6 +199,10 @@ mio-sito/                        ← root del progetto
 - **Cambio lingua:** `i18n.js` emette `document.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }))` dopo inizializzazione o cambio lingua. `main.js` ascolta l'evento, aggiorna `data-cv-url`, `href` dei pulsanti CV e ridisegna la preview se il PDF è cambiato.
 - **Dipendenze:** `index.html` e `vita-lavorativa.html` caricano PDF.js da cdnjs (`pdf.min.js`) e configurano `pdf.worker.min.js`.
 - **Azioni sempre disponibili:** sotto al viewer, ma fuori da `.cv-wrapper`, restano i link per apertura in nuova scheda e download diretto del file PDF. Sono centrati, affiancati in una griglia a due colonne e più grandi dei pulsanti standard. Il download imposta sempre `download="Stefano Catalin D'Alessandro CV.pdf"`, quindi il nome finale del file scaricato è identico per italiano, inglese e spagnolo.
+- **Ancora diretta:** la sezione CV in `vita-lavorativa.html` ha `id="cv-section"`.
+  Il pulsante "Vai al CV" della pagina 404 punta a `index.html#cv-section`; dopo il
+  caricamento dei frammenti, `loadPageFragments()` trova l'hash e scorre direttamente
+  al blocco CV invece che all'inizio della sezione lavorativa.
 - **Fallback visivo:** se PDF.js non riesce a caricare o renderizzare il documento, viene mostrata `.cv-fallback`.
 
 ### 8. Card Passioni
@@ -366,7 +374,7 @@ comparire anche nel dropdown rapido, va aggiunta anche al template `.lang-menu` 
 - Selettore lingua con bandiere, dropdown animato, tre lingue rapide e pulsante "Visualizza tutto"
 - Modal "Tutte le lingue" con barra di ricerca, lista generata da `SUPPORTED`/`LANG_META` e selezione lingua
 - Toggle tema chiaro/scuro con persistenza localStorage e anti-flash nel `<head>`
-- Pagina `404.html` personalizzata, noindex, localizzata tramite chiavi `not_found`, con azioni verso home e CV
+- Pagina `404.html` personalizzata, noindex, localizzata tramite chiavi `not_found`, con azioni verso home e ancora diretta alla sezione CV (`#cv-section`)
 - SEO base: title coerenti, meta description, canonical URL, `og:url`, Open Graph, Twitter Card, favicon SVG `SCD` e immagine preview locale
 - Contenitori principali e sezioni alternate allineati su una larghezza comune tramite `--content-width`
 - QA Browser su `localhost:5500` completato con esito positivo: home, pagine autonome, 404, navbar trasparente, CV, mobile, EN/ES, console e overflow verificati
@@ -570,6 +578,7 @@ La repository del progetto è disponibile su GitHub all'indirizzo: https://githu
 | **Fase 41** | QA finale tramite Browser plugin su `localhost:5500`: home, pagine autonome, 404, navbar trasparente, CV, mobile 360 px, cambio lingua EN/ES, console e overflow verificati; corretto refuso italiano `sopratutto` -> `soprattutto` |
 | **Fase 42** | Rifinitura hero home: rimosso il saluto iniziale `home.greeting` dal markup, nome visualizzato come `home.name` + `home.name_extra`, con `Catalin D'Alessandro` in viola glow/ombra e chiave aggiunta a tutte le 16 lingue |
 | **Fase 43** | Implementazione CV multilingua: italiano, inglese e spagnolo usano PDF dedicati; tutte le altre lingue ricadono sul PDF inglese; apertura, preview PDF.js e download vengono aggiornati al cambio lingua, con nome download sempre `Stefano Catalin D'Alessandro CV.pdf` |
+| **Fase 44** | Riallineamento descrizioni skill card in 14 file lingua: testi separati per C#/Python, C/C++ e HTML/CSS in tutte le 16 lingue; correzione del pulsante 404 "Vai al CV" verso `index.html#cv-section` e aggiunta dell'ancora `#cv-section` alla sezione CV |
 | **Stato corrente** | Progetto completo per lo scope statico attuale, funzionale e online. Restano opzionali: backend proprietario/server-side per il form e rifinitura futura dell'immagine Open Graph |
 
 ---
@@ -622,13 +631,14 @@ scolastico/professionale, con il CV scaricabile/visualizzabile.
 - CSS: include media query mobile, tema dark/light, scroll margin per ancore, utility `.sr-only`, modal lingue, classi reveal e fallback reduced motion
 - `main.js`: navbar, modal contatti accessibile, modal lingue ricercabile, frammenti, tema, scroll spy, scroll fluido, skill scroller con frecce disabilitabili, sfondo live canvas, visualizzatore CV tramite PDF.js con fallback, mapping CV multilingua/fallback inglese e animazioni reveal
 - `i18n.js`: sistema i18n completo con event delegation, `navigator.language`, `refreshI18n()`, `SUPPORTED`, `LANG_META` ed evento `languagechange`
-- JSON: struttura identica per tutte le lingue supportate in `locales/`
+- JSON: struttura identica per tutte le lingue supportate in `locales/`; descrizioni skill card riallineate in tutte le 16 lingue e validate come JSON
+- `404.html` punta il pulsante CV a `index.html#cv-section`; `vita-lavorativa.html` espone `id="cv-section"` sulla sezione CV
 - `assets/Stefano Catalin D'Alessandro CV.pdf`, `assets/Curriculum_EN.pdf`, `assets/Curriculum_ES.pdf`: PDF CV presenti in `assets/` (contenuto non analizzato)
 - `assets/favicon.svg`: favicon `SCD` viola su sfondo scuro
 - `assets/images/`: contiene `og-preview.svg`; nessuna foto profilo personale prevista
 
 ### Ultimo lavoro svolto
-Codex ha implementato la selezione automatica del PDF CV in base alla lingua: italiano usa `assets/Stefano Catalin D'Alessandro CV.pdf`, inglese usa `assets/Curriculum_EN.pdf`, spagnolo usa `assets/Curriculum_ES.pdf`, mentre tutte le altre lingue ricadono sul CV inglese. La preview PDF.js, il link di apertura e il download si aggiornano al cambio lingua; il nome del file scaricato resta sempre `Stefano Catalin D'Alessandro CV.pdf`.
+Codex ha riallineato le descrizioni delle skill card nelle lingue non italiane/inglesi, separando i testi precedentemente accorpati per C#/Python, C/C++ e HTML/CSS, e ha validato tutti i 16 JSON. Ha inoltre corretto la pagina 404: il pulsante "Vai al CV" ora punta a `index.html#cv-section`, e la sezione CV in `vita-lavorativa.html` espone l'ancora `#cv-section` per arrivare direttamente al blocco del curriculum.
 
 ### Prossimo passo consigliato
 Test manuale completato con esito positivo. Deploy effettuato su Netlify all'indirizzo https://stefanocatalin.netlify.app.
@@ -673,10 +683,11 @@ mantenerlo leggibile.
 | 16 giugno 2026 | Codex | QA finale con Browser plugin su `localhost:5500`: controllate home, pagine autonome, pagina 404, mobile, CV, cambio lingua EN/ES, console e overflow; corretto refuso `sopratutto` in `locales/it.json` e registrato progetto completo per lo scope statico. |
 | 16 giugno 2026 | Codex | Rifinitura finale della hero home: rimosso il saluto iniziale, aggiunto `home.name_extra` in tutte le lingue e stile viola glow/ombra per `Catalin D'Alessandro`; verifica locale su `localhost:5500`. |
 | 16 giugno 2026 | Codex | Implementazione CV multilingua IT/EN/ES con fallback inglese per le altre lingue, evento `languagechange` da `i18n.js`, aggiornamento automatico di preview/apertura/download e nome file scaricato fisso `Stefano Catalin D'Alessandro CV.pdf`; aggiornamento del documento di contesto. |
+| 16 giugno 2026 | Codex | Correzione descrizioni skill card in 14 file lingua con validazione JSON completa; aggiunta ancora `#cv-section` alla sezione CV e aggiornamento del link 404 "Vai al CV" da `#work-section` a `#cv-section`; aggiornamento del documento di contesto. |
 
 ---
 
 *Documento inizialmente generato da Claude Code tramite analisi statica del codice sorgente:
 per quella prima analisi nessuna esecuzione del codice è stata effettuata. Successivamente
 Codex ha aggiornato questo documento dopo aver modificato il progetto ed eseguito/verificato
-il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilita del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Claude (claude.ai) ha poi aggiornato il documento dopo il completamento del test manuale e del deploy su Netlify, registrando l'URL di produzione e il nuovo stato del progetto, e ha modificato il viewer CV per usare Google Docs Viewer dove necessario; la versione attuale usa invece PDF.js per il rendering inline del CV. Codex ha infine verificato questa modifica rispetto al codice attuale, riallineato il contesto, rifinito il tema chiaro del modal contatti e riorganizzato le skill card con contenitori piu ampi e badge livello. Successivamente, Claude Opus 4.6 e Gemini Pro 3 (High) hanno ridisegnato il motore dello sfondo animato, migliorato la fisica delle particelle, introdotto in una fase precedente il glassmorphism, risolto il corretto posizionamento fisso per l'esperienza mobile e riallineato questo documento ai file del progetto. Le azioni del CV sono poi state staccate dal viewer e rese piu grandi, centrate e affiancate, con verifica su `127.0.0.1:5500`. Infine Codex ha aggiunto la pagina 404 personalizzata, localizzata in tutte le lingue supportate e verificata in locale, ha bonificato i file di traduzione correggendo accenti, simboli e caratteri CJK/KR/JP rovinati da mojibake, ha documentato la navbar trasparente con blur dopo la modifica manuale, e ha eseguito un QA finale tramite Browser plugin su `localhost:5500`, registrando il progetto come completo per lo scope statico attuale. In seguito Codex ha rimosso il saluto iniziale dalla hero, aggiunto `home.name_extra` a tutte le lingue e applicato lo stile viola glow/ombra a `Catalin D'Alessandro`, verificando la home in locale. Successivamente Codex ha aggiunto la gestione dei CV multilingua in `main.js`, l'evento `languagechange` in `i18n.js`, il fallback inglese per lingue senza CV tradotto e il nome download fisso `Stefano Catalin D'Alessandro CV.pdf`, aggiornando questo documento di contesto. Alcune inferenze (es. cronologia iniziale) restano basate sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
+il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilita del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Claude (claude.ai) ha poi aggiornato il documento dopo il completamento del test manuale e del deploy su Netlify, registrando l'URL di produzione e il nuovo stato del progetto, e ha modificato il viewer CV per usare Google Docs Viewer dove necessario; la versione attuale usa invece PDF.js per il rendering inline del CV. Codex ha infine verificato questa modifica rispetto al codice attuale, riallineato il contesto, rifinito il tema chiaro del modal contatti e riorganizzato le skill card con contenitori piu ampi e badge livello. Successivamente, Claude Opus 4.6 e Gemini Pro 3 (High) hanno ridisegnato il motore dello sfondo animato, migliorato la fisica delle particelle, introdotto in una fase precedente il glassmorphism, risolto il corretto posizionamento fisso per l'esperienza mobile e riallineato questo documento ai file del progetto. Le azioni del CV sono poi state staccate dal viewer e rese piu grandi, centrate e affiancate, con verifica su `127.0.0.1:5500`. Infine Codex ha aggiunto la pagina 404 personalizzata, localizzata in tutte le lingue supportate e verificata in locale, ha bonificato i file di traduzione correggendo accenti, simboli e caratteri CJK/KR/JP rovinati da mojibake, ha documentato la navbar trasparente con blur dopo la modifica manuale, e ha eseguito un QA finale tramite Browser plugin su `localhost:5500`, registrando il progetto come completo per lo scope statico attuale. In seguito Codex ha rimosso il saluto iniziale dalla hero, aggiunto `home.name_extra` a tutte le lingue e applicato lo stile viola glow/ombra a `Catalin D'Alessandro`, verificando la home in locale. Successivamente Codex ha aggiunto la gestione dei CV multilingua in `main.js`, l'evento `languagechange` in `i18n.js`, il fallback inglese per lingue senza CV tradotto e il nome download fisso `Stefano Catalin D'Alessandro CV.pdf`, aggiornando questo documento di contesto. Infine Codex ha riallineato le descrizioni skill card in tutte le lingue, validato i JSON, aggiunto `#cv-section` alla sezione CV e corretto il link 404 verso l'ancora diretta del curriculum, aggiornando nuovamente questo documento. Alcune inferenze (es. cronologia iniziale) restano basate sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
