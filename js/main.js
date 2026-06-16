@@ -11,14 +11,26 @@ const EMAIL_VERIFICATION_CODE_LENGTH = 6;
 const EMAIL_VERIFICATION_TTL_MS = 5 * 60 * 1000;
 const LIVE_BACKGROUND_CONFIG = {
   dark: {
-    node: 'rgba(168, 85, 247, 0.62)',
-    line: 'rgba(124, 58, 237, 0.24)',
-    glow: 'rgba(168, 85, 247, 0.18)',
+    particles: [
+      { r: 168, g: 85, b: 247 },   // viola brillante
+      { r: 139, g: 92, b: 246 },   // indaco
+      { r: 99,  g: 102, b: 241 },  // blu indaco
+      { r: 192, g: 132, b: 252 },  // lilla chiaro
+    ],
+    lineAlpha: 0.18,
+    glowAlpha: 0.22,
+    nodeAlpha: 0.72,
   },
   light: {
-    node: 'rgba(109, 40, 217, 0.42)',
-    line: 'rgba(109, 40, 217, 0.16)',
-    glow: 'rgba(109, 40, 217, 0.10)',
+    particles: [
+      { r: 109, g: 40, b: 217 },
+      { r: 124, g: 58, b: 237 },
+      { r: 79,  g: 70, b: 229 },
+      { r: 147, g: 51, b: 234 },
+    ],
+    lineAlpha: 0.10,
+    glowAlpha: 0.12,
+    nodeAlpha: 0.48,
   },
 };
 const CONTACT_MESSAGES = {
@@ -842,6 +854,7 @@ function setupLiveBackground() {
   const canvas = document.createElement('canvas');
   canvas.id = 'live-background';
   canvas.setAttribute('aria-hidden', 'true');
+  canvas.style.cssText = 'position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none;';
   document.body.prepend(canvas);
 
   const ctx = canvas.getContext('2d');
@@ -850,19 +863,53 @@ function setupLiveBackground() {
   let width = 0;
   let height = 0;
   let animationFrame = 0;
+  let time = 0;
+
+  /* ── Profondità / layer ── */
+  const LAYERS = [
+    { speed: 0.15, sizeMin: 1.0, sizeMax: 1.6, drift: 0.08, count: 0.40 },  // far
+    { speed: 0.28, sizeMin: 1.4, sizeMax: 2.4, drift: 0.14, count: 0.35 },  // mid
+    { speed: 0.42, sizeMin: 2.0, sizeMax: 3.2, drift: 0.20, count: 0.25 },  // near
+  ];
+
+  const LINK_DISTANCE = 150;
+  const MOUSE_RADIUS = 160;
+  const MOUSE_FORCE = 0.005;
 
   const createNodes = () => {
     nodes.length = 0;
-    const density = Math.min(90, Math.max(34, Math.round((width * height) / 26000)));
-    for (let index = 0; index < density; index += 1) {
-      nodes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: (Math.random() - 0.5) * 0.22,
-        radius: Math.random() * 1.8 + 1.1,
-      });
-    }
+    const totalDensity = Math.min(160, Math.max(50, Math.round((width * height) / 16000)));
+
+    LAYERS.forEach((layer, layerIndex) => {
+      const count = Math.round(totalDensity * layer.count);
+      for (let i = 0; i < count; i += 1) {
+        const angle = Math.random() * Math.PI * 2;
+        nodes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          /* Velocità base persistente: mai smorzata, mai zero */
+          baseVx: Math.cos(angle) * layer.drift,
+          baseVy: Math.sin(angle) * layer.drift,
+          /* Velocità extra (interazione mouse) */
+          vx: 0,
+          vy: 0,
+          radius: layer.sizeMin + Math.random() * (layer.sizeMax - layer.sizeMin),
+          layer: layerIndex,
+          speed: layer.speed,
+          /* Parametri per oscillazione organica */
+          phaseX: Math.random() * Math.PI * 2,
+          phaseY: Math.random() * Math.PI * 2,
+          waveAmpX: 0.15 + Math.random() * 0.25,
+          waveAmpY: 0.15 + Math.random() * 0.25,
+          waveFreq: 0.008 + Math.random() * 0.006,
+          /* Colore casuale dalla palette */
+          colorIndex: Math.floor(Math.random() * 4),
+          /* Pulsazione glow */
+          pulsePhase: Math.random() * Math.PI * 2,
+          pulseSpeed: 0.012 + Math.random() * 0.008,
+        });
+      }
+    });
   };
 
   const resize = () => {
@@ -878,63 +925,106 @@ function setupLiveBackground() {
   };
 
   const draw = () => {
+    time += 1;
     const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
-    const colors = LIVE_BACKGROUND_CONFIG[theme];
+    const palette = LIVE_BACKGROUND_CONFIG[theme];
     ctx.clearRect(0, 0, width, height);
 
+    /* ── Aggiorna posizioni ── */
     for (let i = 0; i < nodes.length; i += 1) {
-      const node = nodes[i];
+      const n = nodes[i];
 
+      /* Oscillazione organica (onde sinusoidali) */
+      const waveX = Math.sin(time * n.waveFreq + n.phaseX) * n.waveAmpX;
+      const waveY = Math.cos(time * n.waveFreq * 0.7 + n.phaseY) * n.waveAmpY;
+
+      /* Interazione col mouse: repulsione/attrazione morbida */
       if (pointer.active) {
-        const dx = pointer.x - node.x;
-        const dy = pointer.y - node.y;
-        const distance = Math.hypot(dx, dy);
-        if (distance < 180 && distance > 0) {
-          const force = (1 - distance / 180) * 0.012;
-          node.vx += dx * force / distance;
-          node.vy += dy * force / distance;
+        const dx = pointer.x - n.x;
+        const dy = pointer.y - n.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < MOUSE_RADIUS && dist > 0) {
+          const strength = (1 - dist / MOUSE_RADIUS) * MOUSE_FORCE;
+          n.vx += dx * strength;
+          n.vy += dy * strength;
         }
       }
 
-      node.x += node.vx;
-      node.y += node.vy;
-      node.vx *= 0.985;
-      node.vy *= 0.985;
+      /* Posizione = base drift + onda + velocità extra (mouse) */
+      n.x += n.baseVx + waveX + n.vx;
+      n.y += n.baseVy + waveY + n.vy;
 
-      if (node.x < -20) node.x = width + 20;
-      if (node.x > width + 20) node.x = -20;
-      if (node.y < -20) node.y = height + 20;
-      if (node.y > height + 20) node.y = -20;
+      /* Smorzamento solo della velocità extra (mouse), non del drift */
+      n.vx *= 0.94;
+      n.vy *= 0.94;
 
+      /* Wrap-around con margine */
+      if (n.x < -30) n.x = width + 30;
+      if (n.x > width + 30) n.x = -30;
+      if (n.y < -30) n.y = height + 30;
+      if (n.y > height + 30) n.y = -30;
+    }
+
+    /* ── Disegna linee con gradiente ── */
+    for (let i = 0; i < nodes.length; i += 1) {
+      const a = nodes[i];
       for (let j = i + 1; j < nodes.length; j += 1) {
-        const other = nodes[j];
-        const dx = other.x - node.x;
-        const dy = other.y - node.y;
-        const distance = Math.hypot(dx, dy);
-        if (distance > 135) continue;
+        const b = nodes[j];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist > LINK_DISTANCE) continue;
 
-        ctx.strokeStyle = colors.line;
-        ctx.globalAlpha = 1 - distance / 135;
-        ctx.lineWidth = 1;
+        const opacity = (1 - dist / LINK_DISTANCE) * palette.lineAlpha;
+        const colA = palette.particles[a.colorIndex];
+        const colB = palette.particles[b.colorIndex];
+
+        const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+        grad.addColorStop(0, `rgba(${colA.r},${colA.g},${colA.b},${opacity})`);
+        grad.addColorStop(1, `rgba(${colB.r},${colB.g},${colB.b},${opacity})`);
+
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 0.6 + (1 - dist / LINK_DISTANCE) * 0.6;
         ctx.beginPath();
-        ctx.moveTo(node.x, node.y);
-        ctx.lineTo(other.x, other.y);
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
         ctx.stroke();
       }
+    }
 
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = colors.glow;
+    /* ── Disegna particelle con glow radiale pulsante ── */
+    for (let i = 0; i < nodes.length; i += 1) {
+      const n = nodes[i];
+      const col = palette.particles[n.colorIndex];
+
+      /* Pulsazione: il raggio e l'opacità oscillano dolcemente */
+      const pulse = 0.75 + 0.25 * Math.sin(time * n.pulseSpeed + n.pulsePhase);
+      const glowRadius = n.radius * (3.5 + pulse * 1.5);
+      const coreRadius = n.radius * (0.85 + pulse * 0.15);
+
+      /* Glow esterno: gradiente radiale sfumato */
+      const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowRadius);
+      glow.addColorStop(0, `rgba(${col.r},${col.g},${col.b},${palette.glowAlpha * pulse})`);
+      glow.addColorStop(0.4, `rgba(${col.r},${col.g},${col.b},${palette.glowAlpha * pulse * 0.4})`);
+      glow.addColorStop(1, `rgba(${col.r},${col.g},${col.b},0)`);
+
+      ctx.fillStyle = glow;
       ctx.beginPath();
-      ctx.arc(node.x, node.y, node.radius * 3.2, 0, Math.PI * 2);
+      ctx.arc(n.x, n.y, glowRadius, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = colors.node;
+      /* Nucleo luminoso */
+      const core = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, coreRadius);
+      core.addColorStop(0, `rgba(255,255,255,${palette.nodeAlpha * 0.9 * pulse})`);
+      core.addColorStop(0.3, `rgba(${col.r},${col.g},${col.b},${palette.nodeAlpha * pulse})`);
+      core.addColorStop(1, `rgba(${col.r},${col.g},${col.b},0)`);
+
+      ctx.fillStyle = core;
       ctx.beginPath();
-      ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+      ctx.arc(n.x, n.y, coreRadius, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    ctx.globalAlpha = 1;
     animationFrame = requestAnimationFrame(draw);
   };
 

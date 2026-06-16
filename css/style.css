@@ -890,8 +890,14 @@ img {
   gap: 0.8rem;
   padding: 1rem;
   border-top: 1px solid var(--border);
-  background-color: var(--bg-card);
+  background: rgba(26, 26, 30, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   flex-wrap: wrap;
+}
+
+:root[data-theme="light"] .cv-actions {
+  background: rgba(255, 255, 255, 0.45);
 }
 /* ── LANGUAGE DROPDOWN ── */
 .lang-dropdown {

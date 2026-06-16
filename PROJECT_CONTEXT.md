@@ -546,6 +546,8 @@ npx serve .
 | **Fase 31** | Ridisegno layout skill card: card più grandi, icona grande a destra, titolo/descrizione a sinistra e badge livello centrato in basso |
 | **Fase 32** | Aggiornamento frecce skill card: step di scorrimento calcolato dinamicamente su larghezza card + gap |
 | **Fase 33** | Aggiunta sfondo live canvas con rete di nodi/particelle, colori per tema dark/light e interazione leggera col mouse |
+| **Fase 34** | Ridisegno completo sfondo particellare con movimento organico sinusoidale, livelli di profondità e particelle gradienti, e risoluzione scroll bug |
+| **Fase 35** | Aggiunto glassmorphism (sfondo trasparente sfocato) alla barra delle azioni nel visualizzatore CV per migliorare l'estetica |
 | **Stato corrente** | Progetto funzionale e online. In attesa di: eventuale backend proprietario/server-side per il form e ulteriori rifiniture dell'immagine Open Graph |
 
 ---
@@ -604,9 +606,7 @@ scolastico/professionale, con il CV scaricabile/visualizzabile.
 - `assets/images/`: contiene `og-preview.svg`; nessuna foto profilo personale prevista
 
 ### Ultimo lavoro svolto
-Codex ha aggiunto uno sfondo live canvas con rete di nodi/particelle e interazione leggera
-col mouse. Lo sfondo rispetta `prefers-reduced-motion`, cambia colore in base al tema e resta
-dietro al contenuto senza intercettare click o focus.
+Claude Opus 4.6 ha ridisegnato il sistema di particelle dello sfondo, introducendo un movimento autonomo ondulatorio fluido, diversi livelli di profondità (parallax) e nodi gradienti glow; ha aumentato la densità e risolto un bug di posizionamento (`position: fixed`) su mobile. Infine ha applicato un effetto glassmorphism alla barra del CV viewer. Gemini 3.1 Pro ha supportato i controlli finali.
 
 ### Prossimo passo consigliato
 Test manuale completato con esito positivo. Deploy effettuato su Netlify all'indirizzo https://stefanocatalin.netlify.app.
@@ -641,10 +641,12 @@ mantenerlo leggibile.
 | 15 giugno 2026 | Claude (claude.ai) | Test manuale completato con esito positivo. Deploy effettuato su Netlify (https://stefanocatalin.netlify.app). Aggiornamento del documento: stato progetto, URL di produzione, hosting e prossimo passo consigliato. Foto profilo ancora assente. |
 | 15 giugno 2026 | Claude (claude.ai) + Codex | Modifica del viewer CV per usare Google Docs Viewer su mobile/browser senza viewer PDF nativo; verifica Codex del codice attuale e riallineamento del documento di contesto. |
 | 15 giugno 2026 | Codex | Allargamento coordinato dei contenitori, rifinitura tema chiaro del modal contatti, ingrandimento/separazione skill card e aggiunta badge livello i18n. |
+| 16 giugno 2026 | Claude Opus 4.6 | Ridisegno completo dello sfondo particellare in JS (movimento organico, parallax, colori glow), correzione bug `position: fixed` canvas per mobile e barra inferiore CV viewer resa trasparente (glassmorphism). |
+| 16 giugno 2026 | Gemini 3.1 Pro (High) | Verifica e applicazione finale `position: fixed` in JS e aggiornamento strutturale di questo file di contesto con i cambiamenti apportati. |
 
 ---
 
 *Documento inizialmente generato da Claude Code tramite analisi statica del codice sorgente:
 per quella prima analisi nessuna esecuzione del codice è stata effettuata. Successivamente
 Codex ha aggiornato questo documento dopo aver modificato il progetto ed eseguito/verificato
-il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilità del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Claude (claude.ai) ha poi aggiornato il documento dopo il completamento del test manuale e del deploy su Netlify, registrando l'URL di produzione e il nuovo stato del progetto, e ha modificato il viewer CV per usare Google Docs Viewer dove necessario. Codex ha infine verificato questa modifica rispetto al codice attuale, riallineato il contesto, rifinito il tema chiaro del modal contatti e riorganizzato le skill card con contenitori più ampi e badge livello. Alcune inferenze (es. cronologia iniziale) restano basate sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
+il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilità del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Claude (claude.ai) ha poi aggiornato il documento dopo il completamento del test manuale e del deploy su Netlify, registrando l'URL di produzione e il nuovo stato del progetto, e ha modificato il viewer CV per usare Google Docs Viewer dove necessario. Codex ha infine verificato questa modifica rispetto al codice attuale, riallineato il contesto, rifinito il tema chiaro del modal contatti e riorganizzato le skill card con contenitori più ampi e badge livello. Successivamente, Claude Opus 4.6 e Gemini 3.1 Pro hanno ridisegnato il motore dello sfondo animato, migliorato la fisica delle particelle, introdotto il glassmorphism e risolto il corretto posizionamento fisso per l'esperienza mobile. Alcune inferenze (es. cronologia iniziale) restano basate sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
