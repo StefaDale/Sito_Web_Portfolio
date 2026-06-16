@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagina non trovata | Stefano Catalin D'Alessandro</title>
+  <meta name="description" content="La pagina richiesta non esiste o è stata spostata. Torna al sito personale di Stefano Catalin D'Alessandro." />
+  <meta name="author" content="Stefano Catalin D'Alessandro" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Stefano Catalin D'Alessandro" />
+  <meta property="og:title" content="Pagina non trovata | Stefano Catalin D'Alessandro" />
+  <meta property="og:description" content="La pagina richiesta non esiste o è stata spostata." />
+  <meta property="og:image" content="assets/images/og-preview.svg" />
+  <meta property="og:locale" content="it_IT" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pagina non trovata | Stefano Catalin D'Alessandro" />
+  <meta name="twitter:description" content="La pagina richiesta non esiste o è stata spostata." />
+  <meta name="twitter:image" content="assets/images/og-preview.svg" />
+  <script>
+    document.documentElement.dataset.theme =
+      localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
+  </script>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-not-found">
+  <main class="not-found-page" id="home-section">
+    <section class="not-found-hero" aria-labelledby="not-found-title">
+      <p class="not-found-code" data-i18n="not_found.code"></p>
+      <h1 id="not-found-title" data-i18n="not_found.title"></h1>
+      <p class="not-found-text" data-i18n="not_found.text"></p>
+      <div class="not-found-actions">
+        <a href="index.html" class="btn-primary" data-i18n="not_found.home"></a>
+        <a href="index.html#work-section" class="btn-secondary" data-i18n="not_found.cv"></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contatti">
+    <p class="footer-label" data-i18n="footer.title"></p>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/ste_catalin_/" target="_blank" rel="noopener noreferrer" data-i18n="footer.instagram"></a>
+      <a href="https://github.com/StefaDale" target="_blank" rel="noopener noreferrer" data-i18n="footer.github"></a>
+    </div>
+    <p class="footer-copy" data-i18n="footer.copyright"></p>
+  </footer>
+
+  <div class="modal-overlay" id="modal-contatti" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-intro" tabindex="-1">
+      <button class="modal-close" id="btn-close-modal" type="button" data-i18n-aria-label="modal.close">x</button>
+      <h2 id="modal-title" data-i18n="modal.title"></h2>
+      <p class="modal-intro" id="modal-intro" data-i18n="modal.intro"></p>
+      <form class="contact-form" id="contact-form">
+        <label for="contact-name" data-i18n="modal.name_label"></label>
+        <input id="contact-name" name="name" type="text" autocomplete="name" data-i18n-placeholder="modal.name_placeholder" required>
+
+        <label for="contact-email" data-i18n="modal.email_label"></label>
+        <input id="contact-email" name="email" type="email" autocomplete="email" data-i18n-placeholder="modal.email_placeholder" required>
+        <div class="email-verification">
+          <button class="email-verify-send" id="email-verify-send" type="button" data-i18n="modal.verify_send"></button>
+          <label class="sr-only" for="email-code" data-i18n="modal.code_label"></label>
+          <input id="email-code" name="email_code" type="text" inputmode="numeric" autocomplete="one-time-code" data-i18n-placeholder="modal.code_placeholder" aria-describedby="email-verification-status">
+          <button class="email-verify-check" id="email-verify-check" type="button" data-i18n="modal.verify_check"></button>
+        </div>
+        <p class="email-verification-status" id="email-verification-status" role="status" aria-live="polite"></p>
+
+        <label for="contact-message" data-i18n="modal.message_label"></label>
+        <textarea id="contact-message" name="message" rows="5" data-i18n-placeholder="modal.message_placeholder" required></textarea>
+
+        <button class="contact-submit" type="submit" data-i18n="modal.submit"></button>
+      </form>
+      <p class="contact-form-status" id="contact-form-status" role="status" aria-live="polite"></p>
+      <p class="contact-form-hint" data-i18n="modal.mail_hint"></p>
+      <ul class="modal-list">
+        <li><a href="https://www.instagram.com/ste_catalin_/" target="_blank" rel="noopener noreferrer" data-i18n="footer.instagram"></a></li>
+        <li><a href="https://github.com/StefaDale" target="_blank" rel="noopener noreferrer" data-i18n="footer.github"></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

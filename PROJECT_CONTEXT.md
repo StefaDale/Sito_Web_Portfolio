@@ -14,7 +14,7 @@
 | **Tipo** | Sito web personale statico ibrido: home one-page + due pagine sorgente/modificabili |
 | **Scopo principale** | Presentare il proprietario — chi è, le sue passioni e il suo percorso scolastico/lavorativo — con un curriculum vitae visualizzabile online |
 | **Problema che risolve** | Fornisce un biglietto da visita digitale completo, accessibile in piu lingue, navigabile da chiunque voglia conoscere Stefano |
-| **Stato attuale** | **Funzionale e online.** La home carica in una pagina lunga i contenuti delle pagine personale e lavorativa; le due sottopagine restano modificabili e apribili direttamente. Navbar dinamica, i18n multi-lingua, selettore lingue con modal ricercabile, tema chiaro/scuro, modal contatti accessibile, form EmailJS inline dopo il CV, invio diretto preceduto da verifica email tramite codice, scroll spy, scroll fluido, SEO base, favicon SCD, visualizzatore CV con Google Docs Viewer dove necessario e fallback, e animazioni di entrata sono operativi. Deploy completato su Netlify. La foto profilo non è prevista: l'identità è già coperta dal CV. |
+| **Stato attuale** | **Funzionale e online.** La home carica in una pagina lunga i contenuti delle pagine personale e lavorativa; le due sottopagine restano modificabili e apribili direttamente. Navbar dinamica, i18n multi-lingua, selettore lingue con modal ricercabile, tema chiaro/scuro, modal contatti accessibile, form EmailJS inline dopo il CV, invio diretto preceduto da verifica email tramite codice, scroll spy, scroll fluido, SEO base, favicon SCD, visualizzatore CV renderizzato con PDF.js e fallback, sfondo live canvas e animazioni di entrata sono operativi. Deploy completato su Netlify. La foto profilo non è prevista: l'identità è già coperta dal CV. |
 | **URL di produzione** | https://stefanocatalin.netlify.app |
 | **Hosting** | Netlify (deploy statico) |
 
@@ -29,12 +29,13 @@
 
 ### Framework e librerie
 - **Nessun framework applicativo CSS o JS** — niente React, Vue, Bootstrap o simili; il comportamento del sito resta vanilla JavaScript
-- **EmailJS Browser SDK** — unica libreria esterna funzionale, usata per l'invio dei codici di verifica e dei messaggi dai form contatti
+- **EmailJS Browser SDK** — libreria esterna usata per l'invio dei codici di verifica e dei messaggi dai form contatti
+- **PDF.js** — libreria esterna caricata da CDN per renderizzare il CV PDF in canvas dentro la pagina, senza dipendere dal viewer PDF nativo del browser
 
 ### Strumenti e API esterne
 - **flagcdn.com** — CDN di bandiere SVG usato per le flag nel selettore lingua (dipendenza esterna leggera, nessun pacchetto npm)
 - **EmailJS Browser SDK + REST API** — SDK caricato via CDN (`@emailjs/browser@4`) per inviare i messaggi del form contatti senza backend proprietario, con fallback REST ufficiale quando il CDN non espone `window.emailjs`
-- **Google Docs Viewer** — viewer esterno usato da `main.js` per visualizzare il CV dentro l'`iframe` su mobile o nei browser senza anteprima PDF inline nativa
+- **cdnjs.cloudflare.com / PDF.js** — CDN usato per caricare `pdf.min.js` e `pdf.worker.min.js`, necessari al rendering custom del CV
 - **Simple Icons / Devicon** — sorgenti degli SVG brand scaricati localmente in `assets/icons/` per le skill card
 - **localStorage** — usato da `i18n.js` per persistere la scelta della lingua e da `main.js` per persistere il tema chiaro/scuro
 - **IntersectionObserver** — usato da `main.js` per attivare le animazioni di entrata durante lo scroll
@@ -42,7 +43,7 @@
 
 ### Formato dati
 - **JSON** — file di traduzione in `locales/*.json`
-- **PDF** — curriculum vitae incorporato via `<iframe>` nella pagina lavorativa; `main.js` usa il PDF diretto quando il browser supporta l'anteprima inline e Google Docs Viewer negli altri casi, mantenendo link diretto di apertura/download
+- **PDF** — curriculum vitae renderizzato in canvas tramite PDF.js nella pagina lavorativa; restano sempre disponibili link diretto di apertura e download
 
 ---
 
@@ -55,11 +56,11 @@ mio-sito/                        ← root del progetto
 │   ├── images/
 │   │   └── og-preview.svg       ← immagine preview social/SEO
 │   ├── favicon.svg              ← favicon SVG del sito, testo "SCD" viola su sfondo scuro
-│   └── Stefano Catalin D'Alessandro.pdf ← Curriculum Vitae in PDF; visualizzato inline direttamente o tramite Google Docs Viewer
+│   └── Stefano_Catalin_DAlessandro_CV.pdf ← Curriculum Vitae in PDF; renderizzato con PDF.js e disponibile per apertura/download
 │
 ├── css/
 │   └── style.css                ← UNICO foglio di stile per tutte le pagine
-│                                   (1158 righe, organizzato per sezioni con commenti)
+│                                   (1319 righe, organizzato per sezioni con commenti)
 │
 ├── js/
 │   ├── i18n.js                  ← Sistema di internazionalizzazione multi-lingua
@@ -71,6 +72,7 @@ mio-sito/                        ← root del progetto
 │   └── it.json                  ← Tutte le stringhe in italiano
 │
 ├── index.html                   ← Pagina Home (body.page-home)
+├── 404.html                     ← Pagina errore 404 personalizzata (body.page-not-found)
 ├── vita-lavorativa.html         ← Pagina Vita Lavorativa (body.page-work)
 └── vita-personale.html          ← Pagina Vita Personale (body.page-personal)
 ```
@@ -80,13 +82,14 @@ mio-sito/                        ← root del progetto
 | File | Ruolo |
 |---|---|
 | `index.html` | Home one-page: hero + contenitori `page-fragment` che caricano i blocchi personale/lavorativo + footer + modal |
+| `404.html` | Pagina 404 personalizzata: messaggio localizzato, pulsanti verso home/CV, navbar dinamica, tema, sfondo live e modal contatti |
 | `vita-personale.html` | Pagina autonoma e sorgente del blocco `#personal-section-source`: chi sono, passioni, storia personale |
-| `vita-lavorativa.html` | Pagina autonoma e sorgente del blocco `#work-section-source`: skill cards con badge livello, timeline esperienze, iframe CV e form contatti EmailJS inline subito dopo il CV |
+| `vita-lavorativa.html` | Pagina autonoma e sorgente del blocco `#work-section-source`: skill cards con badge livello, timeline esperienze, contenitore CV renderizzato da PDF.js e form contatti EmailJS inline subito dopo il CV |
 | `style.css` | CSS globale. Sezioni: variabili tema dark/light, reset, animazioni reveal, navbar, hero, footer, modal, modal lingue, page-hero, content-section, cards, skills, timeline, CV viewer, lang-dropdown, mobile menu |
-| `main.js` | Costruisce la navbar lato client, carica i frammenti nella home, gestisce i form contatti con EmailJS e verifica email, modal contatti accessibile, modal lingue ricercabile, tema, scroll spy, scroll fluido, hamburger, skill scroller con frecce disabilitabili, sfondo live canvas, visualizzazione CV tramite PDF diretto/Google Docs Viewer con fallback e animazioni reveal |
+| `main.js` | Costruisce la navbar lato client, carica i frammenti nella home, gestisce i form contatti con EmailJS e verifica email, modal contatti accessibile, modal lingue ricercabile, tema, scroll spy, scroll fluido, hamburger, skill scroller con frecce disabilitabili, sfondo live canvas, rendering CV con PDF.js e fallback, e animazioni reveal |
 | `i18n.js` | Carica il JSON della lingua corrente via `fetch()`, applica le stringhe agli elementi `[data-i18n]`, persiste la scelta in localStorage, espone i metadati delle lingue e riapplica le traduzioni ai frammenti caricati |
 | `locales/*.json` | Dizionari di traduzione, struttura identica con chiavi annidate: `nav`, `home`, `personal`, `work`, `modal`, `language_modal`, `footer` |
-| `Stefano Catalin D'Alessandro.pdf` | PDF del CV; referenziato come `src` iniziale dell'`<iframe>` in `vita-lavorativa.html` e usato anche per generare l'URL assoluto passato a Google Docs Viewer |
+| `Stefano_Catalin_DAlessandro_CV.pdf` | PDF del CV; referenziato da `data-cv-url` nel contenitore `.cv-render-container` e dai link apertura/download in `vita-lavorativa.html` |
 | `favicon.svg` | Favicon SVG del sito con scritta `SCD` viola su sfondo scuro |
 | `assets/images/og-preview.svg` | Immagine preview locale usata dai meta Open Graph/Twitter Card |
 | `assets/images/` | Contiene asset SEO; |
@@ -115,9 +118,11 @@ mio-sito/                        ← root del progetto
   2. `loadTranslations(lang)` fa un `fetch()` del JSON corrispondente.
   3. `applyTranslations()` scorre tutti gli elementi con `data-i18n="chiave.annidata"` e
      imposta `textContent` col valore risolto da `resolve(obj, key)`.
-  4. `updateLangButton()` aggiorna bandiera e codice nel bottone dropdown.
-  5. Clic su una voce del menu chiama `setLang(lang)`, che salva in localStorage e riapplica.
-  6. `refreshI18n()` riapplica le traduzioni ai frammenti HTML caricati dopo il primo render.
+  4. Applica anche `data-i18n-placeholder` e `data-i18n-aria-label`, così placeholder dei form
+     e label accessibili restano localizzati senza testo hardcoded nel JS.
+  5. `updateLangButton()` aggiorna bandiera e codice nel bottone dropdown.
+  6. Clic su una voce del menu chiama `setLang(lang)`, che salva in localStorage e riapplica.
+  7. `refreshI18n()` riapplica le traduzioni ai frammenti HTML caricati dopo il primo render.
 - **Event delegation:** il click sulle `.lang-option` è gestito con un listener sul `document`,
   quindi il cambio lingua funziona anche se la navbar viene generata dinamicamente.
 - **Lingue disponibili:** `it`, `en`, `es`, `fr`, `de`, `pt`, `ro`, `nl`, `pl`, `sv`, `da`, `no`, `ja`, `zh`, `zh-TW`, `ko`.
@@ -177,14 +182,14 @@ mio-sito/                        ← root del progetto
 - **Come:** Lista verticale con bordo sinistro viola e pallino posizionato in assoluto.
   Attualmente contiene una sola voce (ITIS Artom, 2022–Oggi).
 
-### 7. Visualizzatore CV con Google Docs Viewer e fallback
-- **Dove:** `vita-lavorativa.html`
-- **Come:** l'HTML mantiene `<iframe src="assets/Stefano Catalin D'Alessandro.pdf">` con altezza fissa 700 px. `main.js`
-  legge lo `src`, costruisce un URL assoluto e prepara `https://docs.google.com/viewer?url=...&embedded=true`.
-  Sotto al viewer sono sempre disponibili due link: apertura in nuova scheda e download del PDF.
-- **Comportamento automatico:** se `navigator.pdfViewerEnabled`/MIME type indicano supporto PDF inline, su desktop resta il PDF diretto.
-  Su mobile o nei browser senza viewer PDF nativo, `main.js` sostituisce lo `src` dell'`iframe` con Google Docs Viewer.
-- **Fallback visivo:** se l'`iframe` genera errore, viene mostrata `.cv-fallback` e il wrapper riceve `.cv-no-preview`.
+### 7. Visualizzatore CV con PDF.js e fallback
+- **Dove:** `vita-lavorativa.html` + `main.js` → `renderCustomCV()` + CSS `.cv-render-container`
+- **Come:** l'HTML espone un contenitore `<div id="cv-render-container" class="cv-render-container" data-cv-url="assets/Stefano_Catalin_DAlessandro_CV.pdf">`.
+  `main.js` usa `pdfjsLib.getDocument(url).promise`, scorre tutte le pagine del PDF e crea un `<canvas class="cv-page">` per ogni pagina.
+  Il rendering usa scala `1.5` e limita il device pixel ratio a `2` per mantenere buona nitidezza senza caricare troppo il browser.
+- **Dipendenze:** `index.html` e `vita-lavorativa.html` caricano PDF.js da cdnjs (`pdf.min.js`) e configurano `pdf.worker.min.js`.
+- **Azioni sempre disponibili:** sotto al viewer, ma fuori da `.cv-wrapper`, restano i link per apertura in nuova scheda e download diretto del file PDF. Sono centrati, affiancati in una griglia a due colonne e più grandi dei pulsanti standard.
+- **Fallback visivo:** se PDF.js non riesce a caricare o renderizzare il documento, viene mostrata `.cv-fallback`.
 
 ### 8. Card Passioni
 - **Dove:** `vita-personale.html` + CSS `.cards-grid`
@@ -350,11 +355,12 @@ comparire anche nel dropdown rapido, va aggiunta anche al template `.lang-menu` 
 - Skill cards più ampie con layout orizzontale, icona grande a destra, descrizione visibile, badge livello e scroll orizzontale fluido custom
 - Frecce skill cards con `aria-label` localizzato
 - Timeline esperienze
-- Visualizzatore PDF/Google Docs Viewer per il CV con fallback automatico e link apertura/download
+- Visualizzatore CV con PDF.js, fallback automatico e link apertura/download
 - Card passioni in griglia responsive con hover glow coerente con le skill cards
 - Selettore lingua con bandiere, dropdown animato, tre lingue rapide e pulsante "Visualizza tutto"
 - Modal "Tutte le lingue" con barra di ricerca, lista generata da `SUPPORTED`/`LANG_META` e selezione lingua
 - Toggle tema chiaro/scuro con persistenza localStorage e anti-flash nel `<head>`
+- Pagina `404.html` personalizzata, noindex, localizzata tramite chiavi `not_found`, con azioni verso home e CV
 - SEO base: title coerenti, meta description, canonical URL, `og:url`, Open Graph, Twitter Card, favicon SVG `SCD` e immagine preview locale
 - Contenitori principali e sezioni alternate allineati su una larghezza comune tramite `--content-width`
 
@@ -363,7 +369,6 @@ comparire anche nel dropdown rapido, va aggiunta anche al template `.lang-menu` 
 - Prossimo lavoro consigliato: test di regressione dopo nuove modifiche e aggiornamento degli asset definitivi
 
 ### Non ancora implementato ❌
-- **Pagina 404** — non esiste una pagina di errore personalizzata
 - **Backend contatti proprietario** — l'invio usa EmailJS come servizio esterno, non un backend/API gestito dal progetto
 
 ---
@@ -385,10 +390,8 @@ comparire anche nel dropdown rapido, va aggiunta anche al template `.lang-menu` 
   bloccata possono non caricarsi, senza compromettere il cambio lingua
 - EmailJS dipende da un servizio esterno: se CDN/API EmailJS non sono raggiungibili, il form
   non può spedire messaggi o codici di verifica
-- Google Docs Viewer è un servizio esterno: se non è raggiungibile, resta comunque disponibile
-  il link diretto al PDF e il download. In sviluppo locale (`localhost`/`127.0.0.1`), Google
-  potrebbe non riuscire a recuperare il PDF perché l'URL non è pubblico; la resa va verificata
-  soprattutto sull'URL Netlify.
+- PDF.js è caricato da CDN: se cdnjs non è raggiungibile, il rendering inline del CV può non
+  partire, ma restano disponibili il link diretto al PDF e il download.
 
 ### Possibili miglioramenti
 
@@ -445,7 +448,7 @@ Significa che le traduzioni non possono contenere HTML formattato.
 2. **Verifica email server-side** — eventuale evoluzione della verifica codice verso un backend/edge function con sessione e rate limit
 
 ### Priorità bassa 🟢
-3. **Pagina 404** — pagina di errore personalizzata
+- Nessuna voce a bassa priorità registrata al momento.
 
 ---
 
@@ -483,7 +486,7 @@ npx serve .
 | Contenuto home | `index.html` (hero + contenitori frammento) |
 | Contenuto vita personale | `vita-personale.html` dentro `#personal-section-source` |
 | Contenuto vita lavorativa | `vita-lavorativa.html` dentro `#work-section-source` |
-| CV | Sostituire `assets/Stefano Catalin D'Alessandro.pdf` e aggiornare eventuali riferimenti se cambia nome file |
+| CV | Sostituire `assets/Stefano_Catalin_DAlessandro_CV.pdf` e aggiornare `data-cv-url`/link se cambia nome file |
 | Aggiungere immagini | Mettere i file in `assets/images/` e referenziarli nell'HTML |
 | Favicon | Modificare `assets/favicon.svg` |
 | Configurazione EmailJS | Modificare `EMAILJS_CONFIG` in `js/main.js` |
@@ -518,7 +521,7 @@ npx serve .
 | **Fase 3** | Introduzione di `main.js`: logica per generare la navbar dinamicamente e gestire il modal contatti |
 | **Fase 4** | Introduzione del sistema i18n: creazione di `i18n.js`, `locales/en.json` e `locales/it.json`; migrazione di tutti i testi statici a `data-i18n` |
 | **Fase 5** | Aggiunta del selettore lingua con dropdown animato, bandiere da flagcdn.com, persistenza in localStorage |
-| **Fase 6** | Sviluppo della pagina `vita-lavorativa.html`: skill cards con scroll orizzontale, timeline esperienze, iframe CV |
+| **Fase 6** | Sviluppo della pagina `vita-lavorativa.html`: skill cards con scroll orizzontale, timeline esperienze e visualizzatore CV |
 | **Fase 7** | Sviluppo della pagina `vita-personale.html`: sezione chi sono, card passioni in griglia, storia personale |
 | **Fase 8** | Ottimizzazione mobile: menu hamburger, drawer mobile, chiusura su click esterno e sincronizzazione dei controlli desktop/mobile |
 | **Fase 9** | Consolidamento i18n: rilevamento `navigator.language`, event delegation sulle `.lang-option`, aggiornamento desktop/mobile e `refreshI18n()` |
@@ -548,6 +551,10 @@ npx serve .
 | **Fase 33** | Aggiunta sfondo live canvas con rete di nodi/particelle, colori per tema dark/light e interazione leggera col mouse |
 | **Fase 34** | Ridisegno completo sfondo particellare con movimento organico sinusoidale, livelli di profondità e particelle gradienti, e risoluzione scroll bug |
 | **Fase 35** | Aggiunto glassmorphism (sfondo trasparente sfocato) alla barra delle azioni nel visualizzatore CV per migliorare l'estetica |
+| **Fase 36** | Migrazione del visualizzatore CV a PDF.js: sostituzione dell'iframe/viewer esterno con rendering canvas multipagina tramite `renderCustomCV()` e `data-cv-url` |
+| **Fase 37** | Separazione dei pulsanti "Apri CV" e "Scarica CV" dal viewer: azioni spostate fuori da `.cv-wrapper`, centrate, affiancate e ingrandite |
+| **Fase 38** | Aggiunta pagina `404.html` personalizzata: layout coerente col sito, `noindex`, navbar/tema/modal riusati e testi localizzati in tutte le 16 lingue |
+| **Fase 39** | Bonifica encoding dei file `locales/*.json`: correzione mojibake UTF-8/Windows-1252 (`piÃ¹`, `Â©`, `â†’`, accenti europei e testi CJK/KR/JP corrotti) e validazione JSON completa |
 | **Stato corrente** | Progetto funzionale e online. In attesa di: eventuale backend proprietario/server-side per il form e ulteriori rifiniture dell'immagine Open Graph |
 
 ---
@@ -598,15 +605,15 @@ scolastico/professionale, con il CV scaricabile/visualizzabile.
 ### Stato preciso dell'ultima versione analizzata
 - Tre pagine HTML complete: home one-page + due sottopagine autonome/sorgente
 - CSS: include media query mobile, tema dark/light, scroll margin per ancore, utility `.sr-only`, modal lingue, classi reveal e fallback reduced motion
-- `main.js`: navbar, modal contatti accessibile, modal lingue ricercabile, frammenti, tema, scroll spy, scroll fluido, skill scroller con frecce disabilitabili, sfondo live canvas, visualizzatore CV tramite PDF diretto/Google Docs Viewer con fallback e animazioni reveal
+- `main.js`: navbar, modal contatti accessibile, modal lingue ricercabile, frammenti, tema, scroll spy, scroll fluido, skill scroller con frecce disabilitabili, sfondo live canvas, visualizzatore CV tramite PDF.js con fallback e animazioni reveal
 - `i18n.js`: sistema i18n completo con event delegation, `navigator.language`, `refreshI18n()`, `SUPPORTED` e `LANG_META`
 - JSON: struttura identica per tutte le lingue supportate in `locales/`
-- `Stefano Catalin D'Alessandro.pdf`: presente in `assets/` (contenuto non analizzato)
+- `Stefano_Catalin_DAlessandro_CV.pdf`: presente in `assets/` (contenuto non analizzato)
 - `assets/favicon.svg`: favicon `SCD` viola su sfondo scuro
 - `assets/images/`: contiene `og-preview.svg`; nessuna foto profilo personale prevista
 
 ### Ultimo lavoro svolto
-Claude Opus 4.6 ha ridisegnato il sistema di particelle dello sfondo, introducendo un movimento autonomo ondulatorio fluido, diversi livelli di profondità (parallax) e nodi gradienti glow; ha aumentato la densità e risolto un bug di posizionamento (`position: fixed`) su mobile. Infine ha applicato un effetto glassmorphism alla barra del CV viewer. Gemini 3.1 Pro ha supportato i controlli finali.
+Claude Opus 4.6 ha ridisegnato il sistema di particelle dello sfondo, introducendo un movimento autonomo ondulatorio fluido, diversi livelli di profondità (parallax) e nodi gradienti glow; ha aumentato la densità e risolto un bug di posizionamento (`position: fixed`) su mobile. In seguito le azioni del CV sono state staccate dal viewer e rese più grandi, centrate e sempre affiancate. Gemini Pro 3 (High) ha supportato i controlli finali e il riallineamento del contesto.
 
 ### Prossimo passo consigliato
 Test manuale completato con esito positivo. Deploy effettuato su Netlify all'indirizzo https://stefanocatalin.netlify.app.
@@ -642,11 +649,15 @@ mantenerlo leggibile.
 | 15 giugno 2026 | Claude (claude.ai) + Codex | Modifica del viewer CV per usare Google Docs Viewer su mobile/browser senza viewer PDF nativo; verifica Codex del codice attuale e riallineamento del documento di contesto. |
 | 15 giugno 2026 | Codex | Allargamento coordinato dei contenitori, rifinitura tema chiaro del modal contatti, ingrandimento/separazione skill card e aggiunta badge livello i18n. |
 | 16 giugno 2026 | Claude Opus 4.6 | Ridisegno completo dello sfondo particellare in JS (movimento organico, parallax, colori glow), correzione bug `position: fixed` canvas per mobile e barra inferiore CV viewer resa trasparente (glassmorphism). |
-| 16 giugno 2026 | Gemini 3.1 Pro (High) | Verifica e applicazione finale `position: fixed` in JS e aggiornamento strutturale di questo file di contesto con i cambiamenti apportati. |
+| 16 giugno 2026 | Gemini Pro 3 (High) | Verifica e applicazione finale `position: fixed` in JS e aggiornamento strutturale di questo file di contesto con i cambiamenti apportati. |
+| 16 giugno 2026 | Gemini Pro 3 (High) | Analisi statica di `style.css`, `index.html`, `main.js` e `vita-lavorativa.html`; completamento del contesto con rendering CV PDF.js, dipendenze CDN, nome reale del PDF, conteggio righe CSS e stato aggiornato. |
+| 16 giugno 2026 | Codex | Separazione e ridisegno dei pulsanti apertura/download CV: gruppo azioni fuori dal viewer, griglia a due colonne, centratura e dimensioni aumentate; verifica su `127.0.0.1:5500` desktop e mobile 360 px. |
+| 16 giugno 2026 | Codex | Implementazione pagina `404.html` personalizzata con testi `not_found` in tutte le lingue, stile dedicato e verifica locale su `127.0.0.1:5500`. |
+| 16 giugno 2026 | Codex | Correzione degli accenti e dei caratteri mojibake nei file `locales/*.json`, inclusi simboli `©`/`→` e lingue europee/asiatiche; validazione JSON su tutte le 16 lingue. |
 
 ---
 
 *Documento inizialmente generato da Claude Code tramite analisi statica del codice sorgente:
 per quella prima analisi nessuna esecuzione del codice è stata effettuata. Successivamente
 Codex ha aggiornato questo documento dopo aver modificato il progetto ed eseguito/verificato
-il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilità del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Claude (claude.ai) ha poi aggiornato il documento dopo il completamento del test manuale e del deploy su Netlify, registrando l'URL di produzione e il nuovo stato del progetto, e ha modificato il viewer CV per usare Google Docs Viewer dove necessario. Codex ha infine verificato questa modifica rispetto al codice attuale, riallineato il contesto, rifinito il tema chiaro del modal contatti e riorganizzato le skill card con contenitori più ampi e badge livello. Successivamente, Claude Opus 4.6 e Gemini 3.1 Pro hanno ridisegnato il motore dello sfondo animato, migliorato la fisica delle particelle, introdotto il glassmorphism e risolto il corretto posizionamento fisso per l'esperienza mobile. Alcune inferenze (es. cronologia iniziale) restano basate sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
+il sito tramite browser integrato. In controlli successivi, Codex ha corretto la codifica del documento, riallineato i dati verificabili, documentato il form contatti statico, migrato l'invio a EmailJS, aggiunto la verifica email tramite codice, aggiornato la favicon SCD, migliorato l'accessibilità del modal e dei controlli, e ampliato il sistema lingue con spagnolo e modal ricercabile. Claude (claude.ai) ha poi aggiornato il documento dopo il completamento del test manuale e del deploy su Netlify, registrando l'URL di produzione e il nuovo stato del progetto, e ha modificato il viewer CV per usare Google Docs Viewer dove necessario; la versione attuale usa invece PDF.js per il rendering inline del CV. Codex ha infine verificato questa modifica rispetto al codice attuale, riallineato il contesto, rifinito il tema chiaro del modal contatti e riorganizzato le skill card con contenitori più ampi e badge livello. Successivamente, Claude Opus 4.6 e Gemini Pro 3 (High) hanno ridisegnato il motore dello sfondo animato, migliorato la fisica delle particelle, introdotto in una fase precedente il glassmorphism, risolto il corretto posizionamento fisso per l'esperienza mobile e riallineato questo documento ai file `style.css`, `index.html`, `main.js` e `vita-lavorativa.html`. Le azioni del CV sono poi state staccate dal viewer e rese più grandi, centrate e affiancate, con verifica su `127.0.0.1:5500`. Infine Codex ha aggiunto la pagina 404 personalizzata, localizzata in tutte le lingue supportate e verificata in locale, e ha bonificato i file di traduzione correggendo accenti, simboli e caratteri CJK/KR/JP rovinati da mojibake. Alcune inferenze (es. cronologia iniziale) restano basate sulla struttura logica del progetto e potrebbero non riflettere l'ordine reale di sviluppo.*
