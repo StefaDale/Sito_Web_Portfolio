@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "正在走出自己的道路。",
     "btn_personal": "個人生活",
-    "btn_work": "學習與職業",
-    "personal_title": "我是誰",
-    "personal_text": "我叫Stefano。我是一名熱愛電腦科學和科技的學生。我喜歡程式設計、嘗試新專案，並在軟體開發領域持續學習新的技能。",
-    "read_more": "了解更多 →",
-    "work_title": "我在做什麼",
-    "work_text": "我就讀於國立工業技術學院 \"A. Artom\" 資訊與電信方向五年級。",
-    "read_more_work": "了解更多 →"
+    "btn_work": "學習與職業"
   },
   "personal": {
     "title": "個人生活",
     "subtitle": "我是誰、來自哪裡、熱愛什麼",
     "about_title": "我是誰",
-    "about_text": "我是Stefano Catalin D'Alessandro，出生並成長於皮埃蒙特大區阿斯蒂省，目前就讀於家鄉省份的 I.T.I.S. \"A. Artom\"。空閒時間我喜歡學習新的程式設計主題，尤其是Web程式設計。我也喜歡經常和朋友見面以及玩電子遊戲。",
+    "about_text": "我出生並成長於皮埃蒙特大區阿斯蒂省，目前就讀於家鄉省份的 I.T.I.S. \"A. Artom\"。空閒時間我喜歡學習新的程式設計主題，尤其是網頁開發。我也喜歡常和朋友見面以及玩電子遊戲。",
     "passions_title": "我的愛好",
     "passion1_title": "電子遊戲",
-    "passion1_text": "這是我放鬆並暫時遠離一切的方式。",
+    "passion1_text": "玩遊戲能讓我沉浸到另一個世界，放空思緒。",
     "passion2_title": "運動",
-    "passion2_text": "我會獨自騎登山車，最多和幾個朋友一起；我也游泳，從童年/青春期前就開始練習。",
+    "passion2_text": "我以業餘方式騎登山車，可以獨自騎，也可以和同伴一起；我也游泳，這是我從童年起一直持續的運動。",
     "passion3_title": "音樂",
+    "passion3_text": "音樂能讓我在壓力大的日子裡找到平靜與安定。",
     "story_title": "我的故事",
-    "passion3_text": "這是我放鬆並與世界暫時斷開的方式。",
-    "story_text": "我對電腦科學的熱情在進入Artom之前就開始了；談到電腦時我一直都能應付得不錯。自從開始學習以來，我在相關學科中學到了很多，從程式設計到建立和管理網路。我還需要完成學業，並打算繼續學習電腦工程，除非出現其他機會。"
+    "story_text": "我對資訊科學的熱情在進入 Artom 之前就開始了。我一直很擅長使用電腦，開始學習之後，我在相關科目中學到了很多，從程式設計到建立與管理網路。我的學業還沒有結束，如果沒有其他機會出現，我打算繼續攻讀資訊工程。"
   },
   "work": {
     "title": "學習與職業",
@@ -114,5 +108,18 @@
     "cv": "查看履歷",
     "text": "你要尋找的頁面不存在或已被移動。你可以返回首頁，或直接開啟履歷區塊。",
     "home": "返回首頁"
+  },
+  "contact_messages": {
+    "sending": "正在傳送訊息...",
+    "success": "訊息已成功送出。",
+    "error": "訊息傳送失敗。請稍後再試，或使用下方快速連結。",
+    "configError": "EmailJS 尚未設定：請填入 Public Key、Service ID 和 Template ID。",
+    "verificationConfigError": "EmailJS 驗證範本尚未設定。",
+    "verificationSending": "正在傳送驗證碼...",
+    "verificationSent": "驗證碼已送出。請檢查你的信箱。",
+    "verificationInvalid": "驗證碼無效或已過期。",
+    "verificationSuccess": "電子郵件驗證成功。",
+    "verificationRequired": "傳送訊息前請先驗證你的電子郵件。",
+    "verificationReset": "電子郵件已變更：請傳送新的驗證碼。"
   }
 }

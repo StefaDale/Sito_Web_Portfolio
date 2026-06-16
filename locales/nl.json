@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Ik bouw mijn eigen weg.",
     "btn_personal": "Persoonlijk leven",
-    "btn_work": "Werkleven",
-    "personal_title": "Wie ik ben",
-    "personal_text": "Mijn naam is Stefano. Ik ben een student met een passie voor informatica en technologie. Ik programmeer graag, experimenteer met nieuwe projecten en leer voortdurend nieuwe vaardigheden in de wereld van softwareontwikkeling.",
-    "read_more": "Meer ontdekken →",
-    "work_title": "Wat ik doe",
-    "work_text": "Ik zit in het 5e jaar aan het Staats Technisch Industrieel Instituut \"A. Artom\" - richting Informatica en Telecommunicatie.",
-    "read_more_work": "Meer ontdekken →"
+    "btn_work": "Werkleven"
   },
   "personal": {
     "title": "Persoonlijk leven",
     "subtitle": "Wie ik ben, waar ik vandaan kom, wat mij boeit",
     "about_title": "Wie ik ben",
-    "about_text": "Ik ben Stefano Catalin D'Alessandro, geboren en opgegroeid in Piemonte, in de provincie Asti, en momenteel volg ik les aan het I.T.I.S. \"A. Artom\" in mijn geboortestreek. In mijn vrije tijd leer ik graag nieuwe onderwerpen over programmeren, vooral webprogrammeren. Ook spreek ik graag vaak af met mijn vrienden en speel ik videogames.",
+    "about_text": "Ik ben geboren en opgegroeid in Piemonte, in de provincie Asti, en volg momenteel het I.T.I.S. \"A. Artom\" in mijn geboorteprovincie. In mijn vrije tijd leer ik graag nieuwe programmeeronderwerpen, vooral webontwikkeling. Ook spreek ik graag vaak af met vrienden en speel ik videogames.",
     "passions_title": "Mijn passies",
     "passion1_title": "Videogames",
-    "passion1_text": "Het is mijn manier om te ontspannen en even afstand te nemen van alles.",
+    "passion1_text": "Gamen laat me in een andere wereld duiken en mijn hoofd leegmaken.",
     "passion2_title": "Sport",
-    "passion2_text": "Ik doe zelfstandig aan mountainbiken, hoogstens met een paar vrienden, en aan zwemmen, waarmee ik al in mijn kindertijd/vroege tienerjaren ben begonnen.",
+    "passion2_text": "Ik doe aan mountainbiken op amateurniveau, alleen of in gezelschap, en aan zwemmen, een discipline die ik sinds mijn kindertijd beoefen.",
     "passion3_title": "Muziek",
+    "passion3_text": "Met muziek vind ik rust en kalmte op stressvolle dagen.",
     "story_title": "Mijn verhaal",
-    "passion3_text": "Het is mijn manier om te ontspannen en me van de wereld los te maken.",
-    "story_text": "Mijn passie voor informatica begon al voordat ik naar Artom ging; ik kon altijd al goed overweg met computers. Sinds het begin van mijn studies heb ik veel geleerd over alle vakken in het domein, van programmeren tot het maken en beheren van netwerken. Ik moet mijn studies nog afronden en wil verdergaan met Informatica Engineering, tenzij er een andere kans op mijn pad komt."
+    "story_text": "Mijn passie voor informatica begon voordat ik naar Artom ging. Ik kon altijd goed met computers overweg en sinds het begin van mijn studie heb ik veel geleerd over alle vakken in dit gebied, van programmeren tot het opzetten en beheren van netwerken. Ik moet mijn studie nog afronden en wil daarna Informatica Engineering gaan studeren, tenzij er een andere kans voorbij komt."
   },
   "work": {
     "title": "Werkleven",
@@ -114,5 +108,18 @@
     "cv": "Naar CV",
     "text": "De pagina die je zoekt bestaat niet of is verplaatst. Je kunt terug naar de startpagina of direct de CV-sectie openen.",
     "home": "Terug naar home"
+  },
+  "contact_messages": {
+    "sending": "Bericht wordt verzonden...",
+    "success": "Bericht succesvol verzonden.",
+    "error": "Het bericht kon niet worden verzonden. Probeer het zo opnieuw of gebruik de snelle links hieronder.",
+    "configError": "EmailJS is niet geconfigureerd: voeg Public Key, Service ID en Template ID toe.",
+    "verificationConfigError": "De EmailJS-verificatiesjabloon is niet geconfigureerd.",
+    "verificationSending": "Verificatiecode wordt verzonden...",
+    "verificationSent": "Code verzonden. Controleer je e-mail.",
+    "verificationInvalid": "Ongeldige of verlopen code.",
+    "verificationSuccess": "E-mail succesvol geverifieerd.",
+    "verificationRequired": "Verifieer je e-mail voordat je het bericht verzendt.",
+    "verificationReset": "E-mail gewijzigd: stuur een nieuwe verificatiecode."
   }
 }

@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Jeg bygger min egen vei.",
     "btn_personal": "Privatliv",
-    "btn_work": "Arbeidsliv",
-    "personal_title": "Hvem jeg er",
-    "personal_text": "Jeg heter Stefano. Jeg er en student med lidenskap for informatikk og teknologi. Jeg liker å programmere, eksperimentere med nye prosjekter og stadig lære nye ferdigheter innen programvareutvikling.",
-    "read_more": "Les mer →",
-    "work_title": "Hva jeg gjør",
-    "work_text": "Jeg går i 5. klasse ved det statlige tekniske industriinstituttet \"A. Artom\" - retning Informatikk og telekommunikasjon.",
-    "read_more_work": "Les mer →"
+    "btn_work": "Arbeidsliv"
   },
   "personal": {
     "title": "Privatliv",
     "subtitle": "Hvem jeg er, hvor jeg kommer fra, hva jeg brenner for",
     "about_title": "Hvem jeg er",
-    "about_text": "Jeg er Stefano Catalin D'Alessandro, født og oppvokst i Piemonte i provinsen Asti, og går for tiden på I.T.I.S. \"A. Artom\" i min hjemprovins. På fritiden liker jeg å lære nye emner innen programmering, særlig webprogrammering. Jeg liker også ofte å møte vennene mine og spille videospill.",
+    "about_text": "Jeg er født og oppvokst i Piemonte, i provinsen Asti, og går for tiden på I.T.I.S. \"A. Artom\" i hjemprovinsen min. På fritiden liker jeg å lære nye temaer innen programmering, særlig webutvikling. Jeg liker også å møte vennene mine ofte og spille videospill.",
     "passions_title": "Mine lidenskaper",
     "passion1_title": "Videospill",
-    "passion1_text": "Det er min måte å slappe av og ta en pause fra alt på.",
+    "passion1_text": "Å spille lar meg dykke inn i en annen verden og tømme hodet.",
     "passion2_title": "Sport",
-    "passion2_text": "Jeg driver med mountainbike på egen hånd, høyst med noen venner, og svømming, som jeg begynte med allerede i barndommen/tidlig ungdom.",
+    "passion2_text": "Jeg driver med terrengsykling på amatørnivå, alene eller sammen med andre, og svømming, en disiplin jeg har holdt på med siden barndommen.",
     "passion3_title": "Musikk",
+    "passion3_text": "Med musikk finner jeg ro og stillhet på stressende dager.",
     "story_title": "Min historie",
-    "passion3_text": "Det er min måte å slappe av og koble av fra verden på.",
-    "story_text": "Min lidenskap for informatikk begynte før jeg begynte på Artom; jeg har alltid klart meg godt når det handlet om datamaskiner. Siden jeg startet studiene, har jeg lært mye om alle relevante fag, fra programmering til å lage og administrere nettverk. Jeg må fortsatt fullføre studiene og har tenkt å fortsette med dataingeniørfag, med mindre en annen mulighet dukker opp."
+    "story_text": "Interessen min for informatikk begynte før jeg startet på Artom. Jeg har alltid klart meg godt med datamaskiner, og siden jeg begynte studiene har jeg lært mye i alle relevante fag, fra programmering til å opprette og administrere nettverk. Jeg må fortsatt fullføre studiene og har tenkt å fortsette med dataingeniørfag, med mindre en annen mulighet dukker opp."
   },
   "work": {
     "title": "Arbeidsliv",
@@ -114,5 +108,18 @@
     "cv": "Ga til CV",
     "text": "Siden du leter etter finnes ikke eller er flyttet. Du kan ga tilbake til forsiden eller apne CV-delen direkte.",
     "home": "Til forsiden"
+  },
+  "contact_messages": {
+    "sending": "Sender meldingen...",
+    "success": "Meldingen ble sendt.",
+    "error": "Kunne ikke sende meldingen. Prøv igjen snart eller bruk hurtiglenkene nedenfor.",
+    "configError": "EmailJS er ikke konfigurert: legg til Public Key, Service ID og Template ID.",
+    "verificationConfigError": "EmailJS-verifiseringsmalen er ikke konfigurert.",
+    "verificationSending": "Sender bekreftelseskode...",
+    "verificationSent": "Kode sendt. Sjekk e-posten din.",
+    "verificationInvalid": "Ugyldig eller utløpt kode.",
+    "verificationSuccess": "E-post bekreftet.",
+    "verificationRequired": "Bekreft e-posten din før du sender meldingen.",
+    "verificationReset": "E-post endret: send en ny bekreftelseskode."
   }
 }

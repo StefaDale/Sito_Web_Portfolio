@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Jag bygger min egen väg.",
     "btn_personal": "Privatliv",
-    "btn_work": "Arbetsliv",
-    "personal_title": "Vem jag är",
-    "personal_text": "Jag heter Stefano. Jag är en student med passion för datavetenskap och teknik. Jag gillar att programmera, experimentera med nya projekt och ständigt lära mig nya färdigheter inom mjukvaruutveckling.",
-    "read_more": "Läs mer →",
-    "work_title": "Vad jag gör",
-    "work_text": "Jag går femte året vid Statliga tekniska industriinstitutet \"A. Artom\" - inriktning Informatik och telekommunikation.",
-    "read_more_work": "Läs mer →"
+    "btn_work": "Arbetsliv"
   },
   "personal": {
     "title": "Privatliv",
     "subtitle": "Vem jag är, var jag kommer ifrån, vad jag brinner för",
     "about_title": "Vem jag är",
-    "about_text": "Jag är Stefano Catalin D'Alessandro, född och uppvuxen i Piemonte i provinsen Asti, och jag går för närvarande på I.T.I.S. \"A. Artom\" i min hemprovins. På fritiden gillar jag att lära mig nya ämnen inom programmering, särskilt webbutveckling. Jag gillar också att ofta träffa mina vänner och spela videospel.",
+    "about_text": "Jag är född och uppvuxen i Piemonte, i provinsen Asti, och går för närvarande på I.T.I.S. \"A. Artom\" i min hemprovins. På fritiden tycker jag om att lära mig nya ämnen inom programmering, särskilt webbutveckling. Jag gillar också att ofta träffa mina vänner och spela videospel.",
     "passions_title": "Mina passioner",
     "passion1_title": "Videospel",
-    "passion1_text": "Det är mitt sätt att koppla av och ta en paus från allt.",
+    "passion1_text": "Spel låter mig kliva in i en annan värld och rensa tankarna.",
     "passion2_title": "Sport",
-    "passion2_text": "Jag cyklar mountainbike på egen hand, ibland med några vänner, och simmar, vilket jag började med redan i barndomen/förpuberteten.",
+    "passion2_text": "Jag cyklar mountainbike på hobbynivå, ensam eller tillsammans med andra, och simmar, en disciplin jag har hållit på med sedan barndomen.",
     "passion3_title": "Musik",
+    "passion3_text": "Med musik hittar jag ro och lugn under stressiga dagar.",
     "story_title": "Min historia",
-    "passion3_text": "Det är mitt sätt att koppla av och stänga ute världen.",
-    "story_text": "Mitt intresse för datavetenskap började innan jag började på Artom; jag har alltid klarat mig bra när det handlat om datorer. Sedan jag började studera har jag lärt mig mycket inom alla relevanta ämnen, från programmering till att skapa och hantera nätverk. Jag har fortfarande mina studier kvar att avsluta och tänker fortsätta inom dataingenjörskap, om inte någon annan möjlighet dyker upp."
+    "story_text": "Mitt intresse för datavetenskap började innan jag började på Artom. Jag har alltid klarat mig bra med datorer och sedan jag började studera har jag lärt mig mycket inom alla relevanta ämnen, från programmering till att skapa och hantera nätverk. Jag har fortfarande studierna kvar att avsluta och tänker fortsätta med datateknik, om inte någon annan möjlighet dyker upp."
   },
   "work": {
     "title": "Arbetsliv",
@@ -114,5 +108,18 @@
     "cv": "Ga till CV",
     "text": "Sidan du letar efter finns inte eller har flyttats. Du kan ga tillbaka till startsidan eller oppna CV-sektionen direkt.",
     "home": "Till startsidan"
+  },
+  "contact_messages": {
+    "sending": "Skickar meddelandet...",
+    "success": "Meddelandet har skickats.",
+    "error": "Det gick inte att skicka meddelandet. Försök igen snart eller använd snabblänkarna nedan.",
+    "configError": "EmailJS är inte konfigurerat: lägg till Public Key, Service ID och Template ID.",
+    "verificationConfigError": "EmailJS-verifieringsmallen är inte konfigurerad.",
+    "verificationSending": "Skickar verifieringskod...",
+    "verificationSent": "Kod skickad. Kontrollera din e-post.",
+    "verificationInvalid": "Ogiltig eller utgången kod.",
+    "verificationSuccess": "E-post verifierad.",
+    "verificationRequired": "Verifiera din e-post innan du skickar meddelandet.",
+    "verificationReset": "E-post ändrad: skicka en ny verifieringskod."
   }
 }

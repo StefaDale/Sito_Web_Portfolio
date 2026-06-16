@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Jeg bygger min egen vej.",
     "btn_personal": "Privatliv",
-    "btn_work": "Arbejdsliv",
-    "personal_title": "Hvem jeg er",
-    "personal_text": "Jeg hedder Stefano. Jeg er en studerende med passion for informatik og teknologi. Jeg kan lide at programmere, eksperimentere med nye projekter og hele tiden lære nye færdigheder inden for softwareudvikling.",
-    "read_more": "Læs mere →",
-    "work_title": "Hvad jeg laver",
-    "work_text": "Jeg går på 5. år på det statslige tekniske industriinstitut \"A. Artom\" - retningen Informatik og Telekommunikation.",
-    "read_more_work": "Læs mere →"
+    "btn_work": "Arbejdsliv"
   },
   "personal": {
     "title": "Privatliv",
     "subtitle": "Hvem jeg er, hvor jeg kommer fra, hvad jeg brænder for",
     "about_title": "Hvem jeg er",
-    "about_text": "Jeg er Stefano Catalin D'Alessandro, født og opvokset i Piemonte i provinsen Asti, og jeg går i øjeblikket på I.T.I.S. \"A. Artom\" i min fødeprovins. I min fritid kan jeg godt lide at lære nye emner inden for programmering, især webprogrammering. Jeg kan også godt lide ofte at mødes med mine venner og spille videospil.",
+    "about_text": "Jeg er født og opvokset i Piemonte, i provinsen Asti, og går i øjeblikket på I.T.I.S. \"A. Artom\" i min hjemprovins. I min fritid kan jeg lide at lære nye emner inden for programmering, især webudvikling. Jeg kan også godt lide ofte at mødes med mine venner og spille videospil.",
     "passions_title": "Mine passioner",
     "passion1_title": "Videospil",
-    "passion1_text": "Det er min måde at slappe af og tage en pause fra det hele på.",
+    "passion1_text": "At spille giver mig mulighed for at dykke ned i en anden verden og tømme hovedet.",
     "passion2_title": "Sport",
-    "passion2_text": "Jeg dyrker mountainbike på egen hånd, højst med nogle venner, og svømning, som jeg begyndte på allerede i barndommen/før teenageårene.",
+    "passion2_text": "Jeg dyrker mountainbike på amatørniveau, alene eller sammen med andre, og svømning, en disciplin jeg har holdt ved lige siden barndommen.",
     "passion3_title": "Musik",
+    "passion3_text": "Med musik finder jeg ro og fred på stressende dage.",
     "story_title": "Min historie",
-    "passion3_text": "Det er min måde at slappe af og koble fra verden på.",
-    "story_text": "Min passion for informatik begyndte, før jeg kom ind på Artom; jeg har altid klaret mig godt, når det handlede om computere. Siden jeg begyndte mine studier, har jeg lært meget om alle relevante fag, fra programmering til at oprette og administrere netværk. Jeg mangler stadig at afslutte mine studier og har tænkt mig at fortsætte med computer engineering, medmindre en anden mulighed opstår."
+    "story_text": "Min passion for informatik begyndte, før jeg startede på Artom. Jeg har altid klaret mig godt med computere, og siden jeg begyndte mine studier, har jeg lært meget inden for alle relevante fag, fra programmering til oprettelse og administration af netværk. Jeg mangler stadig at afslutte mine studier og har tænkt mig at fortsætte med computer engineering, medmindre en anden mulighed dukker op."
   },
   "work": {
     "title": "Arbejdsliv",
@@ -114,5 +108,18 @@
     "cv": "Ga til CV",
     "text": "Siden du leder efter findes ikke eller er blevet flyttet. Du kan ga tilbage til forsiden eller abne CV-sektionen direkte.",
     "home": "Til forsiden"
+  },
+  "contact_messages": {
+    "sending": "Sender beskeden...",
+    "success": "Beskeden blev sendt.",
+    "error": "Beskeden kunne ikke sendes. Prøv igen om lidt, eller brug hurtiglinkene nedenfor.",
+    "configError": "EmailJS er ikke konfigureret: tilføj Public Key, Service ID og Template ID.",
+    "verificationConfigError": "EmailJS-verifikationsskabelonen er ikke konfigureret.",
+    "verificationSending": "Sender bekræftelseskode...",
+    "verificationSent": "Kode sendt. Tjek din e-mail.",
+    "verificationInvalid": "Ugyldig eller udløbet kode.",
+    "verificationSuccess": "E-mail bekræftet.",
+    "verificationRequired": "Bekræft din e-mail, før du sender beskeden.",
+    "verificationReset": "E-mail ændret: send en ny bekræftelseskode."
   }
 }

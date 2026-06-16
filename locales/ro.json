@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Îmi construiesc propriul drum.",
     "btn_personal": "Viață personală",
-    "btn_work": "Viață profesională",
-    "personal_title": "Cine sunt",
-    "personal_text": "Mă numesc Stefano. Sunt un elev pasionat de informatică și tehnologie. Îmi place să programez, să experimentez cu proiecte noi și să învăț continuu competențe noi în lumea dezvoltării software.",
-    "read_more": "Află mai multe →",
-    "work_title": "Ce fac",
-    "work_text": "Sunt în anul al 5-lea la Institutul Tehnic Industrial de Stat \"A. Artom\" - specializarea Informatică și Telecomunicații.",
-    "read_more_work": "Află mai multe →"
+    "btn_work": "Viață profesională"
   },
   "personal": {
     "title": "Viață personală",
     "subtitle": "Cine sunt, de unde vin, ce mă pasionează",
     "about_title": "Cine sunt",
-    "about_text": "Sunt Stefano Catalin D'Alessandro, născut și crescut în Piemont, în provincia Asti, iar în prezent frecventez I.T.I.S. \"A. Artom\" în provincia mea natală. În timpul liber îmi place să învăț subiecte noi despre programare, mai ales programare web. De asemenea, îmi place să mă întâlnesc des cu prietenii mei și să joc jocuri video.",
+    "about_text": "M-am născut și am crescut în Piemont, în provincia Asti, iar în prezent urmez I.T.I.S. \"A. Artom\" în provincia mea natală. În timpul liber îmi place să învăț subiecte noi despre programare, mai ales dezvoltare web. De asemenea, îmi place să mă întâlnesc des cu prietenii și să joc jocuri video.",
     "passions_title": "Pasiunile mele",
     "passion1_title": "Jocuri video",
-    "passion1_text": "Este modul meu de a mă relaxa și de a lua o pauză de la toate.",
+    "passion1_text": "Jocurile îmi permit să mă cufund într-o altă lume și să-mi limpezesc mintea.",
     "passion2_title": "Sport",
-    "passion2_text": "Practic mountain bike pe cont propriu, cel mult cu câțiva prieteni, și înot, pe care am început să îl practic încă din copilărie/preadolescență.",
+    "passion2_text": "Practic mountain bike la nivel amator, singur sau în companie, și înot, o disciplină pe care o practic încă din copilărie.",
     "passion3_title": "Muzică",
+    "passion3_text": "Cu muzica găsesc liniște și calm în zilele stresante.",
     "story_title": "Povestea mea",
-    "passion3_text": "Este modul meu de a mă relaxa și de a mă deconecta de lume.",
-    "story_text": "Mi-am început pasiunea pentru informatică înainte de a intra la Artom; m-am descurcat mereu bine când era vorba de calculatoare. De când am început studiile, am învățat mult despre toate materiile din domeniu, de la programare până la crearea și administrarea unei rețele. Încă trebuie să-mi termin studiile și intenționez să le continui în Inginerie Informatică, dacă nu apare o altă oportunitate."
+    "story_text": "Pasiunea mea pentru informatică a început înainte să intru la Artom. M-am descurcat mereu bine cu calculatoarele, iar de când am început studiile am învățat mult în toate materiile domeniului, de la programare până la crearea și gestionarea rețelelor. Încă trebuie să termin studiile și intenționez să continui cu Inginerie Informatică, dacă nu apare o altă oportunitate."
   },
   "work": {
     "title": "Viață profesională",
@@ -114,5 +108,18 @@
     "cv": "Mergi la CV",
     "text": "Pagina pe care o cauti nu exista sau a fost mutata. Poti reveni la pagina principala sau deschide direct sectiunea CV.",
     "home": "Inapoi acasa"
+  },
+  "contact_messages": {
+    "sending": "Se trimite mesajul...",
+    "success": "Mesaj trimis cu succes.",
+    "error": "Mesajul nu a putut fi trimis. Încearcă din nou în curând sau folosește linkurile rapide de mai jos.",
+    "configError": "EmailJS nu este configurat: adaugă Public Key, Service ID și Template ID.",
+    "verificationConfigError": "Șablonul de verificare EmailJS nu este configurat.",
+    "verificationSending": "Se trimite codul de verificare...",
+    "verificationSent": "Cod trimis. Verifică-ți emailul.",
+    "verificationInvalid": "Cod invalid sau expirat.",
+    "verificationSuccess": "Email verificat cu succes.",
+    "verificationRequired": "Verifică-ți emailul înainte de a trimite mesajul.",
+    "verificationReset": "Email modificat: trimite un nou cod de verificare."
   }
 }

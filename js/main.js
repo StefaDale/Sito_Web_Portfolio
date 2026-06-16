@@ -33,46 +33,18 @@ const LIVE_BACKGROUND_CONFIG = {
     nodeAlpha: 0.48,
   },
 };
-const CONTACT_MESSAGES = {
-  it: {
-    sending: 'Invio del messaggio in corso...',
-    success: 'Messaggio inviato correttamente.',
-    error: 'Invio non riuscito. Riprova tra poco o usa i link rapidi qui sotto.',
-    configError: 'EmailJS non è configurato: inserisci Public Key, Service ID e Template ID.',
-    verificationConfigError: 'Template di verifica EmailJS non configurato.',
-    verificationSending: 'Invio del codice di verifica...',
-    verificationSent: 'Codice inviato. Controlla la tua email.',
-    verificationInvalid: 'Codice non valido o scaduto.',
-    verificationSuccess: 'Email verificata correttamente.',
-    verificationRequired: 'Verifica la tua email prima di inviare il messaggio.',
-    verificationReset: 'Email modificata: invia un nuovo codice di verifica.',
-  },
-  en: {
-    sending: 'Sending your message...',
-    success: 'Message sent successfully.',
-    error: 'Could not send the message. Try again shortly or use the quick links below.',
-    configError: 'EmailJS is not configured: add Public Key, Service ID and Template ID.',
-    verificationConfigError: 'EmailJS verification template is not configured.',
-    verificationSending: 'Sending verification code...',
-    verificationSent: 'Code sent. Check your email.',
-    verificationInvalid: 'Invalid or expired code.',
-    verificationSuccess: 'Email verified successfully.',
-    verificationRequired: 'Verify your email before sending the message.',
-    verificationReset: 'Email changed: send a new verification code.',
-  },
-  es: {
-    sending: 'Enviando el mensaje...',
-    success: 'Mensaje enviado correctamente.',
-    error: 'No se pudo enviar el mensaje. Inténtalo de nuevo dentro de poco o usa los enlaces rápidos de abajo.',
-    configError: 'EmailJS no está configurado: añade Public Key, Service ID y Template ID.',
-    verificationConfigError: 'La plantilla de verificación de EmailJS no está configurada.',
-    verificationSending: 'Enviando el código de verificación...',
-    verificationSent: 'Código enviado. Revisa tu email.',
-    verificationInvalid: 'Código no válido o caducado.',
-    verificationSuccess: 'Email verificado correctamente.',
-    verificationRequired: 'Verifica tu email antes de enviar el mensaje.',
-    verificationReset: 'Email modificado: envía un nuevo código de verificación.',
-  },
+const CONTACT_MESSAGE_FALLBACK = {
+  sending: 'Sending your message...',
+  success: 'Message sent successfully.',
+  error: 'Could not send the message. Try again shortly or use the quick links below.',
+  configError: 'EmailJS is not configured: add Public Key, Service ID and Template ID.',
+  verificationConfigError: 'EmailJS verification template is not configured.',
+  verificationSending: 'Sending verification code...',
+  verificationSent: 'Code sent. Check your email.',
+  verificationInvalid: 'Invalid or expired code.',
+  verificationSuccess: 'Email verified successfully.',
+  verificationRequired: 'Verify your email before sending the message.',
+  verificationReset: 'Email changed: send a new verification code.',
 };
 
 function getStoredTheme() {
@@ -647,7 +619,11 @@ function setupContactForm(root = document) {
       if (type) verificationStatus.classList.add(type);
     };
 
-    const getMessages = () => CONTACT_MESSAGES[document.documentElement.lang] || CONTACT_MESSAGES.en;
+    const getMessages = () => (
+      typeof getI18nValue === 'function'
+        ? getI18nValue('contact_messages', CONTACT_MESSAGE_FALLBACK)
+        : CONTACT_MESSAGE_FALLBACK
+    );
     const isEmailJsConfigured = () => (
       EMAILJS_CONFIG.publicKey !== 'YOUR_EMAILJS_PUBLIC_KEY'
       && EMAILJS_CONFIG.serviceId !== 'YOUR_EMAILJS_SERVICE_ID'

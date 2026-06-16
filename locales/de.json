@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Ich gehe meinen eigenen Weg.",
     "btn_personal": "Privatleben",
-    "btn_work": "Berufsleben",
-    "personal_title": "Wer ich bin",
-    "personal_text": "Ich heiße Stefano. Ich bin ein Schüler mit großer Leidenschaft für Informatik und Technologie. Ich programmiere gern, experimentiere mit neuen Projekten und lerne ständig neue Fähigkeiten in der Welt der Softwareentwicklung.",
-    "read_more": "Mehr erfahren →",
-    "work_title": "Was ich mache",
-    "work_text": "Ich besuche das 5. Jahr am Staatlichen Technischen Industrieinstitut \"A. Artom\" - Fachrichtung Informatik und Telekommunikation.",
-    "read_more_work": "Mehr erfahren →"
+    "btn_work": "Berufsleben"
   },
   "personal": {
     "title": "Privatleben",
     "subtitle": "Wer ich bin, woher ich komme, was mich begeistert",
     "about_title": "Wer ich bin",
-    "about_text": "Ich bin Stefano Catalin D'Alessandro, geboren und aufgewachsen im Piemont, in der Provinz Asti, und besuche derzeit das I.T.I.S. \"A. Artom\" in meiner Heimatprovinz. In meiner Freizeit beschäftige ich mich gern mit neuen Themen rund um Programmierung, vor allem Webprogrammierung. Außerdem treffe ich mich gerne oft mit meinen Freunden und spiele auch Videospiele.",
+    "about_text": "Ich bin im Piemont, in der Provinz Asti, geboren und aufgewachsen und besuche derzeit das I.T.I.S. \"A. Artom\" in meiner Heimatprovinz. In meiner Freizeit lerne ich gern neue Themen rund um Programmierung, besonders Webentwicklung. Außerdem treffe ich mich gerne oft mit meinen Freunden und spiele Videospiele.",
     "passions_title": "Meine Leidenschaften",
     "passion1_title": "Videospiele",
-    "passion1_text": "Das ist meine Art, mich zu entspannen und eine Pause von allem zu machen.",
+    "passion1_text": "Spielen lässt mich in eine andere Welt eintauchen und den Kopf frei bekommen.",
     "passion2_title": "Sport",
-    "passion2_text": "Ich fahre selbstständig Mountainbike, höchstens mit ein paar Freunden, und schwimme; damit habe ich schon in meiner Kindheit/Vorjugend begonnen.",
+    "passion2_text": "Ich fahre Mountainbike auf Amateurniveau, allein oder in Gesellschaft, und schwimme, eine Disziplin, die ich seit meiner Kindheit ausübe.",
     "passion3_title": "Musik",
+    "passion3_text": "Mit Musik finde ich an stressigen Tagen Ruhe und Gelassenheit.",
     "story_title": "Meine Geschichte",
-    "passion3_text": "Das ist meine Art, mich zu entspannen und von der Welt abzuschalten.",
-    "story_text": "Meine Leidenschaft für Informatik begann schon vor meinem Eintritt ins Artom; ich kam schon immer gut zurecht, wenn es um Computer ging. Seit Beginn meiner Ausbildung habe ich viel über alle relevanten Bereiche gelernt, von der Programmierung bis zum Erstellen und Verwalten von Netzwerken. Ich muss meine Ausbildung noch abschließen und möchte sie im Bereich Informatikingenieurwesen fortsetzen, sofern sich nicht eine andere Gelegenheit ergibt."
+    "story_text": "Meine Leidenschaft für Informatik begann, bevor ich ans Artom kam. Mit Computern kam ich schon immer gut zurecht, und seit Beginn meiner Studien habe ich in allen Bereichen viel gelernt, von der Programmierung bis zum Aufbau und zur Verwaltung von Netzwerken. Ich muss meine Ausbildung noch abschließen und möchte anschließend Informatikingenieurwesen studieren, sofern sich keine andere Gelegenheit ergibt."
   },
   "work": {
     "title": "Berufsleben",
@@ -114,5 +108,18 @@
     "cv": "Zum CV",
     "text": "Die gesuchte Seite existiert nicht oder wurde verschoben. Du kannst zur Startseite zuruckkehren oder direkt den CV-Bereich offnen.",
     "home": "Zur Startseite"
+  },
+  "contact_messages": {
+    "sending": "Nachricht wird gesendet...",
+    "success": "Nachricht erfolgreich gesendet.",
+    "error": "Die Nachricht konnte nicht gesendet werden. Versuche es gleich erneut oder nutze die Schnelllinks unten.",
+    "configError": "EmailJS ist nicht konfiguriert: Public Key, Service ID und Template ID eintragen.",
+    "verificationConfigError": "Die EmailJS-Verifizierungsvorlage ist nicht konfiguriert.",
+    "verificationSending": "Verifizierungscode wird gesendet...",
+    "verificationSent": "Code gesendet. Prüfe deine E-Mail.",
+    "verificationInvalid": "Ungültiger oder abgelaufener Code.",
+    "verificationSuccess": "E-Mail erfolgreich verifiziert.",
+    "verificationRequired": "Verifiziere deine E-Mail, bevor du die Nachricht sendest.",
+    "verificationReset": "E-Mail geändert: Sende einen neuen Verifizierungscode."
   }
 }

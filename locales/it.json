@@ -12,27 +12,21 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Costruendo la mia strada.",
     "btn_personal": "Vita Personale",
-    "btn_work": "Vita Lavorativa",
-    "personal_title": "Chi sono",
-    "personal_text": "Mi chiamo Stefano. Sono uno studente appassionato di informatica e tecnologia. Mi piace programmare, sperimentare con nuovi progetti e imparare continuamente nuove competenze nel mondo dello sviluppo software",
-    "read_more": "Scopri di più →",
-    "work_title": "Cosa faccio",
-    "work_text": "Frequento il 5° anno dell'Istituto Tecnico Industriale Statale \"A. Artom\" - Indirizzo Informatica e Telecomunicazioni.",
-    "read_more_work": "Scopri di più →"
+    "btn_work": "Vita Lavorativa"
   },
   "personal": {
     "title": "Vita Personale",
     "subtitle": "Chi sono, da dove vengo, cosa mi appassiona",
     "about_title": "Chi sono",
-    "about_text": "Sono Stefano Catalin D'Alessandro, nato e cresciuto in Piemonte nella provincia di Asti e attualmente frequento l'I.T.I.S. \"A. Artom\" nella mia provincia di nascita. Nel tempo libero mi piace imparare nuovi argomenti sulla programmazione, soprattutto sulla programmazione web. Mi piace inoltre incontrarmi spesso con i miei amici e anche videogiocare.",
+    "about_text": "Sono nato e cresciuto in Piemonte nella provincia di Asti e attualmente frequento l'I.T.I.S. \"A. Artom\" nella mia provincia di nascita. Nel tempo libero mi piace imparare nuovi argomenti sulla programmazione, soprattutto quella web. Mi piace anche incontrarmi spesso con i miei amici e videogiocare.",
     "passions_title": "Le mie passioni",
     "passion1_title": "Videogiochi",
-    "passion1_text": "È il mio modo di rilassarmi e prendermi una pausa da tutto.",
+    "passion1_text": "Giocare mi permette di immergermi in un altro mondo e svuotare la mente",
     "passion2_title": "Sport",
-    "passion2_text": "Pratico Mountain Bike in autonomia, al massimo con qualche amico, e Nuoto che ho iniziato a praticare fin dall'Infanzia/Preadolescenza",
+    "passion2_text": "Pratico mountain bike a livello amatoriale o in compagnia, e nuoto, una disciplina che porto avanti fin dall'infanzia.",
     "passion3_title": "Musica",
+    "passion3_text": "Con la musica trovo serenità e calma nelle giornate stressanti.",
     "story_title": "La mia storia",
-    "passion3_text": "È il mio modo di rilassarmi e staccarmi dal mondo.",
     "story_text": "Ho iniziato il mio percorso di passione riguardo all'Informatica prima di entrare nell'Artom, me la sono sempre cavata quando si parlava di computer e da quando ho iniziato gli studi ho imparato molto su tutte le materie del caso, dalla Programmazione al creare e gestire una Rete. Devo ancora finire gli studi e ho intenzione di proseguirli nell'Ingegneria Informatica, sempre se non arriverà qualche altra occasione."
   },
   "work": {
@@ -114,5 +108,18 @@
     "cv": "Vai al CV",
     "text": "La pagina che stai cercando non esiste o è stata spostata. Puoi tornare alla home o aprire direttamente la sezione con il CV.",
     "home": "Torna alla home"
+  },
+  "contact_messages": {
+    "sending": "Invio del messaggio in corso...",
+    "success": "Messaggio inviato correttamente.",
+    "error": "Invio non riuscito. Riprova tra poco o usa i link rapidi qui sotto.",
+    "configError": "EmailJS non è configurato: inserisci Public Key, Service ID e Template ID.",
+    "verificationConfigError": "Template di verifica EmailJS non configurato.",
+    "verificationSending": "Invio del codice di verifica...",
+    "verificationSent": "Codice inviato. Controlla la tua email.",
+    "verificationInvalid": "Codice non valido o scaduto.",
+    "verificationSuccess": "Email verificata correttamente.",
+    "verificationRequired": "Verifica la tua email prima di inviare il messaggio.",
+    "verificationReset": "Email modificata: invia un nuovo codice di verifica."
   }
 }

@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Construyendo mi propio camino.",
     "btn_personal": "Vida personal",
-    "btn_work": "Vida laboral",
-    "personal_title": "Quién soy",
-    "personal_text": "Me llamo Stefano. Soy un estudiante apasionado por la informática y la tecnología. Me gusta programar, experimentar con nuevos proyectos y aprender continuamente nuevas competencias en el mundo del desarrollo de software.",
-    "read_more": "Descubre más →",
-    "work_title": "Qué hago",
-    "work_text": "Curso el 5.º año en el Instituto Técnico Industrial Estatal \"A. Artom\" - Especialidad de Informática y Telecomunicaciones.",
-    "read_more_work": "Descubre más →"
+    "btn_work": "Vida laboral"
   },
   "personal": {
     "title": "Vida personal",
     "subtitle": "Quién soy, de dónde vengo, qué me apasiona",
     "about_title": "Quién soy",
-    "about_text": "Soy Stefano Catalin D'Alessandro, nacido y criado en Piamonte, en la provincia de Asti, y actualmente estudio en el I.T.I.S. \"A. Artom\" de mi provincia natal. En mi tiempo libre me gusta aprender nuevos temas de programación, sobre todo programación web. También me gusta reunirme a menudo con mis amigos y jugar a videojuegos.",
+    "about_text": "Nací y crecí en Piamonte, en la provincia de Asti, y actualmente estudio en el I.T.I.S. \"A. Artom\" de mi provincia natal. En mi tiempo libre me gusta aprender nuevos temas de programación, sobre todo desarrollo web. También me gusta quedar a menudo con mis amigos y jugar a videojuegos.",
     "passions_title": "Mis pasiones",
     "passion1_title": "Videojuegos",
-    "passion1_text": "Es mi forma de relajarme y tomarme una pausa de todo.",
+    "passion1_text": "Jugar me permite sumergirme en otro mundo y despejar la mente.",
     "passion2_title": "Deporte",
-    "passion2_text": "Practico mountain bike por mi cuenta, como mucho con algún amigo, y natación, que empecé a practicar desde la infancia/preadolescencia.",
+    "passion2_text": "Practico mountain bike a nivel amateur, solo o en compañía, y natación, una disciplina que mantengo desde la infancia.",
     "passion3_title": "Música",
+    "passion3_text": "Con la música encuentro serenidad y calma en los días estresantes.",
     "story_title": "Mi historia",
-    "passion3_text": "Es mi forma de relajarme y desconectar del mundo.",
-    "story_text": "Empecé mi pasión por la informática antes de entrar en el Artom; siempre me he defendido bien cuando se trataba de ordenadores. Desde que inicié mis estudios he aprendido mucho sobre todas las materias relacionadas, desde la programación hasta la creación y gestión de redes. Aún tengo que terminar mis estudios y tengo intención de continuarlos en Ingeniería Informática, salvo que aparezca alguna otra oportunidad."
+    "story_text": "Mi pasión por la informática empezó antes de entrar en el Artom. Siempre me he defendido bien con los ordenadores y, desde que empecé mis estudios, he aprendido mucho en todas las materias del sector, desde la programación hasta la creación y gestión de redes. Todavía tengo que terminar los estudios y tengo intención de continuar con Ingeniería Informática, salvo que aparezca otra oportunidad."
   },
   "work": {
     "title": "Vida laboral",
@@ -114,5 +108,18 @@
     "cv": "Ir al CV",
     "text": "La pagina que buscas no existe o se ha movido. Puedes volver al inicio o abrir directamente la seccion del CV.",
     "home": "Volver al inicio"
+  },
+  "contact_messages": {
+    "sending": "Enviando el mensaje...",
+    "success": "Mensaje enviado correctamente.",
+    "error": "No se pudo enviar el mensaje. Inténtalo de nuevo dentro de poco o usa los enlaces rápidos de abajo.",
+    "configError": "EmailJS no está configurado: añade Public Key, Service ID y Template ID.",
+    "verificationConfigError": "La plantilla de verificación de EmailJS no está configurada.",
+    "verificationSending": "Enviando el código de verificación...",
+    "verificationSent": "Código enviado. Revisa tu email.",
+    "verificationInvalid": "Código no válido o caducado.",
+    "verificationSuccess": "Email verificado correctamente.",
+    "verificationRequired": "Verifica tu email antes de enviar el mensaje.",
+    "verificationReset": "Email modificado: envía un nuevo código de verificación."
   }
 }

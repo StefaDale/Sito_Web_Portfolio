@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Building my own path.",
     "btn_personal": "Personal Life",
-    "btn_work": "Work Life",
-    "personal_title": "Who I am",
-    "personal_text": "My name is Stefano. I am a student with a passion for computer science and technology. I enjoy programming, experimenting with new projects and continuously learning new skills in the world of software development.",
-    "read_more": "Learn more →",
-    "work_title": "What I do",
-    "work_text": "I am in my fifth year at the State Technical Industrial Institute \"A. Artom\" — Computer Science and Telecommunications programme.",
-    "read_more_work": "Learn more →"
+    "btn_work": "Work Life"
   },
   "personal": {
     "title": "Personal Life",
     "subtitle": "Who I am, where I come from, what I am passionate about",
     "about_title": "Who I am",
-    "about_text": "I am Stefano Catalin D'Alessandro, born and raised in Piedmont in the province of Asti, where I currently attend the I.T.I.S. \"A. Artom\". In my spare time I enjoy learning about new programming topics, especially web development. I also like meeting up with friends and playing video games.",
+    "about_text": "I was born and raised in Piedmont, in the province of Asti, and I currently attend the I.T.I.S. \"A. Artom\" in my home province. In my free time I like learning new programming topics, especially web development. I also enjoy meeting up with my friends and playing video games.",
     "passions_title": "My passions",
     "passion1_title": "Video Games",
-    "passion1_text": "My way of relaxing and taking a break from everything.",
+    "passion1_text": "Gaming lets me dive into another world and clear my mind.",
     "passion2_title": "Sport",
-    "passion2_text": "I ride mountain bikes on my own or with a few friends, and I have been swimming since childhood.",
+    "passion2_text": "I ride mountain bikes at an amateur level, either on my own or with company, and I swim, a discipline I have kept up since childhood.",
     "passion3_title": "Music",
+    "passion3_text": "With music I find peace and calm on stressful days.",
     "story_title": "My story",
-    "passion3_text": "My way of unwinding and switching off from the world.",
-    "story_text": "My passion for computer science started before I enrolled at Artom — I had always been comfortable around computers. Since beginning my studies I have learnt a great deal across all the relevant subjects, from programming to setting up and managing networks. I have yet to finish my studies and I intend to continue with a degree in Computer Engineering, unless another opportunity comes along."
+    "story_text": "My passion for computer science began before I entered Artom. I have always managed well when it came to computers, and since starting my studies I have learned a lot across all the relevant subjects, from programming to creating and managing networks. I still have to finish school and I intend to continue with Computer Engineering, unless another opportunity comes along."
   },
   "work": {
     "title": "Work Life",
@@ -114,5 +108,18 @@
     "cv": "Go to CV",
     "text": "The page you are looking for does not exist or has been moved. You can return home or open the CV section directly.",
     "home": "Back to home"
+  },
+  "contact_messages": {
+    "sending": "Sending your message...",
+    "success": "Message sent successfully.",
+    "error": "Could not send the message. Try again shortly or use the quick links below.",
+    "configError": "EmailJS is not configured: add Public Key, Service ID and Template ID.",
+    "verificationConfigError": "EmailJS verification template is not configured.",
+    "verificationSending": "Sending verification code...",
+    "verificationSent": "Code sent. Check your email.",
+    "verificationInvalid": "Invalid or expired code.",
+    "verificationSuccess": "Email verified successfully.",
+    "verificationRequired": "Verify your email before sending the message.",
+    "verificationReset": "Email changed: send a new verification code."
   }
 }

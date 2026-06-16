@@ -54,6 +54,12 @@ function resolve(obj, key) {
   return key.split('.').reduce((acc, part) => acc?.[part], obj);
 }
 
+function getI18nValue(key, fallback = undefined) {
+  if (!currentTranslations) return fallback;
+  const value = resolve(currentTranslations, key);
+  return value !== undefined ? value : fallback;
+}
+
 // Applica le traduzioni a tutti gli elementi con data-i18n
 function applyTranslations(translations) {
   document.querySelectorAll('[data-i18n]').forEach(el => {

@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "Je construis mon propre chemin.",
     "btn_personal": "Vie personnelle",
-    "btn_work": "Vie professionnelle",
-    "personal_title": "Qui je suis",
-    "personal_text": "Je m'appelle Stefano. Je suis un étudiant passionné par l'informatique et la technologie. J'aime programmer, expérimenter avec de nouveaux projets et apprendre continuellement de nouvelles compétences dans le monde du développement logiciel.",
-    "read_more": "En savoir plus →",
-    "work_title": "Ce que je fais",
-    "work_text": "Je suis en 5e année à l'Institut Technique Industriel d'État \"A. Artom\" - spécialité Informatique et Télécommunications.",
-    "read_more_work": "En savoir plus →"
+    "btn_work": "Vie professionnelle"
   },
   "personal": {
     "title": "Vie personnelle",
     "subtitle": "Qui je suis, d'où je viens, ce qui me passionne",
     "about_title": "Qui je suis",
-    "about_text": "Je suis Stefano Catalin D'Alessandro, né et élevé dans le Piémont, dans la province d'Asti, et je fréquente actuellement l'I.T.I.S. \"A. Artom\" dans ma province natale. Pendant mon temps libre, j'aime apprendre de nouveaux sujets liés à la programmation, surtout la programmation web. J'aime aussi retrouver souvent mes amis et jouer aux jeux vidéo.",
+    "about_text": "Je suis né et j’ai grandi dans le Piémont, dans la province d’Asti, et je fréquente actuellement l’I.T.I.S. \"A. Artom\" dans ma province natale. Pendant mon temps libre, j’aime apprendre de nouveaux sujets liés à la programmation, surtout le développement web. J’aime aussi retrouver souvent mes amis et jouer aux jeux vidéo.",
     "passions_title": "Mes passions",
     "passion1_title": "Jeux vidéo",
-    "passion1_text": "C'est ma façon de me détendre et de faire une pause.",
+    "passion1_text": "Jouer me permet de plonger dans un autre monde et de vider mon esprit.",
     "passion2_title": "Sport",
-    "passion2_text": "Je pratique le VTT en autonomie, parfois avec quelques amis, ainsi que la natation, que j'ai commencée dès l'enfance/préadolescence.",
+    "passion2_text": "Je pratique le VTT à un niveau amateur, seul ou accompagné, ainsi que la natation, une discipline que je poursuis depuis l’enfance.",
     "passion3_title": "Musique",
+    "passion3_text": "Avec la musique, je trouve sérénité et calme dans les journées stressantes.",
     "story_title": "Mon histoire",
-    "passion3_text": "C'est ma façon de me détendre et de me couper du monde.",
-    "story_text": "Ma passion pour l'informatique a commencé avant mon entrée à l'Artom ; je me suis toujours bien débrouillé avec les ordinateurs. Depuis le début de mes études, j'ai beaucoup appris dans toutes les matières liées au domaine, de la programmation à la création et à la gestion d'un réseau. Je dois encore terminer mes études et j'ai l'intention de les poursuivre en ingénierie informatique, sauf si une autre opportunité se présente."
+    "story_text": "Ma passion pour l’informatique a commencé avant mon entrée à l’Artom. Je me suis toujours bien débrouillé avec les ordinateurs et, depuis le début de mes études, j’ai beaucoup appris dans toutes les matières du domaine, de la programmation à la création et la gestion de réseaux. Je dois encore terminer mes études et j’ai l’intention de poursuivre en ingénierie informatique, sauf si une autre occasion se présente."
   },
   "work": {
     "title": "Vie professionnelle",
@@ -114,5 +108,18 @@
     "cv": "Aller au CV",
     "text": "La page que vous cherchez n existe pas ou a ete deplacee. Vous pouvez revenir a l accueil ou ouvrir directement la section CV.",
     "home": "Retour a l accueil"
+  },
+  "contact_messages": {
+    "sending": "Envoi du message en cours...",
+    "success": "Message envoyé correctement.",
+    "error": "Envoi impossible. Réessayez bientôt ou utilisez les liens rapides ci-dessous.",
+    "configError": "EmailJS n’est pas configuré : ajoutez Public Key, Service ID et Template ID.",
+    "verificationConfigError": "Le modèle de vérification EmailJS n’est pas configuré.",
+    "verificationSending": "Envoi du code de vérification...",
+    "verificationSent": "Code envoyé. Vérifiez votre e-mail.",
+    "verificationInvalid": "Code invalide ou expiré.",
+    "verificationSuccess": "E-mail vérifié correctement.",
+    "verificationRequired": "Vérifiez votre e-mail avant d’envoyer le message.",
+    "verificationReset": "E-mail modifié : envoyez un nouveau code de vérification."
   }
 }

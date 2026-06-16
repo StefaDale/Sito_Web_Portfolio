@@ -12,28 +12,22 @@
     "name_extra": "Catalin D'Alessandro",
     "role": "正在走出自己的道路。",
     "btn_personal": "个人生活",
-    "btn_work": "学习与职业",
-    "personal_title": "我是谁",
-    "personal_text": "我叫Stefano。我是一名热爱计算机科学和技术的学生。我喜欢编程、尝试新项目，并在软件开发领域不断学习新的技能。",
-    "read_more": "了解更多 →",
-    "work_title": "我在做什么",
-    "work_text": "我就读于国立工业技术学院 \"A. Artom\" 信息与电信方向五年级。",
-    "read_more_work": "了解更多 →"
+    "btn_work": "学习与职业"
   },
   "personal": {
     "title": "个人生活",
     "subtitle": "我是谁、来自哪里、热爱什么",
     "about_title": "我是谁",
-    "about_text": "我是Stefano Catalin D'Alessandro，出生并成长在皮埃蒙特大区阿斯蒂省，目前就读于家乡省份的 I.T.I.S. \"A. Artom\"。空闲时间我喜欢学习新的编程主题，尤其是Web编程。我也喜欢经常和朋友见面以及玩电子游戏。",
+    "about_text": "我出生并成长在皮埃蒙特大区阿斯蒂省，目前就读于家乡省份的 I.T.I.S. \"A. Artom\"。空闲时间里，我喜欢学习新的编程主题，尤其是 Web 开发。我也喜欢经常和朋友见面以及玩电子游戏。",
     "passions_title": "我的爱好",
     "passion1_title": "电子游戏",
-    "passion1_text": "这是我放松并暂时远离一切的方式。",
+    "passion1_text": "玩游戏让我沉浸在另一个世界里，放空大脑。",
     "passion2_title": "运动",
-    "passion2_text": "我会独自骑山地车，最多和几个朋友一起；我也游泳，从童年/青春期前就开始练习。",
+    "passion2_text": "我以业余方式进行山地骑行，可以独自骑，也可以和同伴一起；我也游泳，这是我从童年起一直坚持的运动。",
     "passion3_title": "音乐",
+    "passion3_text": "音乐能让我在压力大的日子里找到平静与安宁。",
     "story_title": "我的故事",
-    "passion3_text": "这是我放松并与世界暂时断开的方式。",
-    "story_text": "我对计算机科学的热情在进入Artom之前就开始了；谈到电脑时我一直都能应付得不错。自从开始学习以来，我在相关学科中学到了很多，从编程到创建和管理网络。我还需要完成学业，并打算继续学习计算机工程，除非出现其他机会。"
+    "story_text": "我对计算机科学的热情在进入 Artom 之前就开始了。我一直很擅长和电脑打交道，开始学习之后，我在相关学科中学到了很多，从编程到创建和管理网络。我的学业还没有结束，如果没有其他机会出现，我打算继续学习计算机工程。"
   },
   "work": {
     "title": "学习与职业",
@@ -114,5 +108,18 @@
     "cv": "查看简历",
     "text": "你要查找的页面不存在或已被移动。你可以返回首页，或直接打开简历部分。",
     "home": "返回首页"
+  },
+  "contact_messages": {
+    "sending": "正在发送消息...",
+    "success": "消息已成功发送。",
+    "error": "消息发送失败。请稍后重试，或使用下方快捷链接。",
+    "configError": "EmailJS 尚未配置：请填写 Public Key、Service ID 和 Template ID。",
+    "verificationConfigError": "EmailJS 验证模板尚未配置。",
+    "verificationSending": "正在发送验证码...",
+    "verificationSent": "验证码已发送。请检查你的邮箱。",
+    "verificationInvalid": "验证码无效或已过期。",
+    "verificationSuccess": "邮箱验证成功。",
+    "verificationRequired": "发送消息前请先验证你的邮箱。",
+    "verificationReset": "邮箱已更改：请发送新的验证码。"
   }
 }
