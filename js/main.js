@@ -46,6 +46,35 @@ const CONTACT_MESSAGE_FALLBACK = {
   verificationRequired: 'Verify your email before sending the message.',
   verificationReset: 'Email changed: send a new verification code.',
 };
+const CV_DOWNLOAD_FILENAME = "Stefano Catalin D'Alessandro CV.pdf";
+const CV_ASSETS = {
+  it: "assets/Stefano Catalin D'Alessandro CV.pdf",
+  en: "assets/Curriculum_EN.pdf",
+  es: "assets/Curriculum_ES.pdf",
+};
+
+function getCurrentCvAssetUrl() {
+  const lang = document.documentElement.lang || 'en';
+  return CV_ASSETS[lang] || CV_ASSETS.en;
+}
+
+function updateCvAssetLinks() {
+  const url = getCurrentCvAssetUrl();
+
+  document.querySelectorAll('.cv-render-container').forEach(container => {
+    if (container.dataset.cvUrl !== url) {
+      container.dataset.cvUrl = url;
+      container.dataset.cvReady = 'false';
+    }
+  });
+
+  document.querySelectorAll('.cv-actions a').forEach(link => {
+    link.href = url;
+    if (link.hasAttribute('download')) {
+      link.setAttribute('download', CV_DOWNLOAD_FILENAME);
+    }
+  });
+}
 
 function getStoredTheme() {
   const stored = localStorage.getItem(THEME_KEY);
@@ -543,6 +572,7 @@ function smoothHorizontalScroll(element, distance, onUpdate) {
 async function renderCustomCV() {
   if (typeof pdfjsLib === 'undefined') return;
 
+  updateCvAssetLinks();
   const containers = document.querySelectorAll('.cv-render-container');
   
   for (const container of containers) {
@@ -551,10 +581,14 @@ async function renderCustomCV() {
     if (!url) continue;
 
     try {
-      const pdf = await pdfjsLib.getDocument(url).promise;
+      const renderId = String(Date.now() + Math.random());
+      container.dataset.cvRenderId = renderId;
       container.innerHTML = '';
+      const pdf = await pdfjsLib.getDocument(url).promise;
+      if (container.dataset.cvUrl !== url || container.dataset.cvRenderId !== renderId) continue;
 
       for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        if (container.dataset.cvUrl !== url || container.dataset.cvRenderId !== renderId) break;
         const page = await pdf.getPage(pageNum);
         const scale = 1.5;
         const viewport = page.getViewport({ scale });
@@ -577,7 +611,9 @@ async function renderCustomCV() {
           viewport: viewport
         }).promise;
       }
-      container.dataset.cvReady = 'true';
+      if (container.dataset.cvUrl === url && container.dataset.cvRenderId === renderId) {
+        container.dataset.cvReady = 'true';
+      }
     } catch (err) {
       console.error('Error rendering PDF:', err);
       const fallback = container.parentElement.querySelector('.cv-fallback');
@@ -585,6 +621,11 @@ async function renderCustomCV() {
     }
   }
 }
+
+document.addEventListener('languagechange', () => {
+  updateCvAssetLinks();
+  renderCustomCV();
+});
 
 function setupContactForm(root = document) {
   root.querySelectorAll('.contact-form').forEach(form => {

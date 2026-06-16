@@ -125,6 +125,7 @@ async function setLang(lang) {
   currentTranslations = translations;
   applyTranslations(translations);
   updateLangButton(lang);
+  document.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
   document.querySelectorAll('.lang-dropdown.open').forEach(dropdown => {
     dropdown.classList.remove('open');
   });
@@ -173,6 +174,7 @@ async function initI18n() {
     currentTranslations = translations;
     applyTranslations(translations);
     updateLangButton(lang);
+    document.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
 
   } catch (err) {
     console.error('i18n error:', err);
