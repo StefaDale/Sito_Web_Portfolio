@@ -495,7 +495,8 @@ async function loadPageFragments() {
   if (typeof refreshI18n === 'function') refreshI18n();
 
   setupSkillsScroller();
-  renderCustomCV();
+  // CV viewer disabled: restore by uncommenting renderCustomCV() and the function block below.
+  // renderCustomCV();
   setupContactForm();
 
   // Aspetta due frame: uno per il layout, uno per il paint
@@ -570,6 +571,12 @@ function smoothHorizontalScroll(element, distance, onUpdate) {
   requestAnimationFrame(animate);
 }
 
+/*
+  CV PDF viewer disabled on purpose.
+  To show it again:
+  1. Remove this block comment around renderCustomCV().
+  2. Uncomment the three renderCustomCV() calls in this file.
+  3. Re-enable the .cv-wrapper HTML and PDF.js script tags in index.html and vita-lavorativa.html.
 async function renderCustomCV() {
   if (typeof pdfjsLib === 'undefined') return;
 
@@ -626,6 +633,13 @@ async function renderCustomCV() {
 document.addEventListener('languagechange', () => {
   updateCvAssetLinks();
   renderCustomCV();
+});
+*/
+
+document.addEventListener('languagechange', () => {
+  updateCvAssetLinks();
+  // CV viewer disabled: restore by uncommenting renderCustomCV() above and this call.
+  // renderCustomCV();
 });
 
 function setupContactForm(root = document) {
@@ -871,7 +885,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setupLiveBackground();
   loadPageFragments();
   setupSkillsScroller();
-  renderCustomCV();
+  updateCvAssetLinks();
+  // CV viewer disabled: restore by uncommenting renderCustomCV() and the function block above.
+  // renderCustomCV();
 
   // Su pagine senza fragment le animazioni partono subito
   if (!document.querySelector('[data-fragment-url]')) {

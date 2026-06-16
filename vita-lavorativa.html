@@ -169,12 +169,18 @@
   <section class="content-section" id="cv-section">
     <h2 data-i18n="work.cv_title"></h2>
     <p data-i18n="work.cv_text"></p>
+    <!--
+      CV PDF viewer disabled on purpose.
+      To show it again, remove this HTML comment around .cv-wrapper,
+      then also re-enable the PDF.js scripts in this file and the renderCustomCV()
+      blocks/calls in js/main.js.
     <div class="cv-wrapper">
       <div id="cv-render-container" class="cv-render-container" data-cv-url="assets/Stefano Catalin D'Alessandro CV.pdf">
-        <!-- PDF.js canvasses will be injected here -->
+        PDF.js canvasses will be injected here
       </div>
       <p class="cv-fallback" data-i18n="work.cv_fallback"></p>
     </div>
+    -->
     <div class="cv-actions">
       <a href="assets/Stefano Catalin D'Alessandro CV.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary" data-i18n="work.cv_open"></a>
       <a href="assets/Stefano Catalin D'Alessandro CV.pdf" download class="btn-primary" data-i18n="work.cv_download"></a>
@@ -255,8 +261,12 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <!--
+    PDF.js disabled with the inline CV viewer.
+    To restore the viewer, remove this comment around both PDF.js script tags.
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+  -->
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
 </body>
