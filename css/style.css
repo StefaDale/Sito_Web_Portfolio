@@ -44,6 +44,11 @@
   --card-surface: rgba(255, 255, 255, 0.68);
 }
 
+:root[data-theme="light"] .navbar {
+  background-color: rgba(255, 255, 255, 0.55);
+  border-bottom-color: rgba(60, 4, 150, 0.16);
+}
+
 /* ── RESET BASE ── */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -139,14 +144,18 @@ img {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--bg-nav);
-  border-bottom: 1px solid var(--border);
+  background-color: rgba(17, 17, 20, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
   height: 64px;
 }
+
+
 
 .nav-brand {
   font-size: 1.1rem;
