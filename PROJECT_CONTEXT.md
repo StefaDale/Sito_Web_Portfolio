@@ -60,7 +60,7 @@ mio-sito/                        ← root del progetto
 │
 ├── css/
 │   └── style.css                ← UNICO foglio di stile per tutte le pagine
-│                                   (1319 righe, organizzato per sezioni con commenti)
+│                                   (1390 righe, organizzato per sezioni con commenti)
 │
 ├── js/
 │   ├── i18n.js                  ← Sistema di internazionalizzazione multi-lingua
