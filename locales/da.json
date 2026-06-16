@@ -9,6 +9,7 @@
   "home": {
     "greeting": "Hej, jeg er",
     "name": "Stefano",
+    "name_extra": "Catalin D'Alessandro",
     "role": "Jeg bygger min egen vej.",
     "btn_personal": "Privatliv",
     "btn_work": "Arbejdsliv",

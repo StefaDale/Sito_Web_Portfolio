@@ -9,6 +9,7 @@
   "home": {
     "greeting": "Bonjour, je suis",
     "name": "Stefano",
+    "name_extra": "Catalin D'Alessandro",
     "role": "Je construis mon propre chemin.",
     "btn_personal": "Vie personnelle",
     "btn_work": "Vie professionnelle",

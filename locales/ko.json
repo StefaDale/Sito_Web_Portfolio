@@ -9,6 +9,7 @@
   "home": {
     "greeting": "안녕하세요, 저는",
     "name": "Stefano",
+    "name_extra": "Catalin D'Alessandro",
     "role": "저만의 길을 만들어 가고 있습니다.",
     "btn_personal": "개인 생활",
     "btn_work": "학업 및 경력",
