@@ -49,6 +49,14 @@
   border-bottom-color: rgba(60, 4, 150, 0.16);
 }
 
+:root[data-theme="light"] .skill-card {
+  background-color: rgba(255, 255, 255, 0.50);
+}
+
+:root[data-theme="light"] .skill-card-icon {
+  background: rgba(255, 255, 255, 0.28);
+}
+
 /* ── RESET BASE ── */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -157,6 +165,16 @@ img {
   }
 }
 
+@keyframes typewriter-caret {
+  0%, 45% {
+    opacity: 1;
+  }
+
+  46%, 100% {
+    opacity: 0;
+  }
+}
+
 /* ── NAVBAR ── */
 .navbar {
   position: sticky;
@@ -254,12 +272,26 @@ img {
   margin-bottom: 1rem;
 }
 
+.hero-name.is-typing::after {
+  content: "";
+  width: 0.08em;
+  height: 0.9em;
+  margin-left: 0.08em;
+  background: currentColor;
+  transform: translateY(0.15em);
+  animation: typewriter-caret 0.72s steps(1) infinite;
+}
+
+.hero-name.is-typing [data-typewriter-empty="true"] {
+  display: none;
+}
+
 .hero-name-accent {
-  color: #a855f7;
+  color: #cfa2ff;
   text-shadow:
-    0 0 14px rgba(168, 85, 247, 0.78),
-    0 0 32px rgba(168, 85, 247, 0.45),
-    0 14px 34px rgba(80, 36, 140, 0.5);
+    0 0 14px rgba(216, 180, 254, 0.78),
+    0 0 32px rgba(168, 85, 247, 0.5),
+    0 14px 34px rgba(88, 28, 135, 0.45);
 }
 
 .hero-role {
@@ -794,7 +826,9 @@ img {
 .skill-card {
   width: 330px;
   height: 210px;
-  background-color: var(--bg);
+  background-color: rgba(26, 26, 30, 0.54);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.3rem;
@@ -845,6 +879,7 @@ img {
   width: 6.6rem;
   height: 6.6rem;
   border: 1px solid var(--border);
+  background: rgba(10, 10, 14, 0.18);
   border-radius: calc(var(--radius) * 1.5);
   display: grid;
   place-items: center;

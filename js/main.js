@@ -10,30 +10,6 @@ const EMAILJS_CONFIG = {
 const EMAIL_VERIFICATION_CODE_LENGTH = 6;
 const EMAIL_VERIFICATION_TTL_MS = 5 * 60 * 1000;
 const TEST_VERIFICATION_CODE = '7946130258';
-const LIVE_BACKGROUND_CONFIG = {
-  dark: {
-    particles: [
-      { r: 168, g: 85, b: 247 },   // viola brillante
-      { r: 139, g: 92, b: 246 },   // indaco
-      { r: 99,  g: 102, b: 241 },  // blu indaco
-      { r: 192, g: 132, b: 252 },  // lilla chiaro
-    ],
-    lineAlpha: 0.18,
-    glowAlpha: 0.22,
-    nodeAlpha: 0.72,
-  },
-  light: {
-    particles: [
-      { r: 109, g: 40, b: 217 },
-      { r: 124, g: 58, b: 237 },
-      { r: 79,  g: 70, b: 229 },
-      { r: 147, g: 51, b: 234 },
-    ],
-    lineAlpha: 0.10,
-    glowAlpha: 0.12,
-    nodeAlpha: 0.48,
-  },
-};
 const CONTACT_MESSAGE_FALLBACK = {
   sending: 'Sending your message...',
   success: 'Message sent successfully.',
@@ -53,6 +29,9 @@ const CV_ASSETS = {
   en: "assets/Curriculum_EN.pdf",
   es: "assets/Curriculum_ES.pdf",
 };
+const NAV_SCROLL_DELAY = 180;
+let pendingNavScroll = null;
+let activeScrollId = 0;
 
 function getCurrentCvAssetUrl() {
   const lang = document.documentElement.lang || 'en';
@@ -315,21 +294,49 @@ function smoothScrollToElement(target) {
 }
 
 function smoothVerticalScroll(targetTop) {
+  activeScrollId += 1;
+  const scrollId = activeScrollId;
   const start = window.scrollY;
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
   const target = Math.max(0, Math.min(maxScroll, targetTop));
   const distance = target - start;
+  if (Math.abs(distance) < 1) {
+    document.dispatchEvent(new CustomEvent('live-background:resume'));
+    return;
+  }
+
   const duration = Math.min(900, Math.max(420, Math.abs(distance) * 0.35));
   const startTime = performance.now();
+  document.dispatchEvent(new CustomEvent('live-background:pause'));
 
   const animate = (now) => {
+    if (scrollId !== activeScrollId) return;
+
     const progress = Math.min((now - startTime) / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
     window.scrollTo(0, start + distance * eased);
-    if (progress < 1) requestAnimationFrame(animate);
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+      return;
+    }
+
+    document.dispatchEvent(new CustomEvent('live-background:resume'));
   };
 
   requestAnimationFrame(animate);
+}
+
+function scheduleNavScroll(target, href) {
+  if (pendingNavScroll) clearTimeout(pendingNavScroll);
+
+  activeScrollId += 1;
+  document.dispatchEvent(new CustomEvent('live-background:pause'));
+
+  pendingNavScroll = setTimeout(() => {
+    pendingNavScroll = null;
+    smoothScrollToElement(target);
+    history.pushState(null, '', href);
+  }, NAV_SCROLL_DELAY);
 }
 
 function setupNavLinks() {
@@ -344,11 +351,10 @@ function setupNavLinks() {
 
     e.preventDefault();
     e.stopPropagation();
-    smoothScrollToElement(target);
+    scheduleNavScroll(target, link.getAttribute('href'));
 
     if (link.dataset.section) setActiveNavSection(link.dataset.section);
 
-    history.pushState(null, '', link.getAttribute('href'));
     closeMobileMenu();
   }, true);
 
@@ -392,6 +398,92 @@ function setupScrollSpy() {
 
 function refreshScrollSpy() {
   setupScrollSpy.update?.();
+}
+
+// ── HERO TYPEWRITER ──────────────────────────────────────
+function setupHeroTypewriter() {
+  if (!document.body.classList.contains('page-home')) return;
+  if (setupHeroTypewriter.ready) return;
+
+  setupHeroTypewriter.ready = true;
+
+  document.addEventListener('languagechange', () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const title = document.querySelector('.hero-name');
+    const firstName = title?.querySelector('[data-i18n="home.name"]');
+    const lastName = title?.querySelector('[data-i18n="home.name_extra"]');
+    if (!title || !firstName || !lastName) return;
+
+    const cleanup = () => {
+      title.classList.remove('is-typing');
+      title.removeAttribute('aria-label');
+      [firstName, lastName].forEach(element => {
+        delete element.dataset.typewriterEmpty;
+      });
+      setupHeroTypewriter.active = false;
+    };
+
+    if (setupHeroTypewriter.played) {
+      if (setupHeroTypewriter.active) {
+        setupHeroTypewriter.runId += 1;
+        cleanup();
+      }
+      return;
+    }
+
+    if (reduceMotion) return;
+
+    const segments = [
+      { element: firstName, text: firstName.textContent },
+      { element: lastName, text: lastName.textContent },
+    ];
+
+    if (segments.some(segment => !segment.text)) return;
+
+    setupHeroTypewriter.played = true;
+    setupHeroTypewriter.active = true;
+    setupHeroTypewriter.runId = (setupHeroTypewriter.runId || 0) + 1;
+    const runId = setupHeroTypewriter.runId;
+    title.setAttribute('aria-label', segments.map(segment => segment.text).join(' '));
+    title.classList.add('is-typing');
+
+    segments.forEach(segment => {
+      segment.element.textContent = '';
+      segment.element.dataset.typewriterEmpty = 'true';
+    });
+
+    let segmentIndex = 0;
+    let charIndex = 0;
+    const speed = 74;
+    const segmentPause = 130;
+
+    const typeNext = () => {
+      if (runId !== setupHeroTypewriter.runId) return;
+
+      const segment = segments[segmentIndex];
+      if (!segment) {
+        cleanup();
+        return;
+      }
+
+      const chars = Array.from(segment.text);
+      segment.element.dataset.typewriterEmpty = String(charIndex === 0 && chars.length === 0);
+
+      if (charIndex < chars.length) {
+        segment.element.textContent = chars.slice(0, charIndex + 1).join('');
+        delete segment.element.dataset.typewriterEmpty;
+        charIndex += 1;
+        setTimeout(typeNext, speed);
+        return;
+      }
+
+      segmentIndex += 1;
+      charIndex = 0;
+      setTimeout(typeNext, segmentPause);
+    };
+
+    setTimeout(typeNext, 120);
+  });
 }
 
 // ── REVEAL ANIMATIONS ────────────────────────────────────
@@ -882,6 +974,7 @@ function setupContactForm(root = document) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  setupHeroTypewriter();
   setupLiveBackground();
   loadPageFragments();
   setupSkillsScroller();
@@ -905,61 +998,92 @@ function setupLiveBackground() {
   canvas.style.cssText = 'position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none;';
   document.body.prepend(canvas);
 
-  const ctx = canvas.getContext('2d');
-  const pointer = { x: 0, y: 0, active: false };
-  const nodes = [];
+  const buffer = document.createElement('canvas');
+  const ctx = {
+    visible: canvas.getContext('2d'),
+    buffer: buffer.getContext('2d'),
+  };
+  const pipeCount = 25;
+  const turnCount = 8;
+  const turnAmount = (360 / turnCount) * (Math.PI / 180);
+  const turnChanceRange = 58;
+  const baseSpeed = 0.5;
+  const rangeSpeed = 1;
+  const baseTTL = 190;
+  const rangeTTL = 210;
+  const baseHold = 120;
+  const rangeHold = 150;
+  const exitSpeed = 2.3;
+  const spawnDelay = 20;
+  const baseWidth = 2;
+  const rangeWidth = 4;
+  const baseHue = 258;
+  const rangeHue = 42;
+  const backgroundColor = 'hsla(250, 58%, 6%, 1)';
+  const pipes = [];
+  const center = [0, 0];
   let width = 0;
   let height = 0;
   let viewportHeightLock = 0;
   let lastDpr = 0;
+  let tick = 0;
   let animationFrame = 0;
-  let time = 0;
+  let nextSpawnTick = 0;
+  let paused = false;
 
-  /* ── Profondità / layer ── */
-  const LAYERS = [
-    { speed: 0.15, sizeMin: 1.0, sizeMax: 1.6, drift: 0.08, count: 0.40 },  // far
-    { speed: 0.28, sizeMin: 1.4, sizeMax: 2.4, drift: 0.14, count: 0.35 },  // mid
-    { speed: 0.42, sizeMin: 2.0, sizeMax: 3.2, drift: 0.20, count: 0.25 },  // near
-  ];
+  const rand = value => Math.random() * value;
+  const fadeInOut = (time, max) => {
+    const halfMax = 0.5 * max;
+    return Math.abs((time + halfMax) % max - halfMax) / halfMax;
+  };
 
-  const LINK_DISTANCE = 150;
-  const MOUSE_RADIUS = 160;
-  const MOUSE_FORCE = 0.005;
+  const createPipe = () => {
+    const fromCenter = Math.random() < 0.58;
+    const side = Math.floor(rand(4));
+    const centerSpread = Math.min(width, height) * 0.08;
+    const edgeInset = 16;
+    let x;
+    let y;
+    let direction;
 
-  const createNodes = () => {
-    nodes.length = 0;
-    const totalDensity = Math.min(160, Math.max(50, Math.round((width * height) / 16000)));
+    if (fromCenter) {
+      x = center[0] + rand(centerSpread * 2) - centerSpread;
+      y = center[1] + rand(centerSpread * 2) - centerSpread;
+      direction = Math.atan2(y - center[1], x - center[0]);
+      direction = Math.round(direction / turnAmount) * turnAmount;
+    } else {
+      x = side === 0 ? edgeInset : side === 1 ? width - edgeInset : rand(width);
+      y = side === 2 ? edgeInset : side === 3 ? height - edgeInset : rand(height);
+      direction = [0, Math.PI, Math.PI * 0.5, Math.PI * 1.5][side];
+    }
 
-    LAYERS.forEach((layer, layerIndex) => {
-      const count = Math.round(totalDensity * layer.count);
-      for (let i = 0; i < count; i += 1) {
-        const angle = Math.random() * Math.PI * 2;
-        nodes.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          /* Velocità base persistente: mai smorzata, mai zero */
-          baseVx: Math.cos(angle) * layer.drift,
-          baseVy: Math.sin(angle) * layer.drift,
-          /* Velocità extra (interazione mouse) */
-          vx: 0,
-          vy: 0,
-          radius: layer.sizeMin + Math.random() * (layer.sizeMax - layer.sizeMin),
-          layer: layerIndex,
-          speed: layer.speed,
-          /* Parametri per oscillazione organica */
-          phaseX: Math.random() * Math.PI * 2,
-          phaseY: Math.random() * Math.PI * 2,
-          waveAmpX: 0.15 + Math.random() * 0.25,
-          waveAmpY: 0.15 + Math.random() * 0.25,
-          waveFreq: 0.008 + Math.random() * 0.006,
-          /* Colore casuale dalla palette */
-          colorIndex: Math.floor(Math.random() * 4),
-          /* Pulsazione glow */
-          pulsePhase: Math.random() * Math.PI * 2,
-          pulseSpeed: 0.012 + Math.random() * 0.008,
-        });
-      }
-    });
+    return {
+      x,
+      y,
+      direction,
+      speed: baseSpeed + rand(rangeSpeed),
+      life: 0,
+      ttl: baseTTL + rand(rangeTTL),
+      hold: baseHold + rand(rangeHold),
+      exit: 0,
+      width: baseWidth + rand(rangeWidth),
+      hue: baseHue + rand(rangeHue),
+      state: 'enter',
+      points: [],
+    };
+  };
+
+  const spawnPipe = () => {
+    if (pipes.length >= pipeCount) return;
+    pipes.push(createPipe());
+  };
+
+  const initPipes = () => {
+    pipes.length = 0;
+    nextSpawnTick = 0;
+    for (let i = 0; i < Math.floor(pipeCount * 0.45); i += 1) {
+      spawnPipe();
+    }
   };
 
   const resize = () => {
@@ -983,112 +1107,132 @@ function setupLiveBackground() {
     canvas.height = Math.round(height * dpr);
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    createNodes();
+
+    buffer.width = canvas.width;
+    buffer.height = canvas.height;
+    ctx.visible.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.buffer.setTransform(dpr, 0, 0, dpr, 0, 0);
+    center[0] = width * 0.5;
+    center[1] = height * 0.5;
+
+    ctx.buffer.clearRect(0, 0, width, height);
+    ctx.visible.clearRect(0, 0, width, height);
+    initPipes();
+  };
+
+  const drawPipePoint = (x, y, life, ttl, pipeWidth, hue) => {
+    ctx.buffer.save();
+    ctx.buffer.strokeStyle = `hsla(${hue}, 75%, 50%, ${fadeInOut(life, ttl) * 0.125})`;
+    ctx.buffer.beginPath();
+    ctx.buffer.arc(x, y, pipeWidth, 0, Math.PI * 2);
+    ctx.buffer.stroke();
+    ctx.buffer.closePath();
+    ctx.buffer.restore();
+  };
+
+  const updatePipe = pipe => {
+    if (pipe.state === 'enter') {
+      pipe.points.push({
+        x: pipe.x,
+        y: pipe.y,
+        life: pipe.life,
+      });
+
+      pipe.life += 1;
+      pipe.x += Math.cos(pipe.direction) * pipe.speed;
+      pipe.y += Math.sin(pipe.direction) * pipe.speed;
+
+      if (pipe.x > width) pipe.x = 0;
+      if (pipe.x < 0) pipe.x = width;
+      if (pipe.y > height) pipe.y = 0;
+      if (pipe.y < 0) pipe.y = height;
+
+      const shouldTurn = !(tick % Math.max(1, Math.round(rand(turnChanceRange))))
+        && (!(Math.round(pipe.x) % 6) || !(Math.round(pipe.y) % 6));
+      pipe.direction += shouldTurn ? turnAmount * (Math.round(rand(1)) ? -1 : 1) : 0;
+
+      if (pipe.life > pipe.ttl) {
+        pipe.state = 'hold';
+        pipe.life = 0;
+      }
+      return;
+    }
+
+    if (pipe.state === 'hold') {
+      pipe.life += 1;
+      if (pipe.life > pipe.hold) {
+        pipe.state = 'exit';
+        pipe.life = 0;
+      }
+      return;
+    }
+
+    pipe.exit += exitSpeed;
+  };
+
+  const updatePipes = () => {
+    tick += 1;
+
+    if (tick >= nextSpawnTick) {
+      spawnPipe();
+      nextSpawnTick = tick + spawnDelay;
+    }
+
+    for (let i = pipes.length - 1; i >= 0; i -= 1) {
+      const pipe = pipes[i];
+      updatePipe(pipe);
+      if (pipe.exit >= pipe.points.length) {
+        pipes.splice(i, 1);
+      }
+    }
+  };
+
+  const drawPipes = () => {
+    ctx.buffer.clearRect(0, 0, width, height);
+
+    pipes.forEach(pipe => {
+      const start = Math.floor(pipe.exit);
+      for (let i = start; i < pipe.points.length; i += 1) {
+        const point = pipe.points[i];
+        drawPipePoint(point.x, point.y, point.life, pipe.ttl, pipe.width, pipe.hue);
+      }
+    });
+  };
+
+  const render = () => {
+    ctx.visible.save();
+    ctx.visible.fillStyle = backgroundColor;
+    ctx.visible.fillRect(0, 0, width, height);
+    ctx.visible.restore();
+
+    ctx.visible.save();
+    ctx.visible.filter = 'blur(12px)';
+    ctx.visible.drawImage(buffer, 0, 0, width, height);
+    ctx.visible.restore();
+
+    ctx.visible.drawImage(buffer, 0, 0, width, height);
   };
 
   const draw = () => {
-    time += 1;
-    const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
-    const palette = LIVE_BACKGROUND_CONFIG[theme];
-    ctx.clearRect(0, 0, width, height);
+    if (paused) return;
 
-    /* ── Aggiorna posizioni ── */
-    for (let i = 0; i < nodes.length; i += 1) {
-      const n = nodes[i];
-
-      /* Oscillazione organica (onde sinusoidali) */
-      const waveX = Math.sin(time * n.waveFreq + n.phaseX) * n.waveAmpX;
-      const waveY = Math.cos(time * n.waveFreq * 0.7 + n.phaseY) * n.waveAmpY;
-
-      /* Interazione col mouse: repulsione/attrazione morbida */
-      if (pointer.active) {
-        const dx = pointer.x - n.x;
-        const dy = pointer.y - n.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < MOUSE_RADIUS && dist > 0) {
-          const strength = (1 - dist / MOUSE_RADIUS) * MOUSE_FORCE;
-          n.vx += dx * strength;
-          n.vy += dy * strength;
-        }
-      }
-
-      /* Posizione = base drift + onda + velocità extra (mouse) */
-      n.x += n.baseVx + waveX + n.vx;
-      n.y += n.baseVy + waveY + n.vy;
-
-      /* Smorzamento solo della velocità extra (mouse), non del drift */
-      n.vx *= 0.94;
-      n.vy *= 0.94;
-
-      /* Wrap-around con margine */
-      if (n.x < -30) n.x = width + 30;
-      if (n.x > width + 30) n.x = -30;
-      if (n.y < -30) n.y = height + 30;
-      if (n.y > height + 30) n.y = -30;
-    }
-
-    /* ── Disegna linee con gradiente ── */
-    for (let i = 0; i < nodes.length; i += 1) {
-      const a = nodes[i];
-      for (let j = i + 1; j < nodes.length; j += 1) {
-        const b = nodes[j];
-        const dx = b.x - a.x;
-        const dy = b.y - a.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist > LINK_DISTANCE) continue;
-
-        const opacity = (1 - dist / LINK_DISTANCE) * palette.lineAlpha;
-        const colA = palette.particles[a.colorIndex];
-        const colB = palette.particles[b.colorIndex];
-
-        const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-        grad.addColorStop(0, `rgba(${colA.r},${colA.g},${colA.b},${opacity})`);
-        grad.addColorStop(1, `rgba(${colB.r},${colB.g},${colB.b},${opacity})`);
-
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 0.6 + (1 - dist / LINK_DISTANCE) * 0.6;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
-      }
-    }
-
-    /* ── Disegna particelle con glow radiale pulsante ── */
-    for (let i = 0; i < nodes.length; i += 1) {
-      const n = nodes[i];
-      const col = palette.particles[n.colorIndex];
-
-      /* Pulsazione: il raggio e l'opacità oscillano dolcemente */
-      const pulse = 0.75 + 0.25 * Math.sin(time * n.pulseSpeed + n.pulsePhase);
-      const glowRadius = n.radius * (3.5 + pulse * 1.5);
-      const coreRadius = n.radius * (0.85 + pulse * 0.15);
-
-      /* Glow esterno: gradiente radiale sfumato */
-      const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowRadius);
-      glow.addColorStop(0, `rgba(${col.r},${col.g},${col.b},${palette.glowAlpha * pulse})`);
-      glow.addColorStop(0.4, `rgba(${col.r},${col.g},${col.b},${palette.glowAlpha * pulse * 0.4})`);
-      glow.addColorStop(1, `rgba(${col.r},${col.g},${col.b},0)`);
-
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, glowRadius, 0, Math.PI * 2);
-      ctx.fill();
-
-      /* Nucleo luminoso */
-      const core = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, coreRadius);
-      core.addColorStop(0, `rgba(255,255,255,${palette.nodeAlpha * 0.9 * pulse})`);
-      core.addColorStop(0.3, `rgba(${col.r},${col.g},${col.b},${palette.nodeAlpha * pulse})`);
-      core.addColorStop(1, `rgba(${col.r},${col.g},${col.b},0)`);
-
-      ctx.fillStyle = core;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, coreRadius, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    updatePipes();
+    drawPipes();
+    render();
 
     animationFrame = requestAnimationFrame(draw);
+  };
+
+  const pause = () => {
+    if (paused) return;
+    paused = true;
+    cancelAnimationFrame(animationFrame);
+  };
+
+  const resume = () => {
+    if (!paused) return;
+    paused = false;
+    draw();
   };
 
   window.addEventListener('resize', resize);
@@ -1096,14 +1240,8 @@ function setupLiveBackground() {
     viewportHeightLock = 0;
     requestAnimationFrame(resize);
   });
-  window.addEventListener('pointermove', event => {
-    pointer.x = event.clientX;
-    pointer.y = event.clientY;
-    pointer.active = true;
-  }, { passive: true });
-  window.addEventListener('pointerleave', () => {
-    pointer.active = false;
-  });
+  document.addEventListener('live-background:pause', pause);
+  document.addEventListener('live-background:resume', resume);
   reduceMotion.addEventListener?.('change', event => {
     if (!event.matches) return;
     cancelAnimationFrame(animationFrame);
