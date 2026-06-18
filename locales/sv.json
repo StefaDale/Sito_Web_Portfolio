@@ -104,8 +104,8 @@
   "not_found": {
     "title": "Sidan hittades inte",
     "code": "404",
-    "cv": "Ga till CV",
-    "text": "Sidan du letar efter finns inte eller har flyttats. Du kan ga tillbaka till startsidan eller oppna CV-sektionen direkt.",
+    "cv": "Gå till CV",
+    "text": "Sidan du letar efter finns inte eller har flyttats. Du kan gå tillbaka till startsidan eller öppna CV-sektionen direkt.",
     "home": "Till startsidan"
   },
   "contact_messages": {

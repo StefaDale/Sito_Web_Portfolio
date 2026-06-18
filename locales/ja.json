@@ -38,10 +38,10 @@
     "exp1_title": "国立工業技術学校",
     "exp1_role": "学生",
     "exp1_text": "I.T.I.S. \"Alessandro Artom\" 5年目",
-    "level_excellent": "Excellent",
-    "level_good": "Good",
-    "level_intermediate": "Intermediate",
-    "level_basic": "Basic",
+    "level_excellent": "優秀",
+    "level_good": "良好",
+    "level_intermediate": "中級",
+    "level_basic": "基礎",
     "skill1_name": "Windows",
     "skill1_desc": "Windowsオペレーティングシステムを非常によく扱えます。",
     "skill2_name": "C#",
@@ -99,7 +99,7 @@
     "title": "連絡先",
     "instagram": "Instagram",
     "github": "GitHub",
-    "copyright": "© 2026 Stefano Catalin D'Alessandro. All rights reserved."
+    "copyright": "© 2026 Stefano Catalin D'Alessandro. 無断転載を禁じます。"
   },
   "not_found": {
     "title": "ページが見つかりません",

@@ -41,7 +41,7 @@
     "level_excellent": "Excelent",
     "level_good": "Bun",
     "level_intermediate": "Intermediar",
-    "level_basic": "Baza",
+    "level_basic": "Bază",
     "skill1_name": "Windows",
     "skill1_desc": "Stăpânire foarte bună a sistemului de operare Windows.",
     "skill2_name": "C#",
@@ -102,11 +102,11 @@
     "copyright": "© 2026 Stefano Catalin D'Alessandro. Toate drepturile rezervate."
   },
   "not_found": {
-    "title": "Pagina negasita",
+    "title": "Pagina negăsită",
     "code": "404",
     "cv": "Mergi la CV",
-    "text": "Pagina pe care o cauti nu exista sau a fost mutata. Poti reveni la pagina principala sau deschide direct sectiunea CV.",
-    "home": "Inapoi acasa"
+    "text": "Pagina pe care o cauți nu există sau a fost mutată. Poți reveni la pagina principală sau deschide direct secțiunea CV.",
+    "home": "Înapoi acasă"
   },
   "contact_messages": {
     "sending": "Se trimite mesajul...",

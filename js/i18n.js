@@ -2,7 +2,7 @@
 
 const I18N_KEY      = 'lang';
 const I18N_KEY_SET  = 'lang_set_by_user';
-const SUPPORTED     = ['it', 'en', 'es', 'fr', 'de', 'pt', 'ro', 'nl', 'pl', 'sv', 'da', 'no', 'ja', 'zh', 'zh-TW', 'ko'];
+const SUPPORTED     = ['it', 'en', 'es', 'fr', 'de', 'pt', 'ro', 'nl', 'pl', 'sv', 'da', 'no', 'mk', 'ja', 'zh', 'zh-TW', 'ko'];
 const DEFAULT_LANG  = 'en';
 
 const LANG_META = {
@@ -18,6 +18,7 @@ const LANG_META = {
   sv: { code: 'SV', name: 'Swedish', nativeName: 'Svenska', flagSrc: 'https://flagcdn.com/se.svg', flagAlt: 'Svenska flaggan' },
   da: { code: 'DA', name: 'Danish', nativeName: 'Dansk', flagSrc: 'https://flagcdn.com/dk.svg', flagAlt: 'Dannebrog' },
   no: { code: 'NO', name: 'Norwegian', nativeName: 'Norsk', flagSrc: 'https://flagcdn.com/no.svg', flagAlt: 'Norsk flagg' },
+  mk: { code: 'MK', name: 'Macedonian', nativeName: 'Македонски', flagSrc: 'https://flagcdn.com/mk.svg', flagAlt: 'Македонско знаме' },
   ja: { code: 'JA', name: 'Japanese', nativeName: '日本語', flagSrc: 'https://flagcdn.com/jp.svg', flagAlt: '日本の国旗' },
   zh: { code: 'ZH', name: 'Chinese Simplified', nativeName: '简体中文', flagSrc: 'https://flagcdn.com/cn.svg', flagAlt: '中华人民共和国国旗' },
   'zh-TW': { code: 'ZH-TW', name: 'Chinese Traditional', nativeName: '繁體中文', flagSrc: 'https://flagcdn.com/tw.svg', flagAlt: '中華民國國旗' },

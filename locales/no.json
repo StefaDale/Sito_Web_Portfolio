@@ -38,7 +38,7 @@
     "exp1_title": "Statlig teknisk industriinstitutt",
     "exp1_role": "Student",
     "exp1_text": "Femte år ved I.T.I.S. \"Alessandro Artom\"",
-    "level_excellent": "Svaert god",
+    "level_excellent": "Svært god",
     "level_good": "God",
     "level_intermediate": "Middels",
     "level_basic": "Grunnleggende",
@@ -104,8 +104,8 @@
   "not_found": {
     "title": "Siden ble ikke funnet",
     "code": "404",
-    "cv": "Ga til CV",
-    "text": "Siden du leter etter finnes ikke eller er flyttet. Du kan ga tilbake til forsiden eller apne CV-delen direkte.",
+    "cv": "Gå til CV",
+    "text": "Siden du leter etter finnes ikke eller er flyttet. Du kan gå tilbake til forsiden eller åpne CV-delen direkte.",
     "home": "Til forsiden"
   },
   "contact_messages": {
