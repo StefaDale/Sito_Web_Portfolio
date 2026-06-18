@@ -902,7 +902,7 @@ function setupLiveBackground() {
   const canvas = document.createElement('canvas');
   canvas.id = 'live-background';
   canvas.setAttribute('aria-hidden', 'true');
-  canvas.style.cssText = 'position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none;';
+  canvas.style.cssText = 'position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none;';
   document.body.prepend(canvas);
 
   const ctx = canvas.getContext('2d');
@@ -910,6 +910,8 @@ function setupLiveBackground() {
   const nodes = [];
   let width = 0;
   let height = 0;
+  let viewportHeightLock = 0;
+  let lastDpr = 0;
   let animationFrame = 0;
   let time = 0;
 
@@ -962,8 +964,21 @@ function setupLiveBackground() {
 
   const resize = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    width = window.innerWidth;
-    height = window.innerHeight;
+    const isTouchViewport = window.matchMedia('(pointer: coarse)').matches;
+    const nextWidth = Math.ceil(window.innerWidth || document.documentElement.clientWidth);
+    const currentHeight = Math.ceil(window.innerHeight || document.documentElement.clientHeight);
+    const screenHeight = Math.ceil(window.screen?.height || currentHeight);
+    const nextHeight = isTouchViewport
+      ? Math.max(viewportHeightLock, currentHeight, screenHeight)
+      : currentHeight;
+
+    if (width === nextWidth && height === nextHeight && lastDpr === dpr) return;
+
+    width = nextWidth;
+    height = nextHeight;
+    viewportHeightLock = nextHeight;
+    lastDpr = dpr;
+
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     canvas.style.width = `${width}px`;
@@ -1077,6 +1092,10 @@ function setupLiveBackground() {
   };
 
   window.addEventListener('resize', resize);
+  window.addEventListener('orientationchange', () => {
+    viewportHeightLock = 0;
+    requestAnimationFrame(resize);
+  });
   window.addEventListener('pointermove', event => {
     pointer.x = event.clientX;
     pointer.y = event.clientY;
