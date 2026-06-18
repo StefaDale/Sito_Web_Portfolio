@@ -2,7 +2,7 @@
 
 const I18N_KEY      = 'lang';
 const I18N_KEY_SET  = 'lang_set_by_user';
-const SUPPORTED     = ['it', 'en', 'es', 'fr', 'de', 'pt', 'ro', 'nl', 'pl', 'sv', 'da', 'no', 'mk', 'ja', 'zh', 'zh-TW', 'ko'];
+const SUPPORTED     = ['it', 'en', 'es', 'fr', 'de', 'pt', 'ro', 'nl', 'pl', 'sv', 'da', 'no', 'mk', 'ja', 'zh', 'zh-TW', 'ko', 'ar', 'hi', 'tr'];
 const DEFAULT_LANG  = 'en';
 
 const LANG_META = {
@@ -23,6 +23,10 @@ const LANG_META = {
   zh: { code: 'ZH', name: 'Chinese Simplified', nativeName: '简体中文', flagSrc: 'https://flagcdn.com/cn.svg', flagAlt: '中华人民共和国国旗' },
   'zh-TW': { code: 'ZH-TW', name: 'Chinese Traditional', nativeName: '繁體中文', flagSrc: 'https://flagcdn.com/tw.svg', flagAlt: '中華民國國旗' },
   ko: { code: 'KO', name: 'Korean', nativeName: '한국어', flagSrc: 'https://flagcdn.com/kr.svg', flagAlt: '대한민국 국기' },
+  tr: { code: 'TR', name: 'Turkish', nativeName: 'Türkçe', flagSrc: 'https://flagcdn.com/tr.svg', flagAlt: 'Türk bayrağı' },
+  ar: { code: 'AR', name: 'Arabic', nativeName: 'العربية', flagSrc: 'https://flagcdn.com/sa.svg', flagAlt: 'علم المملكة العربية السعودية' },
+  hi: { code: 'HI', name: 'Hindi', nativeName: 'हिन्दी', flagSrc: 'https://flagcdn.com/in.svg', flagAlt: 'भारतीय ध्वज' },
+  
 };
 
 let currentLang = DEFAULT_LANG;
