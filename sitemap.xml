@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <!-- Home Page -->
+  <url>
+    <loc>https://stefanocatalin.netlify.app/</loc>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- Vita Personale -->
+  <url>
+    <loc>https://stefanocatalin.netlify.app/vita-personale.html</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Vita Lavorativa -->
+  <url>
+    <loc>https://stefanocatalin.netlify.app/vita-lavorativa.html</loc>
+    <priority>0.80</priority>
+  </url>
+
+</urlset>
