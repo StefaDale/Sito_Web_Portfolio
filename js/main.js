@@ -30,7 +30,7 @@ const CV_ASSETS = {
   es: "assets/Curriculum_ES.pdf",
 };
 const GITHUB_USERNAME = 'StefaDale';
-const GITHUB_REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?type=owner&sort=updated&per_page=100`;
+const GITHUB_REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?type=owner&sort=created&direction=asc&per_page=100`;
 const PROJECT_REPO_OVERRIDES = {
   'Sito_Web_Portfolio': {
     title: 'Sito Web Portfolio',

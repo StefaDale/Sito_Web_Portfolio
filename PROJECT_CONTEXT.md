@@ -35,7 +35,7 @@
 ### Strumenti e API esterne
 - **flagcdn.com** — CDN di bandiere SVG usato per le flag nel selettore lingua (dipendenza esterna leggera, nessun pacchetto npm)
 - **EmailJS Browser SDK + REST API** — SDK caricato via CDN (`@emailjs/browser@4`) per inviare i messaggi del form contatti senza backend proprietario, con fallback REST ufficiale quando il CDN non espone `window.emailjs`
-- **GitHub REST API** — `main.js` legge `https://api.github.com/users/StefaDale/repos?type=owner&sort=updated&per_page=100` per generare automaticamente la sezione Progetti dalle repository pubbliche.
+- **GitHub REST API** — `main.js` legge `https://api.github.com/users/StefaDale/repos?type=owner&sort=created&direction=asc&per_page=100` per generare automaticamente la sezione Progetti dalle repository pubbliche in ordine di creazione.
 - **cdnjs.cloudflare.com / PDF.js** — CDN conservato nei commenti di `index.html` e `vita-lavorativa.html`; va decommentato solo se si riattiva il viewer inline del CV
 - **Simple Icons / Devicon** — sorgenti degli SVG brand scaricati localmente in `assets/icons/` per le skill card
 - **localStorage** — usato da `i18n.js` per persistere la scelta della lingua e da `main.js` per persistere il tema chiaro/scuro
@@ -189,7 +189,7 @@ mio-sito/                        ← root del progetto
 
 ### 6. Sezione Progetti automatica
 - **Dove:** `vita-lavorativa.html` (`#projects-section`), `main.js` (`setupProjects()`, `PROJECT_REPO_OVERRIDES`, `PROJECT_HIDDEN_REPOS`, `openProjectModal()`), `style.css` (classi `.projects-*` e `.project-*`), `locales/it.json`, `locales/en.json`, `locales/es.json`.
-- **Come:** `setupProjects()` chiama la GitHub REST API pubblica `https://api.github.com/users/StefaDale/repos?type=owner&sort=updated&per_page=100`, filtra fork/archivi e repository escluse, poi crea una card per ogni repo visibile.
+- **Come:** `setupProjects()` chiama la GitHub REST API pubblica `https://api.github.com/users/StefaDale/repos?type=owner&sort=created&direction=asc&per_page=100`, filtra fork/archivi e repository escluse, poi crea una card per ogni repo visibile mantenendo l'ordine di creazione.
 - **Repo nascoste:** `PROJECT_HIDDEN_REPOS` contiene `Login_Registration_Form`, cosi' la repo originale locale/didattica non appare come doppione della versione deploy.
 - **Override manuali:** `PROJECT_REPO_OVERRIDES` definisce titolo, descrizione, lista linguaggi, linguaggio principale, URL demo e comportamento speciale per repo note:
   - `Sito_Web_Portfolio`: visibile, solo pulsante Repository, preview disabilitata per evitare di aprire il sito dentro se stesso.
