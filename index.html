@@ -103,6 +103,22 @@
     </div>
   </div>
 
+  <!-- MODAL PROGETTO -->
+  <div class="modal-overlay project-modal-overlay" id="project-modal" aria-hidden="true">
+    <div class="modal-box project-modal-box" role="dialog" aria-modal="true" aria-labelledby="project-modal-title" tabindex="-1">
+      <button class="modal-close" id="btn-close-project-modal" type="button" data-i18n-aria-label="work.project_close">✕</button>
+      <div class="project-modal-header">
+        <div>
+          <h2 id="project-modal-title"></h2>
+          <p id="project-modal-description" class="modal-intro"></p>
+        </div>
+        <a id="project-modal-repo" class="btn-secondary" href="#" target="_blank" rel="noopener noreferrer" data-i18n="work.project_repo">Repository</a>
+      </div>
+      <div class="project-modal-frame-wrap" id="project-modal-frame-wrap"></div>
+      <p class="projects-status" id="project-modal-status"></p>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <!--
     PDF.js disabled with the inline CV viewer.

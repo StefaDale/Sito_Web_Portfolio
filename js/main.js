@@ -29,6 +29,35 @@ const CV_ASSETS = {
   en: "assets/Curriculum_EN.pdf",
   es: "assets/Curriculum_ES.pdf",
 };
+const GITHUB_USERNAME = 'StefaDale';
+const GITHUB_REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?type=owner&sort=updated&per_page=100`;
+const PROJECT_REPO_OVERRIDES = {
+  'Sito_Web_Portfolio': {
+    title: 'Sito Web Portfolio',
+    description: 'Portfolio personale multilingua con sezioni dinamiche, CV scaricabile, form contatti e integrazione automatica dei progetti GitHub.',
+    languages: 'HTML / CSS / JavaScript',
+    mainLanguage: 'HTML',
+    hideDemoButton: true,
+    disablePreview: true,
+  },
+  Login_Registration_Form_Deploy: {
+    title: 'Login Registration Form',
+    demoUrl: 'https://stefadale.github.io/Login_Registration_Form_Deploy/',
+    languages: 'HTML / CSS / JavaScript / Python',
+    mainLanguage: 'Python',
+    description: 'Form completo di login, registrazione e recupero password con frontend su GitHub Pages e backend Python online.',
+  },
+  LinkTree: {
+    title: 'LinkTree',
+    description: 'Pagina link personale in stile Linktree, pensata per raccogliere profili social, contatti e collegamenti principali in un unico posto.',
+    languages: 'HTML / CSS',
+    mainLanguage: 'HTML',
+    demoUrl: 'https://stefanocatalinlinktree.netlify.app/',
+  },
+};
+const PROJECT_HIDDEN_REPOS = new Set([
+  'Login_Registration_Form',
+]);
 const NAV_SCROLL_DELAY = 180;
 let pendingNavScroll = null;
 let activeScrollId = 0;
@@ -587,6 +616,7 @@ async function loadPageFragments() {
   if (typeof refreshI18n === 'function') refreshI18n();
 
   setupSkillsScroller();
+  setupProjects();
   // CV viewer disabled: restore by uncommenting renderCustomCV() and the function block below.
   // renderCustomCV();
   setupContactForm();
@@ -661,6 +691,184 @@ function smoothHorizontalScroll(element, distance, onUpdate) {
   };
 
   requestAnimationFrame(animate);
+}
+
+function getProjectText(key, fallback) {
+  return typeof getI18nValue === 'function' ? getI18nValue(`work.${key}`, fallback) : fallback;
+}
+
+function shouldHideProjectRepo(repo) {
+  if (!repo || repo.fork || repo.archived) return true;
+  if (PROJECT_HIDDEN_REPOS.has(repo.name)) return true;
+  return false;
+}
+
+function getRepoDemoUrl(repo) {
+  const override = PROJECT_REPO_OVERRIDES[repo.name];
+  if (override?.demoUrl) return override.demoUrl;
+  if (repo.homepage) return repo.homepage;
+  if (repo.has_pages) return `https://${GITHUB_USERNAME.toLowerCase()}.github.io/${repo.name}/`;
+  return '';
+}
+
+function formatRepoName(name) {
+  return String(name || '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[char]));
+}
+
+function capitalizeFirstLetter(value) {
+  const text = String(value || '');
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : '';
+}
+
+function getProjectData(repo) {
+  const override = PROJECT_REPO_OVERRIDES[repo.name] || {};
+  const title = override.title || formatRepoName(repo.name);
+  const description = override.description || repo.description || getProjectText('project_no_description', 'Nessuna descrizione disponibile.');
+  const demoUrl = getRepoDemoUrl(repo);
+
+  return {
+    title,
+    description,
+    demoUrl: override.disablePreview ? '' : demoUrl,
+    repoUrl: repo.html_url,
+    languages: override.languages || repo.language || getProjectText('project_language_unknown', 'Varie'),
+    mainLanguage: override.mainLanguage || repo.language || getProjectText('project_language_unknown', 'Varie'),
+    createdAt: repo.created_at,
+    name: repo.name,
+    hideDemoButton: Boolean(override.hideDemoButton),
+  };
+}
+
+function createProjectCard(project) {
+  const card = document.createElement('article');
+  card.className = 'project-card reveal';
+  card.tabIndex = project.demoUrl ? 0 : -1;
+  card.classList.toggle('has-demo', Boolean(project.demoUrl));
+
+  const createdDate = project.createdAt
+    ? capitalizeFirstLetter(new Intl.DateTimeFormat(document.documentElement.lang || 'it', { month: 'long', year: 'numeric' }).format(new Date(project.createdAt)))
+    : '';
+  const safeTitle = escapeHtml(project.title);
+  const safeDescription = escapeHtml(project.description);
+  const safeLanguages = escapeHtml(project.languages);
+  const safeMainLanguage = escapeHtml(project.mainLanguage);
+  const safeCreatedDate = escapeHtml(createdDate);
+  const safeRepoUrl = encodeURI(project.repoUrl);
+  const showDemoButton = project.demoUrl && !project.hideDemoButton;
+  const demoButton = showDemoButton
+    ? `<button class="btn-primary project-open" type="button">${escapeHtml(getProjectText('project_open_demo', 'Apri demo'))}</button>`
+    : '';
+
+  card.innerHTML = `
+    <div class="project-preview" aria-hidden="true">
+      <span class="project-preview-title">${safeTitle}</span>
+      <span class="project-preview-subtitle">${safeLanguages}</span>
+    </div>
+    <div class="project-card-body">
+      <div class="project-card-topline">
+        <span class="project-language">${escapeHtml(getProjectText('project_main_language', 'Linguaggio piu utilizzato'))}: ${safeMainLanguage}</span>
+        ${createdDate ? `<span class="project-updated">${safeCreatedDate}</span>` : ''}
+      </div>
+      <h3>${safeTitle}</h3>
+      <p>${safeDescription}</p>
+      <div class="project-card-actions">
+        ${demoButton}
+        <a class="btn-secondary" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(getProjectText('project_repo', 'Repository'))}</a>
+      </div>
+    </div>
+  `;
+
+  const open = () => {
+    if (project.demoUrl) openProjectModal(project);
+  };
+
+  card.querySelector('.project-open')?.addEventListener('click', event => {
+    event.stopPropagation();
+    open();
+  });
+
+  card.addEventListener('click', event => {
+    if (event.target.closest('a')) return;
+    open();
+  });
+  card.addEventListener('keydown', event => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    open();
+  });
+
+  return card;
+}
+
+async function setupProjects(root = document) {
+  const grids = root.querySelectorAll('#projects-grid');
+  if (!grids.length) return;
+
+  try {
+    const response = await fetch(GITHUB_REPOS_URL);
+    if (!response.ok) throw new Error(`GitHub API error ${response.status}`);
+
+    const repos = await response.json();
+    const projects = repos
+      .filter(repo => !shouldHideProjectRepo(repo))
+      .map(getProjectData);
+
+    grids.forEach(grid => {
+      grid.innerHTML = '';
+
+      if (!projects.length) {
+        const status = document.createElement('p');
+        status.className = 'projects-status';
+        status.textContent = getProjectText('projects_empty', 'Nessun progetto pubblico disponibile.');
+        grid.append(status);
+        return;
+      }
+
+      projects.forEach(project => grid.append(createProjectCard(project)));
+    });
+
+    requestAnimationFrame(() => setupRevealAnimations(root));
+  } catch (error) {
+    console.error('projects error:', error);
+    grids.forEach(grid => {
+      grid.innerHTML = `<p class="projects-status error">${getProjectText('projects_error', 'Non riesco a caricare i progetti in questo momento.')}</p>`;
+    });
+  }
+}
+
+function openProjectModal(project) {
+  const modal = document.getElementById('project-modal');
+  const modalBox = modal?.querySelector('.project-modal-box');
+  const title = document.getElementById('project-modal-title');
+  const description = document.getElementById('project-modal-description');
+  const repo = document.getElementById('project-modal-repo');
+  const frameWrap = document.getElementById('project-modal-frame-wrap');
+  const status = document.getElementById('project-modal-status');
+  if (!modal || !modalBox || !frameWrap) return;
+
+  title.textContent = project.title;
+  description.textContent = project.description;
+  repo.href = project.repoUrl;
+  status.textContent = getProjectText('project_iframe_hint', 'La demo live e\' caricata qui sotto.');
+  frameWrap.innerHTML = `<iframe class="project-modal-frame" src="${encodeURI(project.demoUrl)}" title="${escapeHtml(project.title)}" loading="lazy"></iframe>`;
+
+  lastFocusedBeforeProjectModal = document.activeElement;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+
+  requestAnimationFrame(() => modalBox.focus());
 }
 
 /*
@@ -978,6 +1186,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupLiveBackground();
   loadPageFragments();
   setupSkillsScroller();
+  setupProjects();
   updateCvAssetLinks();
   // CV viewer disabled: restore by uncommenting renderCustomCV() and the function block above.
   // renderCustomCV();
@@ -1255,6 +1464,7 @@ function setupLiveBackground() {
 // ── MODAL ────────────────────────────────────────────────
 let lastFocusedBeforeModal = null;
 let lastFocusedBeforeLanguageModal = null;
+let lastFocusedBeforeProjectModal = null;
 
 function getModalFocusableElements(modal) {
   return [...modal.querySelectorAll(
@@ -1353,6 +1563,21 @@ function closeLanguageModal() {
   lastFocusedBeforeLanguageModal = null;
 }
 
+function closeProjectModal() {
+  const modal = document.getElementById('project-modal');
+  const frameWrap = document.getElementById('project-modal-frame-wrap');
+  if (!modal) return;
+
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  if (frameWrap) frameWrap.innerHTML = '';
+
+  if (lastFocusedBeforeProjectModal && typeof lastFocusedBeforeProjectModal.focus === 'function') {
+    lastFocusedBeforeProjectModal.focus();
+  }
+  lastFocusedBeforeProjectModal = null;
+}
+
 function filterLanguageOptions(query) {
   const modal = document.getElementById('language-modal');
   if (!modal) return;
@@ -1408,6 +1633,37 @@ function handleLanguageModalKeydown(e) {
   }
 }
 
+function handleProjectModalKeydown(e) {
+  const modal = document.getElementById('project-modal');
+  if (!modal?.classList.contains('open')) return;
+
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    closeProjectModal();
+    return;
+  }
+
+  if (e.key !== 'Tab') return;
+
+  const focusable = getModalFocusableElements(modal);
+  if (!focusable.length) {
+    e.preventDefault();
+    modal.querySelector('.project-modal-box')?.focus();
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-close-modal')
     .addEventListener('click', closeModal);
@@ -1419,6 +1675,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('keydown', handleModalKeydown);
   document.addEventListener('keydown', handleLanguageModalKeydown);
+  document.addEventListener('keydown', handleProjectModalKeydown);
 
   document.getElementById('btn-close-language-modal')
     ?.addEventListener('click', closeLanguageModal);
@@ -1430,6 +1687,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('language-search')
     ?.addEventListener('input', (e) => filterLanguageOptions(e.target.value));
+
+  document.getElementById('btn-close-project-modal')
+    ?.addEventListener('click', closeProjectModal);
+
+  document.getElementById('project-modal')
+    ?.addEventListener('click', (e) => {
+      if (e.target.id === 'project-modal') closeProjectModal();
+    });
 
   document.querySelectorAll('.language-modal-option').forEach(option => {
     option.addEventListener('click', () => {

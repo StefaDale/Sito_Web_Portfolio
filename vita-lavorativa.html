@@ -152,6 +152,19 @@
   </section>
 
   <!-- ── SEZIONE: ESPERIENZE ── -->
+  <section class="content-section alt" id="projects-section">
+    <div class="projects-header">
+      <div>
+        <h2 data-i18n="work.projects_title">Progetti</h2>
+        <p data-i18n="work.projects_intro">Una selezione automatica delle mie repository pubbliche su GitHub.</p>
+      </div>
+      <a class="btn-secondary projects-github-link" href="https://github.com/StefaDale" target="_blank" rel="noopener noreferrer" data-i18n="work.projects_github">GitHub</a>
+    </div>
+    <div class="projects-grid" id="projects-grid" aria-live="polite">
+      <p class="projects-status" data-i18n="work.projects_loading">Caricamento progetti...</p>
+    </div>
+  </section>
+
   <section class="content-section alt">
     <h2 data-i18n="work.experience_title">Esperienze</h2>
     <div class="timeline">
@@ -257,6 +270,22 @@
         <li>📸 <a href="https://www.instagram.com/ste_catalin_/" target="_blank" rel="noopener noreferrer" data-i18n="footer.instagram"></a></li>
         <li>💻 <a href="https://github.com/StefaDale" target="_blank" rel="noopener noreferrer" data-i18n="footer.github"></a></li>
       </ul>
+    </div>
+  </div>
+
+  <!-- MODAL PROGETTO -->
+  <div class="modal-overlay project-modal-overlay" id="project-modal" aria-hidden="true">
+    <div class="modal-box project-modal-box" role="dialog" aria-modal="true" aria-labelledby="project-modal-title" tabindex="-1">
+      <button class="modal-close" id="btn-close-project-modal" type="button" data-i18n-aria-label="work.project_close">✕</button>
+      <div class="project-modal-header">
+        <div>
+          <h2 id="project-modal-title"></h2>
+          <p id="project-modal-description" class="modal-intro"></p>
+        </div>
+        <a id="project-modal-repo" class="btn-secondary" href="#" target="_blank" rel="noopener noreferrer" data-i18n="work.project_repo">Repository</a>
+      </div>
+      <div class="project-modal-frame-wrap" id="project-modal-frame-wrap"></div>
+      <p class="projects-status" id="project-modal-status"></p>
     </div>
   </div>
 
