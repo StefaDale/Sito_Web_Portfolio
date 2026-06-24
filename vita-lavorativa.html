@@ -158,10 +158,18 @@
         <h2 data-i18n="work.projects_title">Progetti</h2>
         <p data-i18n="work.projects_intro">Una selezione automatica delle mie repository pubbliche su GitHub.</p>
       </div>
-      <a class="btn-secondary projects-github-link" href="https://github.com/StefaDale" target="_blank" rel="noopener noreferrer" data-i18n="work.projects_github">GitHub</a>
+      <div class="projects-actions">
+        <a class="btn-secondary projects-github-link" href="https://github.com/StefaDale" target="_blank" rel="noopener noreferrer" data-i18n="work.projects_github">GitHub</a>
+        <div class="projects-nav">
+          <button class="projects-nav-btn" id="projects-prev" type="button" aria-label="Progetto precedente" data-i18n-aria-label="work.projects_prev_label">&larr;</button>
+          <button class="projects-nav-btn" id="projects-next" type="button" aria-label="Progetto successivo" data-i18n-aria-label="work.projects_next_label">&rarr;</button>
+        </div>
+      </div>
     </div>
-    <div class="projects-grid" id="projects-grid" aria-live="polite">
-      <p class="projects-status" data-i18n="work.projects_loading">Caricamento progetti...</p>
+    <div class="projects-scroll-wrapper" id="projects-scroll-wrapper">
+      <div class="projects-grid" id="projects-grid" aria-live="polite">
+        <p class="projects-status" data-i18n="work.projects_loading">Caricamento progetti...</p>
+      </div>
     </div>
   </section>
 

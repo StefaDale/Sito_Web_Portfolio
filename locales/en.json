@@ -34,6 +34,8 @@
     "skills_title": "Skills",
     "skills_prev_label": "Scroll skills left",
     "skills_next_label": "Scroll skills right",
+    "projects_prev_label": "Scroll projects left",
+    "projects_next_label": "Scroll projects right",
     "experience_title": "Experience",
     "exp1_title": "State Technical and Industrial Institute",
     "exp1_role": "Student",
@@ -112,7 +114,7 @@
   "footer": {
     "title": "Contacts",
     "instagram": "Instagram",
-    "github": "Github",
+    "github": "GitHub",
     "copyright": "© 2026 Stefano Catalin D'Alessandro. All rights reserved."
   },
   "not_found": {

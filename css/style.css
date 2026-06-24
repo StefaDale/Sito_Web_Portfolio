@@ -767,12 +767,14 @@ img {
   margin-bottom: 0;
 }
 
-.skills-nav {
+.skills-nav,
+.projects-nav {
   display: flex;
   gap: 0.5rem;
 }
 
-.skills-nav-btn {
+.skills-nav-btn,
+.projects-nav-btn {
   background: none;
   border: 1px solid var(--border);
   color: var(--text-muted);
@@ -788,13 +790,15 @@ img {
   font-family: inherit;
 }
 
-.skills-nav-btn:hover {
+.skills-nav-btn:hover,
+.projects-nav-btn:hover {
   border-color: var(--accent);
   color: var(--accent-hl);
   background-color: rgba(124, 58, 237, 0.1);
 }
 
-.skills-nav-btn:disabled {
+.skills-nav-btn:disabled,
+.projects-nav-btn:disabled {
   border-color: var(--border);
   color: rgba(144, 144, 168, 0.45);
   background-color: transparent;
@@ -948,13 +952,33 @@ img {
   flex-shrink: 0;
 }
 
+.projects-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.projects-scroll-wrapper {
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none;
+}
+
+.projects-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
 .projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  align-items: stretch;
   gap: 1rem;
+  width: max-content;
+  padding: 0.25rem 0.1rem 0.25rem;
 }
 
 .project-card {
+  width: 360px;
   min-height: 420px;
   background-color: rgba(26, 26, 30, 0.54);
   border: 1px solid var(--border);
@@ -964,6 +988,7 @@ img {
   -webkit-backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
+  flex: 0 0 360px;
   transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
@@ -1487,6 +1512,11 @@ img {
   }
 
   /* --- CV container: altezza ridotta, più gestibile su mobile --- */
+  .project-card {
+    width: min(320px, calc(100vw - 3.5rem));
+    flex-basis: min(320px, calc(100vw - 3.5rem));
+  }
+
   .cv-render-container {
     height: 450px;
     padding: 1rem 0;
@@ -1615,6 +1645,11 @@ img {
   .project-modal-header {
     grid-template-columns: 1fr;
     flex-direction: column;
+  }
+
+  .projects-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .project-modal-header {

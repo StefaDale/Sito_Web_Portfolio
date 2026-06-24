@@ -34,7 +34,6 @@ const GITHUB_REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?
 const PROJECT_REPO_OVERRIDES = {
   'Sito_Web_Portfolio': {
     title: 'Sito Web Portfolio',
-    description: 'Portfolio personale multilingua con sezioni dinamiche, CV scaricabile, form contatti e integrazione automatica dei progetti GitHub.',
     languages: 'HTML / CSS / JavaScript',
     mainLanguage: 'HTML',
     hideDemoButton: true,
@@ -42,14 +41,11 @@ const PROJECT_REPO_OVERRIDES = {
   },
   Login_Registration_Form_Deploy: {
     title: 'Login Registration Form',
-    demoUrl: 'https://stefadale.github.io/Login_Registration_Form_Deploy/',
     languages: 'HTML / CSS / JavaScript / Python',
     mainLanguage: 'Python',
-    description: 'Form completo di login, registrazione e recupero password con frontend su GitHub Pages e backend Python online.',
   },
   LinkTree: {
     title: 'LinkTree',
-    description: 'Pagina link personale in stile Linktree, pensata per raccogliere profili social, contatti e collegamenti principali in un unico posto.',
     languages: 'HTML / CSS',
     mainLanguage: 'HTML',
     demoUrl: 'https://stefanocatalinlinktree.netlify.app/',
@@ -665,6 +661,30 @@ function setupSkillsScroller() {
   });
 }
 
+function setupProjectsScroller(root = document) {
+  root.querySelectorAll('.projects-scroll-wrapper').forEach(wrapper => {
+    const section = wrapper.closest('#projects-section') || document;
+    const prev = section.querySelector('#projects-prev');
+    const next = section.querySelector('#projects-next');
+    if (!prev || !next) return;
+
+    const updateButtons = () => updateSkillsNavButtons(wrapper, prev, next);
+
+    if (wrapper.dataset.projectsReady === 'true') {
+      updateButtons();
+      return;
+    }
+
+    prev.addEventListener('click', () => scrollHorizontalByItem(wrapper, '.projects-grid', '.project-card', -1, updateButtons));
+    next.addEventListener('click', () => scrollHorizontalByItem(wrapper, '.projects-grid', '.project-card', 1, updateButtons));
+    wrapper.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+
+    updateButtons();
+    wrapper.dataset.projectsReady = 'true';
+  });
+}
+
 function updateSkillsNavButtons(wrapper, prev, next) {
   const maxScroll = Math.max(0, wrapper.scrollWidth - wrapper.clientWidth);
   const current = Math.round(wrapper.scrollLeft);
@@ -675,10 +695,33 @@ function updateSkillsNavButtons(wrapper, prev, next) {
   next.disabled = atEnd;
 }
 
+function scrollHorizontalByItem(element, trackSelector, itemSelector, direction, onUpdate) {
+  const track = element.querySelector(trackSelector);
+  const firstItem = element.querySelector(itemSelector);
+  if (!track || !firstItem) return;
+
+  const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+  const step = firstItem.getBoundingClientRect().width + gap;
+  if (!step) return;
+
+  const maxScroll = Math.max(0, element.scrollWidth - element.clientWidth);
+  const currentIndex = Math.round(element.scrollLeft / step);
+  const targetIndex = currentIndex + direction;
+  const target = Math.max(0, Math.min(maxScroll, targetIndex * step));
+
+  smoothHorizontalScrollTo(element, target, onUpdate);
+}
+
 function smoothHorizontalScroll(element, distance, onUpdate) {
   const start = element.scrollLeft;
   const maxScroll = element.scrollWidth - element.clientWidth;
   const target = Math.max(0, Math.min(maxScroll, start + distance));
+
+  smoothHorizontalScrollTo(element, target, onUpdate);
+}
+
+function smoothHorizontalScrollTo(element, target, onUpdate) {
+  const start = element.scrollLeft;
   const duration = 320;
   const startTime = performance.now();
 
@@ -815,6 +858,7 @@ function createProjectCard(project) {
 async function setupProjects(root = document) {
   const grids = root.querySelectorAll('#projects-grid');
   if (!grids.length) return;
+  setupProjectsScroller(root);
 
   try {
     const response = await fetch(GITHUB_REPOS_URL);
@@ -839,12 +883,14 @@ async function setupProjects(root = document) {
       projects.forEach(project => grid.append(createProjectCard(project)));
     });
 
+    setupProjectsScroller(root);
     requestAnimationFrame(() => setupRevealAnimations(root));
   } catch (error) {
     console.error('projects error:', error);
     grids.forEach(grid => {
       grid.innerHTML = `<p class="projects-status error">${getProjectText('projects_error', 'Non riesco a caricare i progetti in questo momento.')}</p>`;
     });
+    setupProjectsScroller(root);
   }
 }
 
