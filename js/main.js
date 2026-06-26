@@ -32,35 +32,34 @@ const CV_ASSETS = {
 const GITHUB_USERNAME = 'StefaDale';
 const GITHUB_REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?type=owner&sort=created&direction=asc&per_page=100`;
 const PROJECT_REPO_OVERRIDES = {
-  'Sito_Web_Portfolio': {
-    title: 'Sito Web Portfolio',
-    languages: 'HTML / CSS / JavaScript',
-    mainLanguage: 'HTML',
+  Sito_Web_Portfolio: {
     hideDemoButton: true,
     disablePreview: true,
-  },
-  Login_Registration_Form_Deploy: {
-    title: 'Login Registration Form',
-    languages: 'HTML / CSS / JavaScript / Python',
-    mainLanguage: 'Python',
-  },
-  LinkTree: {
-    title: 'LinkTree',
-    languages: 'HTML / CSS',
-    mainLanguage: 'HTML',
-    demoUrl: 'https://stefanocatalinlinktree.netlify.app/',
-  },
-  Click_Counter: {
-    languages: 'HTML / CSS / JavaScript'
-  },
-  School_Schedule: {
-    languages: 'HTML / CSS / JavaScript'
   }
-  
 };
 const PROJECT_HIDDEN_REPOS = new Set([
   'Login_Registration_Form',
 ]);
+const PROJECT_LANGUAGE_CACHE_KEY = 'project-repo-languages-v1';
+const PROJECT_LANGUAGE_DISPLAY_ORDER = [
+  'HTML',
+  'CSS',
+  'JavaScript',
+  'TypeScript',
+  'Python',
+  'Java',
+  'C#',
+  'C++',
+  'C',
+  'PHP',
+  'Ruby',
+  'Go',
+  'Rust',
+  'Dart',
+  'Kotlin',
+  'Swift',
+  'Shell',
+];
 const NAV_SCROLL_DELAY = 180;
 let pendingNavScroll = null;
 let activeScrollId = 0;
@@ -782,19 +781,80 @@ function capitalizeFirstLetter(value) {
   return text ? text.charAt(0).toUpperCase() + text.slice(1) : '';
 }
 
-function getProjectData(repo) {
+function getCachedProjectLanguages() {
+  try {
+    return JSON.parse(sessionStorage.getItem(PROJECT_LANGUAGE_CACHE_KEY) || '{}');
+  } catch (error) {
+    return {};
+  }
+}
+
+function setCachedProjectLanguages(repoName, languages) {
+  try {
+    const cache = getCachedProjectLanguages();
+    cache[repoName] = languages;
+    sessionStorage.setItem(PROJECT_LANGUAGE_CACHE_KEY, JSON.stringify(cache));
+  } catch (error) {
+    // Cache failure should never block project rendering.
+  }
+}
+
+function sortProjectLanguages(languageEntries) {
+  return languageEntries.sort((first, second) => {
+    const firstIndex = PROJECT_LANGUAGE_DISPLAY_ORDER.indexOf(first[0]);
+    const secondIndex = PROJECT_LANGUAGE_DISPLAY_ORDER.indexOf(second[0]);
+    const hasFirstOrder = firstIndex !== -1;
+    const hasSecondOrder = secondIndex !== -1;
+
+    if (hasFirstOrder && hasSecondOrder) return firstIndex - secondIndex;
+    if (hasFirstOrder) return -1;
+    if (hasSecondOrder) return 1;
+    return second[1] - first[1] || first[0].localeCompare(second[0]);
+  });
+}
+
+function formatProjectLanguages(languages, fallback) {
+  const entries = Object.entries(languages || {}).filter(([, bytes]) => bytes > 0);
+  if (!entries.length) return fallback;
+  return sortProjectLanguages(entries)
+    .map(([language]) => language)
+    .join(' / ');
+}
+
+async function fetchRepoLanguages(repo) {
+  const fallback = repo.language || getProjectText('project_language_unknown', 'Varie');
+  if (!repo.languages_url) return fallback;
+
+  const cachedLanguages = getCachedProjectLanguages()[repo.name];
+  if (cachedLanguages) return formatProjectLanguages(cachedLanguages, fallback);
+
+  try {
+    const response = await fetch(repo.languages_url);
+    if (!response.ok) throw new Error(`GitHub languages API error ${response.status}`);
+
+    const languages = await response.json();
+    setCachedProjectLanguages(repo.name, languages);
+    return formatProjectLanguages(languages, fallback);
+  } catch (error) {
+    console.warn(`languages error for ${repo.name}:`, error);
+    return fallback;
+  }
+}
+
+async function getProjectData(repo) {
   const override = PROJECT_REPO_OVERRIDES[repo.name] || {};
   const title = override.title || formatRepoName(repo.name);
   const description = override.description || repo.description || getProjectText('project_no_description', 'Nessuna descrizione disponibile.');
   const demoUrl = getRepoDemoUrl(repo);
+  const mainLanguage = repo.language || getProjectText('project_language_unknown', 'Varie');
 
   return {
     title,
     description,
     demoUrl: override.disablePreview ? '' : demoUrl,
     repoUrl: repo.html_url,
-    languages: override.languages || repo.language || getProjectText('project_language_unknown', 'Varie'),
-    mainLanguage: override.mainLanguage || repo.language || getProjectText('project_language_unknown', 'Varie'),
+    languages: await fetchRepoLanguages(repo),
+    mainLanguage,
     createdAt: repo.created_at,
     name: repo.name,
     hideDemoButton: Boolean(override.hideDemoButton),
@@ -872,9 +932,11 @@ async function setupProjects(root = document) {
     if (!response.ok) throw new Error(`GitHub API error ${response.status}`);
 
     const repos = await response.json();
-    const projects = repos
-      .filter(repo => !shouldHideProjectRepo(repo))
-      .map(getProjectData);
+    const projects = await Promise.all(
+      repos
+        .filter(repo => !shouldHideProjectRepo(repo))
+        .map(getProjectData)
+    );
 
     grids.forEach(grid => {
       grid.innerHTML = '';
