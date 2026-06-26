@@ -52,7 +52,11 @@ const PROJECT_REPO_OVERRIDES = {
   },
   Click_Counter: {
     languages: 'HTML / CSS / JavaScript'
+  },
+  School_Schedule: {
+    languages: 'HTML / CSS / JavaScript'
   }
+  
 };
 const PROJECT_HIDDEN_REPOS = new Set([
   'Login_Registration_Form',
