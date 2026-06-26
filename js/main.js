@@ -9,7 +9,6 @@ const EMAILJS_CONFIG = {
 };
 const EMAIL_VERIFICATION_CODE_LENGTH = 6;
 const EMAIL_VERIFICATION_TTL_MS = 5 * 60 * 1000;
-const TEST_VERIFICATION_CODE = '7946130258';
 const CONTACT_MESSAGE_FALLBACK = {
   sending: 'Sending your message...',
   success: 'Message sent successfully.',
